@@ -24,6 +24,7 @@ export interface FormField {
   options?: FieldOption[];
   required?: boolean;
   readOnly?: boolean;
+  colSpan?: number;
   label: string;
   icon?: string;
   name: string;
@@ -38,6 +39,7 @@ export interface FormAction {
 }
 
 export interface FormStep {
+  gridColumns?: number;
   actions: FormAction[];
   fields: FormField[];
   title: string;

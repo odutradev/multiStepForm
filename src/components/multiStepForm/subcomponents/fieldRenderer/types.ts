@@ -11,5 +11,6 @@ export interface MaskedInputProps extends Omit<InputBaseComponentProps, 'onChang
 
 export interface FieldRendererProps {
   control: Control<FieldValues>;
+  gridColumns?: number;
   fields: FormField[];
 }

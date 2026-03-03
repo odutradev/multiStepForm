@@ -5,6 +5,7 @@ export const mockFormConfig: FormConfig = {
     {
       id: 'step-1',
       title: 'Cadastrar Processo',
+      gridColumns: 2,
       fields: [
         {
           name: 'numeroProcesso',
@@ -51,6 +52,7 @@ export const mockFormConfig: FormConfig = {
     {
       id: 'step-2',
       title: 'Informações Gerais',
+      gridColumns: 2,
       fields: [
         { name: 'subtitleMagistrado', label: 'Magistrado Responsável', type: 'subtitle' },
         {

@@ -1,8 +1,8 @@
 import { FormContainer, StepContainer, LoadingOverlay } from './styles';
-import { useMultiStepForm } from './hooks/useMultiStepForm';
 import ActionButtons from './subcomponents/actionButtons';
-import StepIndicator from './subcomponents/stepIndicator';
 import FieldRenderer from './subcomponents/fieldRenderer';
+import StepIndicator from './subcomponents/stepIndicator';
+import { useMultiStepForm } from './hooks/useMultiStepForm';
 import Loading from '../loading';
 
 import type { MultiStepFormProps } from './types';
@@ -25,7 +25,7 @@ const MultiStepForm = (props: MultiStepFormProps) => {
     <FormContainer onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}>
       <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
       <StepContainer>
-        <FieldRenderer fields={currentStep.fields} control={control} />
+        <FieldRenderer fields={currentStep.fields} control={control} gridColumns={currentStep.gridColumns} />
         <ActionButtons
           actions={currentStep.actions}
           isActionLoading={isActionLoading}
