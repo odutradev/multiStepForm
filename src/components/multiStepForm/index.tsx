@@ -1,58 +1,38 @@
-import { useState, useCallback, useMemo } from 'react';
-
 import { FormContainer, StepContainer, StepTitle } from './styles';
-import FieldRenderer from './subcomponents/fieldRenderer';
+import { useMultiStepForm } from './hooks/useMultiStepForm';
 import ActionButtons from './subcomponents/actionButtons';
+import FieldRenderer from './subcomponents/fieldRenderer';
 import StepIndicator from './subcomponents/stepIndicator';
 
 import type { MultiStepFormProps } from './types';
 
-const MultiStepForm = ({ config, initialData = {}, onSubmit }: MultiStepFormProps) => {
-  const [formData, setFormData] = useState<Record<string, unknown>>(initialData);
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-
-  const steps = useMemo(() => config.steps, [config]);
-  const currentStep = useMemo(() => steps[currentStepIndex], [steps, currentStepIndex]);
-  const isFirstStep = currentStepIndex === 0;
-  const isLastStep = currentStepIndex === steps.length - 1;
-
-  const handleFieldChange = useCallback((name: string, value: unknown) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!isLastStep) setCurrentStepIndex((prev) => prev + 1);
-  }, [isLastStep]);
-
-  const handlePrev = useCallback(() => {
-    if (!isFirstStep) setCurrentStepIndex((prev) => prev - 1);
-  }, [isFirstStep]);
-
-  const handleSubmit = useCallback(() => {
-    onSubmit(formData);
-  }, [onSubmit, formData]);
+const MultiStepForm = (props: MultiStepFormProps) => {
+  const {
+    steps,
+    control,
+    getValues,
+    currentStep,
+    currentStepIndex,
+    isCurrentStepValid,
+    handleNext,
+    handlePrev,
+    handleFormSubmit
+  } = useMultiStepForm(props);
 
   if (!currentStep) return null;
 
   return (
-    <FormContainer>
-      <StepIndicator currentStepIndex={currentStepIndex} steps={steps} />
-
+    <FormContainer onSubmit={handleFormSubmit}>
+      <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
       <StepContainer>
         <StepTitle variant="h5">{currentStep.title}</StepTitle>
-
-        <FieldRenderer
-          formData={formData}
-          fields={currentStep.fields}
-          onChange={handleFieldChange}
-        />
-
+        <FieldRenderer fields={currentStep.fields} control={control} />
         <ActionButtons
-          data={formData}
           actions={currentStep.actions}
+          isNextDisabled={!isCurrentStepValid}
+          getValues={getValues}
           onNext={handleNext}
           onPrev={handlePrev}
-          onSubmit={handleSubmit}
         />
       </StepContainer>
     </FormContainer>

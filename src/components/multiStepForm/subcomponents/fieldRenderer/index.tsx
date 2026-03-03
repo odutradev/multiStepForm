@@ -1,48 +1,52 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
 import { FieldsContainer } from './styles';
 
 import type { FieldRendererProps } from './types';
 
-const FieldRenderer = ({ fields, formData, onChange }: FieldRendererProps) => {
+const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
   if (!fields?.length) return null;
 
   return (
     <FieldsContainer>
-      {fields.map((field) => {
-        const value = (formData[field.name] as string) || '';
+      {fields.map((field) => (
+        <Controller
+          key={field.name}
+          name={field.name}
+          control={control}
+          rules={{ required: field.required }}
+          defaultValue=""
+          render={({ field: { onChange, value }, fieldState: { error } }) => {
+            if (field.type === 'select') {
+              return (
+                <FormControl fullWidth required={field.required} error={!!error}>
+                  <InputLabel>{field.label}</InputLabel>
+                  <Select value={value} label={field.label} onChange={onChange}>
+                    {field.options?.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              );
+            }
 
-        if (field.type === 'select') {
-          return (
-            <FormControl key={field.name} fullWidth required={field.required}>
-              <InputLabel>{field.label}</InputLabel>
-              <Select
-                value={value}
+            return (
+              <TextField
+                type={field.type}
                 label={field.label}
-                onChange={(e) => onChange(field.name, e.target.value)}
-              >
-                {field.options?.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          );
-        }
-
-        return (
-          <TextField
-            key={field.name}
-            type={field.type}
-            label={field.label}
-            required={field.required}
-            value={value}
-            onChange={(e) => onChange(field.name, e.target.value)}
-            fullWidth
-          />
-        );
-      })}
+                required={field.required}
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                fullWidth
+              />
+            );
+          }}
+        />
+      ))}
     </FieldsContainer>
   );
 };
