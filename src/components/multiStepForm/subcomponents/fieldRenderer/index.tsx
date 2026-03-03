@@ -15,6 +15,7 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
     {...other}
     mask={maskPattern}
     inputRef={ref}
+    prepareChar={(str) => str.toUpperCase()}
     onAccept={(value: string) => onChange({ target: { name, value } })}
     overwrite
   />

@@ -60,11 +60,11 @@ export const mockFormConfig: FormConfig = {
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
-          mask: 'a0000000',
+          mask: 'a-0000000',
           icon: 'Search',
           validation: {
-            pattern: '^[a-zA-Z]\\d{7}$',
-            message: 'Matrícula inválida. Formato: 1 Letra e 7 Números'
+            pattern: '^[A-Z]-\\d{7}$',
+            message: 'Matrícula inválida. Formato: 1 Letra e 7 Números (Ex: P-0000000)'
           }
         },
         {
