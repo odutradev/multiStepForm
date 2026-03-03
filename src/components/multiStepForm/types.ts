@@ -18,8 +18,22 @@ export interface FieldValidation {
   message: string;
 }
 
+export interface SearchResultColumn {
+  header: string;
+  key: string;
+}
+
+export interface SearchConfig {
+  onSearch: (filters: Record<string, unknown>) => Promise<Record<string, unknown>[]>;
+  onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
+  columns: SearchResultColumn[];
+  fields: FormField[];
+  title: string;
+}
+
 export interface FormField {
   type: 'text' | 'number' | 'email' | 'select' | 'subtitle';
+  searchConfig?: SearchConfig;
   validation?: FieldValidation;
   options?: FieldOption[];
   disabled?: boolean;

@@ -12,6 +12,7 @@ const MultiStepForm = (props: MultiStepFormProps) => {
   const {
     steps,
     control,
+    formMethods,
     currentStep,
     executeAction,
     isActionLoading,
@@ -21,11 +22,18 @@ const MultiStepForm = (props: MultiStepFormProps) => {
 
   if (!currentStep) return null;
 
+  const actionContext = { data: formMethods.getValues(), ...formMethods };
+
   return (
     <FormContainer onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}>
       <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
       <StepContainer>
-        <FieldRenderer fields={currentStep.fields} control={control} gridColumns={currentStep.gridColumns} />
+        <FieldRenderer
+          fields={currentStep.fields}
+          control={control}
+          context={actionContext}
+          gridColumns={currentStep.gridColumns}
+        />
         <ActionButtons
           actions={currentStep.actions}
           isActionLoading={isActionLoading}

@@ -60,9 +60,36 @@ export const mockFormConfig: FormConfig = {
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
-          disabled: true,
+          readOnly: true,
           mask: 'a-0000000',
           icon: 'Search',
+          searchConfig: {
+            title: 'Buscar Magistrado',
+            fields: [
+              { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
+              { name: 'matricula', label: 'Matrícula', type: 'text' }
+            ],
+            columns: [
+              { header: 'Matrícula', key: 'matricula' },
+              { header: 'Nome', key: 'nome' },
+              { header: 'Vara', key: 'vara' }
+            ],
+            onSearch: async (filters) => {
+              await new Promise((resolve) => setTimeout(resolve, 800));
+              const searchName = (filters.nome as string)?.toLowerCase() || '';
+              const mockData = [
+                { matricula: 'P-1234567', nome: 'João da Silva', vara: '1ª Vara Cível' },
+                { matricula: 'M-7654321', nome: 'Maria Souza', vara: '2ª Vara Criminal' },
+                { matricula: 'F-9988776', nome: 'Ana Costa', vara: '3ª Vara de Família' }
+              ];
+              return mockData.filter((item) => item.nome.toLowerCase().includes(searchName));
+            },
+            onSelect: (item, context) => {
+              context.setValue('usernameMagistrado', item.matricula as string);
+              context.setValue('nomeMagistrado', item.nome as string);
+              context.clearErrors(['usernameMagistrado', 'nomeMagistrado']);
+            }
+          },
           validation: {
             pattern: '^[A-Z]-\\d{7}$',
             message: 'Matrícula inválida. Formato: 1 Letra e 7 Números (Ex: P-0000000)'
@@ -73,7 +100,7 @@ export const mockFormConfig: FormConfig = {
           label: 'Nome do magistrado',
           type: 'text',
           required: true,
-          disabled: true
+          readOnly: true
         }
       ],
       actions: [

@@ -32,6 +32,13 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
     return !hasErrors && !hasMissingRequired;
   }, [currentFieldsToValidate, currentFieldNames, currentValues, errors]);
 
+  const formMethods = useMemo(() => ({
+    clearErrors,
+    getValues,
+    setError,
+    setValue
+  }), [clearErrors, getValues, setError, setValue]);
+
   const executeAction = useCallback(async (action: FormAction) => {
     if (action.actionType === 'next') {
       const isStepValid = await trigger(currentFieldNames);
@@ -41,7 +48,7 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
     setIsActionLoading(true);
     try {
       if (action.onClick) {
-        const context = { data: getValues(), setValue, getValues, setError, clearErrors };
+        const context = { data: getValues(), ...formMethods };
         const result = await action.onClick(context);
         if (result === false) return;
       }
@@ -52,11 +59,12 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
     } finally {
       setIsActionLoading(false);
     }
-  }, [trigger, currentFieldNames, getValues, setValue, setError, clearErrors, isLastStep, isFirstStep, handleSubmit, onSubmit]);
+  }, [trigger, currentFieldNames, getValues, formMethods, isLastStep, isFirstStep, handleSubmit, onSubmit]);
 
   return {
     steps,
     control,
+    formMethods,
     currentStep,
     executeAction,
     isActionLoading,
