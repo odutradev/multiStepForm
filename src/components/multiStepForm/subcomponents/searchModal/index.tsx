@@ -1,9 +1,9 @@
-import { Dialog, DialogTitle, DialogActions, Button, TextField, Table, TableBody, TableHead, TableRow, CircularProgress, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography } from '@mui/material';
 import { useState, useCallback, forwardRef, useEffect } from 'react';
-import { Search } from '@mui/icons-material';
 import { IMaskInput } from 'react-imask';
+import { Search } from '@mui/icons-material';
 
-import { TableContainerWrapper, FiltersContainer, ContentContainer, ModalContainer, SearchButton, CenterContent, EmptyIcon, StyledTableCell } from './styles';
+import { TableContainerWrapper, FiltersContainer, ContentContainer, ModalContainer, StyledTableRow, SearchButton, CenterContent, EmptyIcon } from './styles';
 
 import type { SearchModalProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
@@ -84,43 +84,43 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
               <TableHead>
                 <TableRow>
                   {config.columns.map((col) => (
-                    <StyledTableCell key={col.key}>{col.header}</StyledTableCell>
+                    <TableCell key={col.key}>{col.header}</TableCell>
                   ))}
-                  <StyledTableCell align="right">Ação</StyledTableCell>
+                  <TableCell align="right">Ação</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {isLoading ? (
-                  <TableRow>
-                    <StyledTableCell colSpan={config.columns.length + 1}>
+                  <StyledTableRow>
+                    <TableCell colSpan={config.columns.length + 1}>
                       <CenterContent>
                         <CircularProgress size={40} />
                         <Typography variant="body1">Buscando resultados...</Typography>
                       </CenterContent>
-                    </StyledTableCell>
-                  </TableRow>
+                    </TableCell>
+                  </StyledTableRow>
                 ) : results.length > 0 ? (
                   results.map((row, index) => (
-                    <TableRow key={index} hover>
+                    <StyledTableRow key={index} hover>
                       {config.columns.map((col) => (
-                        <StyledTableCell key={col.key}>{String(row[col.key] ?? '-')}</StyledTableCell>
+                        <TableCell key={col.key}>{String(row[col.key] ?? '-')}</TableCell>
                       ))}
-                      <StyledTableCell align="right">
+                      <TableCell align="right">
                         <Button size="small" variant="outlined" onClick={() => handleSelect(row)}>
                           Selecionar
                         </Button>
-                      </StyledTableCell>
-                    </TableRow>
+                      </TableCell>
+                    </StyledTableRow>
                   ))
                 ) : (
-                  <TableRow>
-                    <StyledTableCell colSpan={config.columns.length + 1}>
+                  <StyledTableRow>
+                    <TableCell colSpan={config.columns.length + 1}>
                       <CenterContent>
                         <EmptyIcon />
                         <Typography variant="body1">Nenhum resultado encontrado.</Typography>
                       </CenterContent>
-                    </StyledTableCell>
-                  </TableRow>
+                    </TableCell>
+                  </StyledTableRow>
                 )}
               </TableBody>
             </Table>

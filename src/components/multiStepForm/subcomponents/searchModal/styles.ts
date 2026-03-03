@@ -1,4 +1,4 @@
-import { Box, TableContainer, DialogContent, Button, TableCell } from '@mui/material';
+import { Box, TableContainer, DialogContent, Button, TableRow } from '@mui/material';
 import { SearchOff } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
@@ -36,8 +36,10 @@ export const TableContainerWrapper = styled(TableContainer)(({ theme }) => ({
   maxHeight: '60vh'
 }));
 
-export const StyledTableCell = styled(TableCell)({
-  borderBottom: 'none'
+export const StyledTableRow = styled(TableRow)({
+  '&:last-child td, &:last-child th': {
+    borderBottom: 0
+  }
 });
 
 export const CenterContent = styled(Box)(({ theme }) => ({
