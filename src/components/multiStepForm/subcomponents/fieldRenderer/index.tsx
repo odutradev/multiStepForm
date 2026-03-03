@@ -1,5 +1,5 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import * as MuiIcons from '@mui/icons-material';
 import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
@@ -9,10 +9,6 @@ import { FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import type { FieldRendererProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
 import type { ElementType } from 'react';
-
-const ICONS_MAP: Record<string, ElementType> = {
-  search: SearchIcon
-};
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
   <IMaskInput
@@ -38,7 +34,7 @@ const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => 
           );
         }
 
-        const SelectedIcon = field.icon ? ICONS_MAP[field.icon] : null;
+        const SelectedIcon = field.icon ? MuiIcons[field.icon as keyof typeof MuiIcons] : null;
 
         return (
           <FieldWrapper key={field.name} $colSpan={field.colSpan}>

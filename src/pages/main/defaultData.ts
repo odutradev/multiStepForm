@@ -61,7 +61,7 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           required: true,
           mask: 'a0000000',
-          icon: 'search',
+          icon: 'Search',
           validation: {
             pattern: '^[a-zA-Z]\\d{7}$',
             message: 'Matrícula inválida. Formato: 1 Letra e 7 Números'
@@ -73,7 +73,7 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           required: true,
           readOnly: true,
-          icon: 'search'
+          icon: 'Search'
         }
       ],
       actions: [
