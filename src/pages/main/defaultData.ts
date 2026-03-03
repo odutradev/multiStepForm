@@ -44,6 +44,7 @@ export const mockFormConfig: FormConfig = {
               setValue('value', 5000);
               setValue('court', 'TJSP');
             }
+            console.log(data)
           }
         }
       ],

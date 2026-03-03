@@ -5,13 +5,13 @@ import { forwardRef } from 'react';
 
 import { FieldsContainer } from './styles';
 
-import type { InputBaseComponentProps } from '@mui/material';
 import type { FieldRendererProps, MaskedInputProps } from './types';
+import type { InputBaseComponentProps } from '@mui/material';
 import type { ElementType } from 'react';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>((props, ref) => {
   const { onChange, maskPattern, name, ...other } = props;
-  
+
   return (
     <IMaskInput
       {...other}
@@ -33,12 +33,9 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
           key={field.name}
           name={field.name}
           control={control}
-          rules={{ 
+          rules={{
             required: field.required ? 'Campo obrigatório' : false,
-            pattern: field.validation ? { 
-              value: new RegExp(field.validation.pattern), 
-              message: field.validation.message 
-            } : undefined
+            pattern: field.validation ? { value: new RegExp(field.validation.pattern), message: field.validation.message } : undefined
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
             if (field.type === 'select') {
@@ -67,6 +64,7 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
+                InputProps={field.mask ? { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> } : undefined}
                 inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             );

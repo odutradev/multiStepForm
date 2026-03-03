@@ -1,14 +1,15 @@
+import type { InputBaseComponentProps } from '@mui/material';
 import type { Control, FieldValues } from 'react-hook-form';
 
 import type { FormField } from '../../types';
 
-export interface FieldRendererProps {
-  fields: FormField[];
-  control: Control<FieldValues>;
+export interface MaskedInputProps extends Omit<InputBaseComponentProps, 'onChange'> {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  maskPattern: string;
+  name: string;
 }
 
-export interface MaskedInputProps {
-  name: string;
-  maskPattern: string;
-  onChange: (event: { target: { name: string; value: string } }) => void;
+export interface FieldRendererProps {
+  control: Control<FieldValues>;
+  fields: FormField[];
 }
