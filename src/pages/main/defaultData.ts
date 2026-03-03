@@ -1,3 +1,5 @@
+import { magistratesMock } from './mock';
+
 import type { FormConfig } from '@components/multiStepForm/types';
 
 export const mockFormConfig: FormConfig = {
@@ -24,14 +26,8 @@ export const mockFormConfig: FormConfig = {
           type: 'select',
           required: true,
           options: [
-            {
-              label: 'Justiça Comum 1ª Instância',
-              value: 'JUSTICA_COMUM_1_INSTANCIA',
-            },
-            {
-              label: 'Justiça Comum 2ª Instância',
-              value: 'JUSTICA_COMUM_2_INSTANCIA',
-            },
+            { label: 'Justiça Comum 1ª Instância', value: 'JUSTICA_COMUM_1_INSTANCIA' },
+            { label: 'Justiça Comum 2ª Instância', value: 'JUSTICA_COMUM_2_INSTANCIA' },
           ],
         },
       ],
@@ -67,22 +63,22 @@ export const mockFormConfig: FormConfig = {
             title: 'Buscar Magistrado',
             fields: [
               { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
-              { name: 'matricula', label: 'Matrícula', type: 'text' }
+              { name: 'matricula', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
             ],
             columns: [
               { header: 'Matrícula', key: 'matricula' },
-              { header: 'Nome', key: 'nome' },
-              { header: 'Vara', key: 'vara' }
+              { header: 'Nome', key: 'nome' }
             ],
             onSearch: async (filters) => {
               await new Promise((resolve) => setTimeout(resolve, 800));
               const searchName = (filters.nome as string)?.toLowerCase() || '';
-              const mockData = [
-                { matricula: 'P-1234567', nome: 'João da Silva', vara: '1ª Vara Cível' },
-                { matricula: 'M-7654321', nome: 'Maria Souza', vara: '2ª Vara Criminal' },
-                { matricula: 'F-9988776', nome: 'Ana Costa', vara: '3ª Vara de Família' }
-              ];
-              return mockData.filter((item) => item.nome.toLowerCase().includes(searchName));
+              const searchMatricula = (filters.matricula as string)?.toLowerCase() || '';
+              
+              return magistratesMock.filter((item) => {
+                const matchName = item.nome.toLowerCase().includes(searchName);
+                const matchMatricula = item.matricula.toLowerCase().includes(searchMatricula);
+                return matchName && matchMatricula;
+              });
             },
             onSelect: (item, context) => {
               context.setValue('usernameMagistrado', item.matricula as string);

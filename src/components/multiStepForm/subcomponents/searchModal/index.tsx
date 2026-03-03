@@ -1,17 +1,30 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, forwardRef } from 'react';
+import { IMaskInput } from 'react-imask';
 
 import { TableContainerWrapper, FiltersContainer, ModalContainer } from './styles';
 
-import type { SearchModalProps } from './types';
-import type { ChangeEvent } from 'react';
+import type { SearchModalProps, MaskedInputProps } from './types';
+import type { InputBaseComponentProps } from '@mui/material';
+import type { ChangeEvent, ElementType } from 'react';
+
+const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
+  <IMaskInput
+    {...other}
+    mask={maskPattern}
+    inputRef={ref}
+    prepareChar={(str) => str.toUpperCase()}
+    onAccept={(value: string) => onChange({ target: { name, value } })}
+    overwrite
+  />
+));
 
 const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
   const [filters, setFilters] = useState<Record<string, unknown>>({});
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFilterChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleFilterChange = useCallback((e: ChangeEvent<HTMLInputElement> | { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   }, []);
@@ -46,6 +59,10 @@ const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
                 fullWidth
                 size="small"
                 onChange={handleFilterChange}
+                InputProps={{
+                  ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> })
+                }}
+                inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             ))}
             <Button variant="contained" onClick={handleSearch} disabled={isLoading}>
