@@ -7,7 +7,7 @@ export const mockFormConfig: FormConfig = {
       title: 'Cadastrar Processo',
       fields: [
         {
-          name: 'processNumber',
+          name: 'numeroProcesso',
           label: 'Número do processo',
           type: 'text',
           required: true,
@@ -18,7 +18,7 @@ export const mockFormConfig: FormConfig = {
           }
         },
         {
-          name: 'instance',
+          name: 'tipoJustica',
           label: 'Instância',
           type: 'select',
           required: true,
