@@ -1,9 +1,9 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography } from '@mui/material';
 import { useState, useCallback, forwardRef, useEffect } from 'react';
-import { Search, SearchOff } from '@mui/icons-material';
+import { Search } from '@mui/icons-material';
 import { IMaskInput } from 'react-imask';
 
-import { TableContainerWrapper, FiltersContainer, ModalContainer, SearchButton, CenterContent } from './styles';
+import { TableContainerWrapper, FiltersContainer, ContentContainer, ModalContainer, SearchButton, CenterContent, EmptyIcon } from './styles';
 
 import type { SearchModalProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
@@ -50,13 +50,13 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
 
   useEffect(() => {
     if (initialValue && config.initialFilterName) handleSearch({ [config.initialFilterName]: initialValue });
-  }, []);
+  }, [initialValue, config.initialFilterName, handleSearch]);
 
   return (
     <Dialog open maxWidth="lg" fullWidth onClose={onClose}>
       <ModalContainer>
         <DialogTitle>{config.title}</DialogTitle>
-        <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column' }}>
+        <ContentContainer dividers>
           <FiltersContainer>
             {config.fields.map((field) => (
               <TextField
@@ -64,7 +64,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 name={field.name}
                 label={field.label}
                 type={field.type}
-                value={filters[field.name] as string || ''}
+                value={(filters[field.name] as string) || ''}
                 fullWidth
                 disabled={isLoading}
                 onChange={handleFilterChange}
@@ -116,7 +116,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                   <TableRow>
                     <TableCell colSpan={config.columns.length + 1}>
                       <CenterContent>
-                        <SearchOff sx={{ fontSize: 64, opacity: 0.5 }} />
+                        <EmptyIcon />
                         <Typography variant="body1">Nenhum resultado encontrado.</Typography>
                       </CenterContent>
                     </TableCell>
@@ -125,7 +125,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
               </TableBody>
             </Table>
           </TableContainerWrapper>
-        </DialogContent>
+        </ContentContainer>
         <DialogActions>
           <Button onClick={onClose} color="inherit">
             Fechar

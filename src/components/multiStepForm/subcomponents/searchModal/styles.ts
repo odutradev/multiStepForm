@@ -1,15 +1,21 @@
-import { Box, TableContainer, Button } from '@mui/material';
+import { Box, TableContainer, DialogContent, Button } from '@mui/material';
+import { SearchOff } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
-const MODAL_MIN_HEIGHT = '75vh';
 const BUTTON_MIN_WIDTH = 180;
 const BUTTON_HEIGHT = 56;
+const ICON_SIZE = 64;
+const ICON_OPACITY = 0.5;
 
 export const ModalContainer = styled(Box)({
   width: '100%',
   display: 'flex',
-  flexDirection: 'column',
-  minHeight: MODAL_MIN_HEIGHT
+  flexDirection: 'column'
+});
+
+export const ContentContainer = styled(DialogContent)({
+  display: 'flex',
+  flexDirection: 'column'
 });
 
 export const FiltersContainer = styled(Box)(({ theme }) => ({
@@ -25,9 +31,9 @@ export const SearchButton = styled(Button)({
 });
 
 export const TableContainerWrapper = styled(TableContainer)(({ theme }) => ({
-  flex: 1,
   border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius
+  borderRadius: theme.shape.borderRadius,
+  maxHeight: '60vh'
 }));
 
 export const CenterContent = styled(Box)(({ theme }) => ({
@@ -39,3 +45,8 @@ export const CenterContent = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   color: theme.palette.text.secondary
 }));
+
+export const EmptyIcon = styled(SearchOff)({
+  fontSize: ICON_SIZE,
+  opacity: ICON_OPACITY
+});
