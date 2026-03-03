@@ -7,9 +7,9 @@ import { IMaskInput } from 'react-imask';
 import { FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import SearchModal from '../searchModal';
 
+import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
 import type { FieldRendererProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
-import type { ElementType, KeyboardEvent } from 'react';
 import type { FormField } from '../../types';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
@@ -85,10 +85,13 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
                       onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                         if (e.key === 'Enter') {
                           e.preventDefault();
-                          if (field.searchConfig) {
+                          if (field.searchConfig && !field.disabled && !field.readOnly) {
                             setActiveSearch({ field, value: value ? String(value) : undefined });
                           }
                         }
+                      }}
+                      onMouseDown={(e: MouseEvent<HTMLDivElement>) => {
+                        if ((field.readOnly || field.disabled) && !value) e.preventDefault();
                       }}
                       InputProps={{
                         ...(field.readOnly && { readOnly: true }),
@@ -97,7 +100,7 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
                           endAdornment: (
                             <InputAdornment position="end">
                               {field.searchConfig ? (
-                                <IconButton edge="end" onClick={() => setActiveSearch({ field, value: value ? String(value) : undefined })}>
+                                <IconButton edge="end" disabled={field.disabled || field.readOnly} onClick={() => !field.disabled && !field.readOnly && setActiveSearch({ field, value: value ? String(value) : undefined })}>
                                   {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
                                 </IconButton>
                               ) : (
