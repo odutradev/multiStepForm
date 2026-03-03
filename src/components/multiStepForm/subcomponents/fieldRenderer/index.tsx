@@ -49,7 +49,7 @@ const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => 
               render={({ field: { onChange, value }, fieldState: { error } }) => {
                 if (field.type === 'select') {
                   return (
-                    <FormControl fullWidth required={field.required} error={!!error}>
+                    <FormControl fullWidth required={field.required} error={!!error} disabled={field.disabled}>
                       <InputLabel>{field.label}</InputLabel>
                       <Select value={value || ''} label={field.label} onChange={onChange}>
                         {field.options?.map((option) => (
@@ -68,6 +68,7 @@ const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => 
                     type={field.type}
                     label={field.label}
                     required={field.required}
+                    disabled={field.disabled}
                     value={value || ''}
                     onChange={onChange}
                     error={!!error}

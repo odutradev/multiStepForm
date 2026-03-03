@@ -22,6 +22,7 @@ export interface FormField {
   type: 'text' | 'number' | 'email' | 'select' | 'subtitle';
   validation?: FieldValidation;
   options?: FieldOption[];
+  disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
   colSpan?: number;

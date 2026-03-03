@@ -60,6 +60,7 @@ export const mockFormConfig: FormConfig = {
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
+          disabled: true,
           mask: 'a-0000000',
           icon: 'Search',
           validation: {
@@ -72,8 +73,7 @@ export const mockFormConfig: FormConfig = {
           label: 'Nome do magistrado',
           type: 'text',
           required: true,
-          readOnly: true,
-          icon: 'Search'
+          disabled: true
         }
       ],
       actions: [
