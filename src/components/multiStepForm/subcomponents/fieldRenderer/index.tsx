@@ -1,10 +1,25 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 import { Controller } from 'react-hook-form';
+import { IMaskInput } from 'react-imask';
+import { forwardRef } from 'react';
 
-import { maskValue } from '@utils/functions/mask';
 import { FieldsContainer } from './styles';
 
-import type { FieldRendererProps } from './types';
+import type { FieldRendererProps, MaskedInputProps } from './types';
+import type { ElementType } from 'react';
+
+const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>((props, ref) => {
+  const { onChange, maskPattern, name, ...other } = props;
+  return (
+    <IMaskInput
+      {...other}
+      mask={maskPattern}
+      inputRef={ref}
+      onAccept={(value: string) => onChange({ target: { name, value } })}
+      overwrite
+    />
+  );
+});
 
 const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
   if (!fields?.length) return null;
@@ -24,16 +39,11 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
             } : undefined
           }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
-            const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-              const maskedValue = maskValue(e.target.value, field.mask);
-              onChange(maskedValue);
-            };
-
             if (field.type === 'select') {
               return (
                 <FormControl fullWidth required={field.required} error={!!error}>
                   <InputLabel>{field.label}</InputLabel>
-                  <Select value={value} label={field.label} onChange={onChange}>
+                  <Select value={value || ''} label={field.label} onChange={onChange}>
                     {field.options?.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}
@@ -50,11 +60,13 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                 type={field.type}
                 label={field.label}
                 required={field.required}
-                value={value}
-                onChange={handleChange}
+                value={value || ''}
+                onChange={onChange}
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
+                InputProps={field.mask ? { inputComponent: MaskedInput as ElementType } : undefined}
+                inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             );
           }}

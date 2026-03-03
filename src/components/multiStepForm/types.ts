@@ -11,11 +11,11 @@ export interface FieldValidation {
 export interface FormField {
   name: string;
   label: string;
+  type: 'text' | 'number' | 'email' | 'select';
   required?: boolean;
-  mask?: 'process';
+  mask?: string;
   options?: FieldOption[];
   validation?: FieldValidation;
-  type: 'text' | 'number' | 'email' | 'select';
 }
 
 export interface FormAction {
