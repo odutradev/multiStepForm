@@ -1,11 +1,11 @@
-import { styled } from '@mui/material/styles';
 import { Box, Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 export const ActionsContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'flex-end',
+  marginTop: 'auto',
   gap: theme.spacing(2),
-  marginTop: theme.spacing(4),
+  justifyContent: 'flex-end'
 }));
 
 export const ActionButton = styled(Button)({});
