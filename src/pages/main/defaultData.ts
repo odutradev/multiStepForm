@@ -72,7 +72,7 @@ export const mockFormConfig: FormConfig = {
           label: 'Nome do magistrado',
           type: 'text',
           required: true,
-          readOnly: false,
+          readOnly: true,
           icon: 'search'
         }
       ],

@@ -1,27 +1,28 @@
-import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, Icon } from '@mui/material';
+import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
 
 import { FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 
-import type { InputBaseComponentProps } from '@mui/material';
 import type { FieldRendererProps, MaskedInputProps } from './types';
+import type { InputBaseComponentProps } from '@mui/material';
 import type { ElementType } from 'react';
 
-const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>((props, ref) => {
-  const { onChange, maskPattern, name, ...other } = props;
+const ICONS_MAP: Record<string, ElementType> = {
+  search: SearchIcon
+};
 
-  return (
-    <IMaskInput
-      {...other}
-      mask={maskPattern}
-      inputRef={ref}
-      onAccept={(value: string) => onChange({ target: { name, value } })}
-      overwrite
-    />
-  );
-});
+const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
+  <IMaskInput
+    {...other}
+    mask={maskPattern}
+    inputRef={ref}
+    onAccept={(value: string) => onChange({ target: { name, value } })}
+    overwrite
+  />
+));
 
 const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => {
   if (!fields?.length) return null;
@@ -36,6 +37,8 @@ const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => 
             </SubtitleText>
           );
         }
+
+        const SelectedIcon = field.icon ? ICONS_MAP[field.icon] : null;
 
         return (
           <FieldWrapper key={field.name} $colSpan={field.colSpan}>
@@ -76,10 +79,10 @@ const FieldRenderer = ({ fields, control, gridColumns }: FieldRendererProps) => 
                     InputProps={{
                       ...(field.readOnly && { readOnly: true }),
                       ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
-                      ...(field.icon && {
+                      ...(SelectedIcon && {
                         endAdornment: (
                           <InputAdornment position="end">
-                            <Icon color="action" style={{ cursor: 'pointer' }}>{field.icon}</Icon>
+                            <SelectedIcon color="action" sx={{ cursor: 'pointer' }} />
                           </InputAdornment>
                         )
                       })
