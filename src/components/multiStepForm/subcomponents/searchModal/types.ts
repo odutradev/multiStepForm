@@ -8,7 +8,8 @@ export interface MaskedInputProps extends Omit<InputBaseComponentProps, 'onChang
 }
 
 export interface SearchModalProps {
-  onClose: () => void;
   context: ActionContext;
   config: SearchConfig;
+  initialValue?: string;
+  onClose: () => void;
 }

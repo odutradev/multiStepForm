@@ -56,11 +56,11 @@ export const mockFormConfig: FormConfig = {
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
-          readOnly: true,
           mask: 'a-0000000',
           icon: 'Search',
           searchConfig: {
             title: 'Buscar Magistrado',
+            initialFilterName: 'matricula',
             fields: [
               { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
               { name: 'matricula', label: 'Matrícula', type: 'text', mask: 'a-0000000' }

@@ -1,16 +1,16 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton } from '@mui/material';
-import { Controller } from 'react-hook-form';
 import * as MuiIcons from '@mui/icons-material';
-import { IMaskInput } from 'react-imask';
+import { Controller } from 'react-hook-form';
 import { forwardRef, useState } from 'react';
+import { IMaskInput } from 'react-imask';
 
 import { FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import SearchModal from '../searchModal';
 
 import type { FieldRendererProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
+import type { ElementType, KeyboardEvent } from 'react';
 import type { FormField } from '../../types';
-import type { ElementType } from 'react';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
   <IMaskInput
@@ -24,7 +24,7 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
 ));
 
 const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererProps) => {
-  const [activeSearchField, setActiveSearchField] = useState<FormField | null>(null);
+  const [activeSearch, setActiveSearch] = useState<{ field: FormField; value?: string } | null>(null);
 
   if (!fields?.length) return null;
 
@@ -68,6 +68,9 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
                     );
                   }
 
+                  const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
+                  const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
+
                   return (
                     <TextField
                       type={field.type}
@@ -77,8 +80,16 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
                       value={value || ''}
                       onChange={onChange}
                       error={!!error}
-                      helperText={error?.message}
+                      helperText={helperTextContent}
                       fullWidth
+                      onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          if (field.searchConfig) {
+                            setActiveSearch({ field, value: value ? String(value) : undefined });
+                          }
+                        }
+                      }}
                       InputProps={{
                         ...(field.readOnly && { readOnly: true }),
                         ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
@@ -86,7 +97,7 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
                           endAdornment: (
                             <InputAdornment position="end">
                               {field.searchConfig ? (
-                                <IconButton edge="end" onClick={() => setActiveSearchField(field)}>
+                                <IconButton edge="end" onClick={() => setActiveSearch({ field, value: value ? String(value) : undefined })}>
                                   {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
                                 </IconButton>
                               ) : (
@@ -106,11 +117,12 @@ const FieldRenderer = ({ fields, control, context, gridColumns }: FieldRendererP
         })}
       </FieldsContainer>
 
-      {activeSearchField?.searchConfig && (
+      {activeSearch?.field.searchConfig && (
         <SearchModal
-          config={activeSearchField.searchConfig}
+          config={activeSearch.field.searchConfig}
+          initialValue={activeSearch.value}
           context={context}
-          onClose={() => setActiveSearchField(null)}
+          onClose={() => setActiveSearch(null)}
         />
       )}
     </>

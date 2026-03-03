@@ -27,6 +27,7 @@ export interface SearchConfig {
   onSearch: (filters: Record<string, unknown>) => Promise<Record<string, unknown>[]>;
   onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
   columns: SearchResultColumn[];
+  initialFilterName?: string;
   fields: FormField[];
   title: string;
 }

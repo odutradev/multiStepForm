@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
-import { useState, useCallback, forwardRef } from 'react';
+import { useState, useCallback, forwardRef, useEffect } from 'react';
 import { IMaskInput } from 'react-imask';
 
 import { TableContainerWrapper, FiltersContainer, ModalContainer } from './styles';
@@ -19,8 +19,11 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
   />
 ));
 
-const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
-  const [filters, setFilters] = useState<Record<string, unknown>>({});
+const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProps) => {
+  const [filters, setFilters] = useState<Record<string, unknown>>(() => {
+    if (initialValue && config.initialFilterName) return { [config.initialFilterName]: initialValue };
+    return {};
+  });
   const [results, setResults] = useState<Record<string, unknown>[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,10 +32,10 @@ const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleSearch = useCallback(async () => {
+  const handleSearch = useCallback(async (searchFilters?: Record<string, unknown>) => {
     setIsLoading(true);
     try {
-      const data = await config.onSearch(filters);
+      const data = await config.onSearch(searchFilters || filters);
       setResults(data);
     } finally {
       setIsLoading(false);
@@ -43,6 +46,10 @@ const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
     config.onSelect(item, context);
     onClose();
   }, [config, context, onClose]);
+
+  useEffect(() => {
+    if (initialValue && config.initialFilterName) handleSearch({ [config.initialFilterName]: initialValue });
+  }, []);
 
   return (
     <Dialog open maxWidth="md" fullWidth onClose={onClose}>
@@ -56,6 +63,7 @@ const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
                 name={field.name}
                 label={field.label}
                 type={field.type}
+                value={filters[field.name] as string || ''}
                 fullWidth
                 size="small"
                 onChange={handleFilterChange}
@@ -65,7 +73,7 @@ const SearchModal = ({ config, context, onClose }: SearchModalProps) => {
                 inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             ))}
-            <Button variant="contained" onClick={handleSearch} disabled={isLoading}>
+            <Button variant="contained" onClick={() => handleSearch()} disabled={isLoading}>
               {isLoading ? <CircularProgress size={24} /> : 'Buscar'}
             </Button>
           </FiltersContainer>
