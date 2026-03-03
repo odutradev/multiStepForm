@@ -3,11 +3,18 @@ export interface FieldOption {
   value: string;
 }
 
+export interface FieldValidation {
+  pattern: string;
+  message: string;
+}
+
 export interface FormField {
   name: string;
   label: string;
   required?: boolean;
+  mask?: 'process';
   options?: FieldOption[];
+  validation?: FieldValidation;
   type: 'text' | 'number' | 'email' | 'select';
 }
 

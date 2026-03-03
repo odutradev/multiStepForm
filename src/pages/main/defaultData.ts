@@ -11,6 +11,11 @@ export const mockFormConfig: FormConfig = {
           label: "Número do processo",
           type: "text",
           required: true,
+          mask: "process",
+          validation: {
+            pattern: "^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$",
+            message: "Número do processo inválido (0000000-00.0000.0.00.0000)"
+          }
         },
         {
           name: "instance",
@@ -35,12 +40,6 @@ export const mockFormConfig: FormConfig = {
       id: "step-2",
       title: "Detalhes do Ofício",
       fields: [
-        {
-          name: "processNumber",
-          label: "Número do Processo",
-          type: "text",
-          required: true,
-        },
         { name: "value", label: "Valor (R$)", type: "number", required: true },
         {
           name: "court",

@@ -1,6 +1,7 @@
-import { TextField, MenuItem, FormControl, InputLabel, Select } from '@mui/material';
+import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
 import { Controller } from 'react-hook-form';
 
+import { maskValue } from '@utils/functions/mask';
 import { FieldsContainer } from './styles';
 
 import type { FieldRendererProps } from './types';
@@ -15,9 +16,19 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
           key={field.name}
           name={field.name}
           control={control}
-          rules={{ required: field.required }}
-          defaultValue=""
+          rules={{ 
+            required: field.required ? 'Campo obrigatório' : false,
+            pattern: field.validation ? { 
+              value: new RegExp(field.validation.pattern), 
+              message: field.validation.message 
+            } : undefined
+          }}
           render={({ field: { onChange, value }, fieldState: { error } }) => {
+            const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+              const maskedValue = maskValue(e.target.value, field.mask);
+              onChange(maskedValue);
+            };
+
             if (field.type === 'select') {
               return (
                 <FormControl fullWidth required={field.required} error={!!error}>
@@ -29,6 +40,7 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                       </MenuItem>
                     ))}
                   </Select>
+                  {error && <FormHelperText>{error.message}</FormHelperText>}
                 </FormControl>
               );
             }
@@ -39,8 +51,9 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                 label={field.label}
                 required={field.required}
                 value={value}
-                onChange={onChange}
+                onChange={handleChange}
                 error={!!error}
+                helperText={error?.message}
                 fullWidth
               />
             );
