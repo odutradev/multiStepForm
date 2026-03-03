@@ -29,7 +29,7 @@ export const mockFormConfig: FormConfig = {
           ],
         },
       ],
-      actions: [{ label: "Avançar", actionType: "next" }],
+      actions: [{ label: "Cadastrar", actionType: "next" }],
     },
     {
       id: "step-2",
