@@ -19,7 +19,7 @@ export interface FieldValidation {
 }
 
 export interface FormField {
-  type: 'text' | 'number' | 'email' | 'select';
+  type: 'text' | 'number' | 'email' | 'select' | 'subtitle';
   validation?: FieldValidation;
   options?: FieldOption[];
   required?: boolean;

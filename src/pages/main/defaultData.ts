@@ -44,27 +44,15 @@ export const mockFormConfig: FormConfig = {
               setValue('value', 5000);
               setValue('court', 'TJSP');
             }
-            console.log(data)
           }
         }
       ],
     },
     {
       id: 'step-2',
-      title: 'Detalhes do Ofício',
+      title: 'Informações Gerais',
       fields: [
-        { name: 'value', label: 'Valor (R$)', type: 'number', required: true },
-        {
-          name: 'court',
-          label: 'Tribunal',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'TJSP', value: 'TJSP' },
-            { label: 'TJMG', value: 'TJMG' },
-            { label: 'TRF1', value: 'TRF1' },
-          ],
-        },
+        { name: 'subtitleMagistrado', label: 'Magistrado Responsável', type: 'subtitle' },
       ],
       actions: [
         { label: 'Voltar', actionType: 'prev', variant: 'outlined' },

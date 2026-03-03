@@ -18,18 +18,19 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === steps.length - 1;
 
-  const currentFieldNames = useMemo(() => currentStep.fields.map((f) => f.name), [currentStep]);
+  const currentFieldsToValidate = useMemo(() => currentStep.fields.filter((f) => f.type !== 'subtitle'), [currentStep]);
+  const currentFieldNames = useMemo(() => currentFieldsToValidate.map((f) => f.name), [currentFieldsToValidate]);
   const currentValues = watch(currentFieldNames);
 
   const isCurrentStepValid = useMemo(() => {
     const hasErrors = currentFieldNames.some((name) => !!errors[name]);
-    const hasMissingRequired = currentStep.fields.some((field, index) => {
+    const hasMissingRequired = currentFieldsToValidate.some((field, index) => {
       const value = currentValues[index];
       const isEmpty = value === undefined || value === null || value === '';
       return field.required && isEmpty;
     });
     return !hasErrors && !hasMissingRequired;
-  }, [currentStep, currentFieldNames, currentValues, errors]);
+  }, [currentFieldsToValidate, currentFieldNames, currentValues, errors]);
 
   const executeAction = useCallback(async (action: FormAction) => {
     if (action.actionType === 'next') {
