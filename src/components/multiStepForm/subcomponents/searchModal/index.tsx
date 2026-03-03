@@ -1,8 +1,9 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography } from '@mui/material';
 import { useState, useCallback, forwardRef, useEffect } from 'react';
+import { Search, SearchOff } from '@mui/icons-material';
 import { IMaskInput } from 'react-imask';
 
-import { TableContainerWrapper, FiltersContainer, ModalContainer } from './styles';
+import { TableContainerWrapper, FiltersContainer, ModalContainer, SearchButton, CenterContent } from './styles';
 
 import type { SearchModalProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
@@ -52,10 +53,10 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
   }, []);
 
   return (
-    <Dialog open maxWidth="md" fullWidth onClose={onClose}>
+    <Dialog open maxWidth="lg" fullWidth onClose={onClose}>
       <ModalContainer>
         <DialogTitle>{config.title}</DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers sx={{ display: 'flex', flexDirection: 'column' }}>
           <FiltersContainer>
             {config.fields.map((field) => (
               <TextField
@@ -65,7 +66,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 type={field.type}
                 value={filters[field.name] as string || ''}
                 fullWidth
-                size="small"
+                disabled={isLoading}
                 onChange={handleFilterChange}
                 InputProps={{
                   ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> })
@@ -73,13 +74,13 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             ))}
-            <Button variant="contained" onClick={() => handleSearch()} disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} /> : 'Buscar'}
-            </Button>
+            <SearchButton variant="contained" disabled={isLoading} startIcon={isLoading ? <CircularProgress size={20} color="inherit" /> : <Search />} onClick={() => handleSearch()}>
+              Buscar
+            </SearchButton>
           </FiltersContainer>
 
           <TableContainerWrapper>
-            <Table size="small" stickyHeader>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   {config.columns.map((col) => (
@@ -89,22 +90,35 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 </TableRow>
               </TableHead>
               <TableBody>
-                {results.map((row, index) => (
-                  <TableRow key={index} hover>
-                    {config.columns.map((col) => (
-                      <TableCell key={col.key}>{String(row[col.key] ?? '-')}</TableCell>
-                    ))}
-                    <TableCell align="right">
-                      <Button size="small" variant="outlined" onClick={() => handleSelect(row)}>
-                        Selecionar
-                      </Button>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={config.columns.length + 1}>
+                      <CenterContent>
+                        <CircularProgress size={40} />
+                        <Typography variant="body1">Buscando resultados...</Typography>
+                      </CenterContent>
                     </TableCell>
                   </TableRow>
-                ))}
-                {!results.length && !isLoading && (
+                ) : results.length > 0 ? (
+                  results.map((row, index) => (
+                    <TableRow key={index} hover>
+                      {config.columns.map((col) => (
+                        <TableCell key={col.key}>{String(row[col.key] ?? '-')}</TableCell>
+                      ))}
+                      <TableCell align="right">
+                        <Button size="small" variant="outlined" onClick={() => handleSelect(row)}>
+                          Selecionar
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
                   <TableRow>
-                    <TableCell colSpan={config.columns.length + 1} align="center">
-                      Nenhum resultado encontrado.
+                    <TableCell colSpan={config.columns.length + 1}>
+                      <CenterContent>
+                        <SearchOff sx={{ fontSize: 64, opacity: 0.5 }} />
+                        <Typography variant="body1">Nenhum resultado encontrado.</Typography>
+                      </CenterContent>
                     </TableCell>
                   </TableRow>
                 )}
