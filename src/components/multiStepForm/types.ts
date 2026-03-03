@@ -23,7 +23,9 @@ export interface FormField {
   validation?: FieldValidation;
   options?: FieldOption[];
   required?: boolean;
+  readOnly?: boolean;
   label: string;
+  icon?: string;
   name: string;
   mask?: string;
 }

@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 export const FormContainer = styled('form')(({ theme }) => ({
   flex: 1,
@@ -17,11 +17,6 @@ export const StepContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(3),
   marginTop: theme.spacing(4)
-}));
-
-export const StepTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: theme.typography.fontWeightBold,
-  marginBottom: theme.spacing(2)
 }));
 
 export const LoadingOverlay = styled(Box)(({ theme }) => ({

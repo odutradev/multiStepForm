@@ -1,4 +1,4 @@
-import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText } from '@mui/material';
+import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, Icon } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 import { forwardRef } from 'react';
@@ -73,7 +73,17 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                   error={!!error}
                   helperText={error?.message}
                   fullWidth
-                  InputProps={field.mask ? { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> } : undefined}
+                  InputProps={{
+                    ...(field.readOnly && { readOnly: true }),
+                    ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
+                    ...(field.icon && {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Icon color="action" style={{ cursor: 'pointer' }}>{field.icon}</Icon>
+                        </InputAdornment>
+                      )
+                    })
+                  }}
                   inputProps={field.mask ? { maskPattern: field.mask } : undefined}
                 />
               );

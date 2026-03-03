@@ -53,6 +53,26 @@ export const mockFormConfig: FormConfig = {
       title: 'Informações Gerais',
       fields: [
         { name: 'subtitleMagistrado', label: 'Magistrado Responsável', type: 'subtitle' },
+        {
+          name: 'usernameMagistrado',
+          label: 'Matrícula do magistrado',
+          type: 'text',
+          required: true,
+          mask: 'a0000000',
+          icon: 'search',
+          validation: {
+            pattern: '^[a-zA-Z]\\d{7}$',
+            message: 'Matrícula inválida. Formato: 1 Letra e 7 Números'
+          }
+        },
+        {
+          name: 'nomeMagistrado',
+          label: 'Nome do magistrado',
+          type: 'text',
+          required: true,
+          readOnly: false,
+          icon: 'search'
+        }
       ],
       actions: [
         { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
