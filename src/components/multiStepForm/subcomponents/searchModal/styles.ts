@@ -1,4 +1,4 @@
-import { Box, TableContainer, DialogContent, Button } from '@mui/material';
+import { Box, TableContainer, DialogContent, Button, TableCell } from '@mui/material';
 import { SearchOff } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
@@ -35,6 +35,10 @@ export const TableContainerWrapper = styled(TableContainer)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   maxHeight: '60vh'
 }));
+
+export const StyledTableCell = styled(TableCell)({
+  borderBottom: 'none'
+});
 
 export const CenterContent = styled(Box)(({ theme }) => ({
   display: 'flex',
