@@ -5,11 +5,13 @@ import { forwardRef } from 'react';
 
 import { FieldsContainer } from './styles';
 
+import type { InputBaseComponentProps } from '@mui/material';
 import type { FieldRendererProps, MaskedInputProps } from './types';
 import type { ElementType } from 'react';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>((props, ref) => {
   const { onChange, maskPattern, name, ...other } = props;
+  
   return (
     <IMaskInput
       {...other}
@@ -65,7 +67,6 @@ const FieldRenderer = ({ fields, control }: FieldRendererProps) => {
                 error={!!error}
                 helperText={error?.message}
                 fullWidth
-                InputProps={field.mask ? { inputComponent: MaskedInput as ElementType } : undefined}
                 inputProps={field.mask ? { maskPattern: field.mask } : undefined}
               />
             );

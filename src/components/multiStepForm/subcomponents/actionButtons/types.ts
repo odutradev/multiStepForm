@@ -1,10 +1,8 @@
-import type { FieldValues } from 'react-hook-form';
 import type { FormAction } from '../../types';
 
 export interface ActionButtonsProps {
-  actions: FormAction[];
+  onExecuteAction: (action: FormAction) => void;
+  isActionLoading: boolean;
   isNextDisabled: boolean;
-  getValues: () => FieldValues;
-  onNext: () => void;
-  onPrev: () => void;
+  actions: FormAction[];
 }

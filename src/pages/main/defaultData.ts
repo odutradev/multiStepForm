@@ -34,7 +34,19 @@ export const mockFormConfig: FormConfig = {
           ],
         },
       ],
-      actions: [{ label: 'Cadastrar', actionType: 'next' }],
+      actions: [
+        {
+          label: 'Buscar e Avançar',
+          actionType: 'next',
+          onClick: async ({ data, setValue }) => {
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            if (data.numeroProcesso) {
+              setValue('value', 5000);
+              setValue('court', 'TJSP');
+            }
+          }
+        }
+      ],
     },
     {
       id: 'step-2',
@@ -66,7 +78,13 @@ export const mockFormConfig: FormConfig = {
       ],
       actions: [
         { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
-        { label: 'Confirmar e Enviar', actionType: 'submit' },
+        {
+          label: 'Confirmar e Enviar',
+          actionType: 'submit',
+          onClick: async () => {
+             await new Promise((resolve) => setTimeout(resolve, 2000));
+          }
+        },
       ],
     },
   ],

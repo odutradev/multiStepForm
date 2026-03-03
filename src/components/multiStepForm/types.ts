@@ -1,3 +1,13 @@
+import type { UseFormClearErrors, UseFormGetValues, UseFormSetError, UseFormSetValue, FieldValues } from 'react-hook-form';
+
+export interface ActionContext {
+  clearErrors: UseFormClearErrors<FieldValues>;
+  getValues: UseFormGetValues<FieldValues>;
+  setValue: UseFormSetValue<FieldValues>;
+  setError: UseFormSetError<FieldValues>;
+  data: FieldValues;
+}
+
 export interface FieldOption {
   label: string;
   value: string;
@@ -9,27 +19,27 @@ export interface FieldValidation {
 }
 
 export interface FormField {
-  name: string;
-  label: string;
   type: 'text' | 'number' | 'email' | 'select';
-  required?: boolean;
-  mask?: string;
-  options?: FieldOption[];
   validation?: FieldValidation;
+  options?: FieldOption[];
+  required?: boolean;
+  label: string;
+  name: string;
+  mask?: string;
 }
 
 export interface FormAction {
-  label: string;
   actionType: 'next' | 'prev' | 'submit' | 'custom';
+  onClick?: (context: ActionContext) => Promise<boolean | void>;
   variant?: 'contained' | 'outlined' | 'text';
-  onClick?: (data: Record<string, unknown>) => void;
+  label: string;
 }
 
 export interface FormStep {
-  id: string;
-  title: string;
-  fields: FormField[];
   actions: FormAction[];
+  fields: FormField[];
+  title: string;
+  id: string;
 }
 
 export interface FormConfig {
@@ -37,7 +47,7 @@ export interface FormConfig {
 }
 
 export interface MultiStepFormProps {
-  config: FormConfig;
-  initialData?: Record<string, unknown>;
   onSubmit: (data: Record<string, unknown>) => void;
+  initialData?: Record<string, unknown>;
+  config: FormConfig;
 }
