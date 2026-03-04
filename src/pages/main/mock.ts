@@ -1,6 +1,6 @@
 const MOCK_DELAY_MS = 800;
 
-export const magistratesMock = [
+export const usersMock = [
   { matricula: 'P-1234567', nome: 'João da Silva' },
   { matricula: 'M-7654321', nome: 'Maria Souza' },
   { matricula: 'F-9988776', nome: 'Ana Costa' },
@@ -26,16 +26,14 @@ export const magistratesMock = [
   { matricula: 'M-5544778', nome: 'Wagner Correia' },
   { matricula: 'F-1100998', nome: 'Xuxa Meneghel' },
   { matricula: 'P-7766223', nome: 'Yuri Nogueira' },
-  { matricula: 'M-4455110', nome: 'Zélia Duncan' }
+  { matricula: 'M-4455110', nome: 'Zélia Duncan' },
+  { matricula: 'S0123456', nome: 'Silvana Almeida' },
+  { matricula: 'S0987654', nome: 'Sérgio Ramos' }
 ];
 
-export const fetchMagistrates = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
+export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
-  
   const searchName = String(filters.nome || '').toLowerCase();
   const searchMatricula = String(filters.matricula || '').toLowerCase();
-  
-  return magistratesMock.filter(
-    (item) => item.nome.toLowerCase().includes(searchName) && item.matricula.toLowerCase().includes(searchMatricula)
-  );
+  return usersMock.filter((item) => item.nome.toLowerCase().includes(searchName) && item.matricula.toLowerCase().includes(searchMatricula));
 };
