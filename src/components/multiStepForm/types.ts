@@ -35,7 +35,7 @@ export interface SearchConfig {
 }
 
 export interface FormField {
-  type: 'text' | 'number' | 'email' | 'select' | 'info';
+  type: 'text' | 'number' | 'email' | 'select' | 'info' | 'date';
   conditionalRender?: (context: ActionContext) => boolean;
   searchConfig?: SearchConfig;
   mask?: string | RegExp;

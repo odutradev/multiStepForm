@@ -245,13 +245,26 @@ export const mockFormConfig: FormConfig = {
             {
               name: 'dataDistribuicaoConhecimento',
               label: 'Data de distribuição',
-              type: 'text',
-              required: true,
-              mask: '00/00/0000',
-              validation: {
-                pattern: '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/((19|20)\\d\\d)$',
-                message: 'Data inválida'
-              }
+              type: 'date',
+              required: true
+            },
+            {
+              name: 'dataAjuizamento',
+              label: 'Data de ajuizamento do processo de conhecimento',
+              type: 'date',
+              required: true
+            },
+            {
+              name: 'dataCitacaoProcesso',
+              label: 'Data da citação do processo de conhecimento',
+              type: 'date',
+              required: true
+            },
+            {
+              name: 'dataTransitoJulgado',
+              label: 'Data do trânsito em julgado',
+              type: 'date',
+              required: true
             }
           ]
         }

@@ -1,7 +1,7 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import * as MuiIcons from '@mui/icons-material';
-import { Controller } from 'react-hook-form';
 import { forwardRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
@@ -83,6 +83,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               error={!!error}
                               helperText={helperTextContent}
                               fullWidth
+                              InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
                               onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                                 if (e.key === 'Enter') {
                                   e.preventDefault();
