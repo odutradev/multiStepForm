@@ -44,12 +44,8 @@ export const mockFormConfig: FormConfig = {
         {
           label: 'Buscar e Avançar',
           actionType: 'next',
-          onClick: async ({ data, setValue }) => {
+          onClick: async () => {
             await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
-            if (data.numeroProcesso) {
-              setValue('value', 5000);
-              setValue('court', 'TJSP');
-            }
           },
         },
       ],
@@ -65,7 +61,7 @@ export const mockFormConfig: FormConfig = {
           type: 'subtitle',
         },
         {
-          name: 'usernameMagistrado',
+          name: 'matriculaMagistrado',
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
@@ -94,9 +90,9 @@ export const mockFormConfig: FormConfig = {
             ],
             onSearch: fetchMagistrates,
             onSelect: (item, context) => {
-              context.setValue('usernameMagistrado', item.matricula as string);
+              context.setValue('matriculaMagistrado', item.matricula as string);
               context.setValue('nomeMagistrado', item.nome as string);
-              context.clearErrors(['usernameMagistrado', 'nomeMagistrado']);
+              context.clearErrors(['matriculaMagistrado', 'nomeMagistrado']);
             },
           },
         },
@@ -110,17 +106,6 @@ export const mockFormConfig: FormConfig = {
       ],
       actions: [
         { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
-        { label: 'Avançar', actionType: 'next' },
-      ],
-    },
-    {
-      id: 'step-3',
-      title: 'Revisão e Envio',
-      fields: [
-        { name: 'observations', label: 'Observações Adicionais', type: 'text' },
-      ],
-      actions: [
-        { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
         {
           label: 'Confirmar e Enviar',
           actionType: 'submit',
@@ -129,6 +114,6 @@ export const mockFormConfig: FormConfig = {
           },
         },
       ],
-    },
+    }
   ],
 };
