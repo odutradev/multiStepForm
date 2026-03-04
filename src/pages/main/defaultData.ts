@@ -61,6 +61,7 @@ export const mockFormConfig: FormConfig = {
           searchConfig: {
             title: 'Buscar Magistrado',
             initialFilterName: 'matricula',
+            pagination: true,
             fields: [
               { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
               { name: 'matricula', label: 'Matrícula', type: 'text', mask: 'a-0000000' }

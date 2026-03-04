@@ -28,6 +28,7 @@ export interface SearchConfig {
   onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
   columns: SearchResultColumn[];
   initialFilterName?: string;
+  pagination?: boolean;
   fields: FormField[];
   title: string;
 }
