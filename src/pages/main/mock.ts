@@ -1,5 +1,3 @@
-const MOCK_DELAY_MS = 800;
-
 export const usersMock = [
   { matricula: 'P-1234567', nome: 'João da Silva' },
   { matricula: 'M-7654321', nome: 'Maria Souza' },
@@ -28,8 +26,19 @@ export const usersMock = [
   { matricula: 'P-7766223', nome: 'Yuri Nogueira' },
   { matricula: 'M-4455110', nome: 'Zélia Duncan' },
   { matricula: 'S0123456', nome: 'Silvana Almeida' },
-  { matricula: 'S0987654', nome: 'Sérgio Ramos' }
+  { matricula: 'S0987654', nome: 'Sérgio Ramos' },
+  { matricula: 'S9876543', nome: 'João Guimarães Rosa' }
 ];
+
+export const stepOneAutoFillMock = {
+  matriculaGerenteDaSecretaria: 'S9876543',
+  numeroUnicoProcessoJudicialCNJ: '0018503-75.2011.8.13.0251',
+  nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
+  nomeGerenteDaSecretaria: 'João Guimarães Rosa',
+  codigoDaVara: '100240412'
+};
+
+const MOCK_DELAY_MS = 800;
 
 export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));

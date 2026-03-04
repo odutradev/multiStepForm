@@ -1,4 +1,4 @@
-import { fetchUsers } from "./mock";
+import { fetchUsers, stepOneAutoFillMock } from "./mock";
 
 import type { FormConfig } from "@components/multiStepForm/types";
 
@@ -44,8 +44,20 @@ export const mockFormConfig: FormConfig = {
         {
           label: "Buscar e Avançar",
           actionType: "next",
-          onClick: async () => {
+          onClick: async (context) => {
             await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
+            context.setValue("numeroUnicoProcessoJudicialCNJ", stepOneAutoFillMock.numeroUnicoProcessoJudicialCNJ);
+            context.setValue("matriculaGerenteDaSecretaria", stepOneAutoFillMock.matriculaGerenteDaSecretaria);
+            context.setValue("nomeGerenteDaSecretaria", stepOneAutoFillMock.nomeGerenteDaSecretaria);
+            context.setValue("codigoDaVara", stepOneAutoFillMock.codigoDaVara);
+            context.setValue("nomeDaVara", stepOneAutoFillMock.nomeDaVara);
+            context.clearErrors([
+              "numeroUnicoProcessoJudicialCNJ",
+              "matriculaGerenteDaSecretaria",
+              "nomeGerenteDaSecretaria",
+              "codigoDaVara",
+              "nomeDaVara"
+            ]);
           },
         },
       ],
