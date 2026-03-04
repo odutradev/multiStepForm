@@ -95,7 +95,35 @@ export const fetchVaras = async (filters: Record<string, unknown>): Promise<Reco
   return varasMock.filter((item) => item.nome.toLowerCase().includes(searchNome) && item.codigo.toLowerCase().includes(searchCodigo));
 };
 
-export const fetchAssuntos = async (): Promise<Record<string, unknown>[]> => {
+export const fetchAssuntos = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
-  return assuntosTreeMock;
+
+  const searchCodigo = String(filters.codigo || '').toLowerCase();
+  const searchDescricao = String(filters.descricao || '').toLowerCase();
+
+  if (!searchCodigo && !searchDescricao) return assuntosTreeMock;
+
+  const filterTree = (nodes: Record<string, unknown>[]): Record<string, unknown>[] => {
+    return nodes.map((node) => {
+      const nodeCodigo = String(node.codigo || '').toLowerCase();
+      const nodeDescricao = String(node.descricao || '').toLowerCase();
+
+      const matchesCodigo = searchCodigo ? nodeCodigo.includes(searchCodigo) : true;
+      const matchesDescricao = searchDescricao ? nodeDescricao.includes(searchDescricao) : true;
+      const isMatch = (searchCodigo ? matchesCodigo : true) && (searchDescricao ? matchesDescricao : true);
+
+      if (isMatch) return { ...node };
+
+      const filhos = node.filhos as Record<string, unknown>[] | undefined;
+      
+      if (filhos?.length) {
+        const filteredChildren = filterTree(filhos);
+        if (filteredChildren.length > 0) return { ...node, filhos: filteredChildren };
+      }
+
+      return null;
+    }).filter((node) => node !== null) as Record<string, unknown>[];
+  };
+
+  return filterTree(assuntosTreeMock);
 };

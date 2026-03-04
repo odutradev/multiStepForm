@@ -72,6 +72,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
 
   const displayedResults = config.pagination ? results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : results;
   const isTreeView = config.viewMode === 'tree' && config.treeConfig;
+  const hasActiveFilters = Object.values(filters).some((val) => val !== '' && val !== undefined && val !== null);
 
   return (
     <Dialog open maxWidth="lg" fullWidth onClose={onClose}>
@@ -115,6 +116,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
               config={config.treeConfig!}
               isLoading={isLoading}
               onSelect={handleSelect}
+              defaultExpanded={hasActiveFilters}
             />
           ) : (
             <TableView

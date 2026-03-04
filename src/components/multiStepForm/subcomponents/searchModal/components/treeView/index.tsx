@@ -1,13 +1,17 @@
 import { Collapse, Checkbox, IconButton, Box, CircularProgress, Typography } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 import { TreeContainer, NodeContainer, NodeText, Spacer, CenterContent, EmptyIcon, EmptyText } from './styles';
 
 import type { TreeViewProps, TreeNodeProps } from './types';
 
-const TreeNode = ({ item, config, level = 0, onSelect }: TreeNodeProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const TreeNode = ({ item, config, level = 0, defaultExpanded = false, onSelect }: TreeNodeProps) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  useEffect(() => {
+    setIsExpanded(defaultExpanded);
+  }, [defaultExpanded, item]);
 
   const children = (item[config.childrenKey] as Record<string, unknown>[]) || [];
   const hasChildren = children.length > 0;
@@ -27,9 +31,7 @@ const TreeNode = ({ item, config, level = 0, onSelect }: TreeNodeProps) => {
         ) : (
           <Spacer />
         )}
-        {!hasChildren && (
-          <Checkbox size="small" onChange={handleSelect} />
-        )}
+        {!hasChildren && <Checkbox size="small" onChange={handleSelect} />}
         <NodeText variant="body2" $clickable={hasChildren} onClick={hasChildren ? handleToggle : handleSelect}>
           {value} - {label}
         </NodeText>
@@ -39,10 +41,11 @@ const TreeNode = ({ item, config, level = 0, onSelect }: TreeNodeProps) => {
           {children.map((child, index) => (
             <TreeNode
               key={`${String(child[config.valueKey])}-${index}`}
-              item={child}
-              config={config}
-              level={level + 1}
+              defaultExpanded={defaultExpanded}
               onSelect={onSelect}
+              level={level + 1}
+              config={config}
+              item={child}
             />
           ))}
         </Collapse>
@@ -51,7 +54,7 @@ const TreeNode = ({ item, config, level = 0, onSelect }: TreeNodeProps) => {
   );
 };
 
-const TreeView = ({ results, config, isLoading, onSelect }: TreeViewProps) => {
+const TreeView = ({ results, config, isLoading, defaultExpanded = false, onSelect }: TreeViewProps) => {
   if (isLoading) {
     return (
       <TreeContainer>
@@ -79,9 +82,10 @@ const TreeView = ({ results, config, isLoading, onSelect }: TreeViewProps) => {
       {results.map((item, index) => (
         <TreeNode
           key={`${String(item[config.valueKey])}-${index}`}
-          item={item}
-          config={config}
+          defaultExpanded={defaultExpanded}
           onSelect={onSelect}
+          config={config}
+          item={item}
         />
       ))}
     </TreeContainer>
