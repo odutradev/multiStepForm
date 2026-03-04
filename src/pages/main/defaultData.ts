@@ -451,6 +451,37 @@ export const mockFormConfig: FormConfig = {
             },
           ],
         },
+        {
+          title: "Informações sobre o(s) Beneficiário(s) do Precatório",
+          gridColumns: 3,
+          fields: [
+            {
+              type: "select",
+              name: "beneficiario",
+              label: "A requisição será expedida em favor de qual beneficiário?",
+              required: true,
+              options: [
+                { label: "Beneficiário Principal", value: "Beneficiário Principal" },
+                { label: "Honorários Sucumbenciais", value: "Honorários Sucumbenciais" },
+                { label: "Honorários Periciais", value: "Honorários Periciais" }
+              ],
+              colSpan: 1
+            },
+            {
+              type: "select",
+              name: "existeDestaque",
+              label: "Existe a previsão de destaque de honorários contratuais?",
+              options: [
+                { label: "Sim", value: "sim" },
+                { label: "Não", value: "nao" }
+              ],
+              required: true,
+              disabled: false,
+              colSpan: 2,
+              conditionalRender: (context) => context.data?.beneficiario === "Beneficiário Principal"
+            }
+          ]
+        }
       ],
       actions: [
         { label: "Voltar", actionType: "prev", variant: "outlined" },
