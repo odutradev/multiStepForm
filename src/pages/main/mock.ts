@@ -42,11 +42,11 @@ export const varasMock = [
 ];
 
 export const stepOneAutoFillMock = {
-  numeroUnicoProcessoJudicialCNJ: '00185037520118130251',
+  numeroUnicoProcessoJudicialCNJ: '12345678912345678912',
   nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
-  matriculaGerenteDaSecretaria: 'S9876543',
+  matriculaGerenteDaSecretaria: 'S1234567',
   nomeGerenteDaSecretaria: 'João Guimarães Rosa',
-  codigoDaVara: '100240412'
+  codigoDaVara: '123456789'
 };
 
 const MOCK_DELAY_MS = 800;
