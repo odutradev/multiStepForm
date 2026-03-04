@@ -295,6 +295,38 @@ export const mockFormConfig: FormConfig = {
               conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoAcordao'
             }
           ]
+        },
+        {
+          gridColumns: 2,
+          fields: [
+            {
+              type: 'select',
+              name: 'impugnacaoCumpSentenca',
+              label: 'Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?',
+              required: true,
+              colSpan: 2,
+              options: [
+                { label: 'Sim', value: 'sim' },
+                { label: 'Não', value: 'nao' }
+              ]
+            },
+            {
+              type: 'date',
+              name: 'dataDecisaoImpugnacaoText',
+              label: 'Data do trânsito em julgado dos embargos à execução ou data do trânsito da decisão que resolveu a impugnação ao cálculo no cumprimento de sentença',
+              required: false,
+              colSpan: 2,
+              conditionalRender: (context) => context.data.impugnacaoCumpSentenca === 'sim'
+            },
+            {
+              type: 'date',
+              name: 'dataDecursoImpugnacaoText',
+              label: 'Data do decurso de prazo para apresentação dos embargos à execução ou da impugnação ao cálculo no cumprimento de sentença',
+              required: false,
+              colSpan: 2,
+              conditionalRender: (context) => context.data.impugnacaoCumpSentenca === 'nao'
+            }
+          ]
         }
       ],
       actions: [
