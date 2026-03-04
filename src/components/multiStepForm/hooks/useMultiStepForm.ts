@@ -30,7 +30,7 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
 
   const actionContext = useMemo(() => ({ data: allData, ...formMethods }), [allData, formMethods]);
 
-  const visibleSteps = useMemo(() => config.steps.filter((s) => (s.render ? s.render(actionContext) : true)), [config.steps, actionContext]);
+  const visibleSteps = useMemo(() => config.steps.filter((s) => (s.conditionalRender ? s.conditionalRender(actionContext) : true)), [config.steps, actionContext]);
 
   useEffect(() => {
     if (currentStepIndex >= visibleSteps.length && visibleSteps.length > 0) {
@@ -45,10 +45,10 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
   const visibleGroups = useMemo(() => {
     if (!currentStep) return [];
     return currentStep.groups
-      .filter((g) => (g.render ? g.render(actionContext) : true))
+      .filter((g) => (g.conditionalRender ? g.conditionalRender(actionContext) : true))
       .map((g) => ({
         ...g,
-        fields: g.fields.filter((f) => (f.render ? f.render(actionContext) : true))
+        fields: g.fields.filter((f) => (f.conditionalRender ? f.conditionalRender(actionContext) : true))
       }));
   }, [currentStep, actionContext]);
 

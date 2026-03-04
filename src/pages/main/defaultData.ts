@@ -232,7 +232,7 @@ export const mockFormConfig: FormConfig = {
               label: 'Atenção: Como houve processo de conhecimento, verifique os prazos adicionais aplicáveis.',
               type: 'info',
               colSpan: 3,
-              render: (context) => context.data.processoConhecimento === 'sim'
+              conditionalRender: (context) => context.data.processoConhecimento === 'sim'
             }
           ]
         }
