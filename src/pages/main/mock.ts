@@ -40,6 +40,7 @@ export const stepOneAutoFillMock = {
 
 const MOCK_DELAY_MS = 800;
 
+
 export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
   const searchName = String(filters.nome || '').toLowerCase();

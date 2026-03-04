@@ -32,12 +32,18 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
     return !hasErrors && !hasMissingRequired;
   }, [currentFieldsToValidate, currentFieldNames, currentValues, errors]);
 
+  const setMultipleValues = useCallback((values: Record<string, unknown>, shouldClearErrors: boolean = true) => {
+    Object.entries(values).forEach(([key, value]) => setValue(key, value));
+    if (shouldClearErrors) clearErrors(Object.keys(values));
+  }, [setValue, clearErrors]);
+
   const formMethods = useMemo(() => ({
+    setMultipleValues,
     clearErrors,
     getValues,
     setError,
     setValue
-  }), [clearErrors, getValues, setError, setValue]);
+  }), [setMultipleValues, clearErrors, getValues, setError, setValue]);
 
   const executeAction = useCallback(async (action: FormAction) => {
     if (action.actionType === 'next') {

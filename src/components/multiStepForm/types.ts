@@ -1,6 +1,7 @@
 import type { UseFormClearErrors, UseFormGetValues, UseFormSetError, UseFormSetValue, FieldValues } from 'react-hook-form';
 
 export interface ActionContext {
+  setMultipleValues: (values: Record<string, unknown>, shouldClearErrors?: boolean) => void;
   clearErrors: UseFormClearErrors<FieldValues>;
   getValues: UseFormGetValues<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
