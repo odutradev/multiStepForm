@@ -1,8 +1,8 @@
 import { FormContainer, StepContainer, LoadingOverlay } from './styles';
+import { useMultiStepForm } from './hooks/useMultiStepForm';
 import ActionButtons from './subcomponents/actionButtons';
 import FieldRenderer from './subcomponents/fieldRenderer';
 import StepIndicator from './subcomponents/stepIndicator';
-import { useMultiStepForm } from './hooks/useMultiStepForm';
 import Loading from '../loading';
 
 import type { MultiStepFormProps } from './types';
@@ -10,10 +10,11 @@ import type { FormEvent } from 'react';
 
 const MultiStepForm = (props: MultiStepFormProps) => {
   const {
-    steps,
     control,
-    formMethods,
     currentStep,
+    actionContext,
+    visibleSteps,
+    visibleGroups,
     executeAction,
     isActionLoading,
     currentStepIndex,
@@ -22,14 +23,12 @@ const MultiStepForm = (props: MultiStepFormProps) => {
 
   if (!currentStep) return null;
 
-  const actionContext = { data: formMethods.getValues(), ...formMethods };
-
   return (
     <FormContainer onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}>
-      <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
+      <StepIndicator steps={visibleSteps} currentStepIndex={currentStepIndex} />
       <StepContainer>
         <FieldRenderer
-          groups={currentStep.groups}
+          groups={visibleGroups}
           control={control}
           context={actionContext}
         />

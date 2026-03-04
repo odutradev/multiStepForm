@@ -226,6 +226,13 @@ export const mockFormConfig: FormConfig = {
                 { label: 'Sim', value: 'sim' },
                 { label: 'Não', value: 'nao' }
               ]
+            },
+            {
+              name: 'infoProcessoConhecimento',
+              label: 'Atenção: Como houve processo de conhecimento, verifique os prazos adicionais aplicáveis.',
+              type: 'info',
+              colSpan: 3,
+              render: (context) => context.data.processoConhecimento === 'sim'
             }
           ]
         }

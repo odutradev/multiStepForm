@@ -1,7 +1,7 @@
-import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton } from '@mui/material';
+import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import * as MuiIcons from '@mui/icons-material';
-import { Controller } from 'react-hook-form';
 import { forwardRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
@@ -40,75 +40,81 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
 
                 return (
                   <FieldWrapper key={field.name} $colSpan={field.colSpan}>
-                    <Controller
-                      name={field.name}
-                      control={control}
-                      rules={{
-                        required: field.required ? 'Campo obrigatório' : false,
-                        pattern: field.validation ? { value: new RegExp(field.validation.pattern), message: field.validation.message } : undefined
-                      }}
-                      render={({ field: { onChange, value }, fieldState: { error } }) => {
-                        if (field.type === 'select') {
+                    {field.type === 'info' ? (
+                      <Typography variant="body2" color="text.secondary">
+                        {field.label}
+                      </Typography>
+                    ) : (
+                      <Controller
+                        name={field.name}
+                        control={control}
+                        rules={{
+                          required: field.required ? 'Campo obrigatório' : false,
+                          pattern: field.validation ? { value: new RegExp(field.validation.pattern), message: field.validation.message } : undefined
+                        }}
+                        render={({ field: { onChange, value }, fieldState: { error } }) => {
+                          if (field.type === 'select') {
+                            return (
+                              <FormControl fullWidth required={field.required} error={!!error} disabled={field.disabled}>
+                                <InputLabel>{field.label}</InputLabel>
+                                <Select value={value || ''} label={field.label} onChange={onChange}>
+                                  {field.options?.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                      {option.label}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                                {error && <FormHelperText>{error.message}</FormHelperText>}
+                              </FormControl>
+                            );
+                          }
+
+                          const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
+                          const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
+
                           return (
-                            <FormControl fullWidth required={field.required} error={!!error} disabled={field.disabled}>
-                              <InputLabel>{field.label}</InputLabel>
-                              <Select value={value || ''} label={field.label} onChange={onChange}>
-                                {field.options?.map((option) => (
-                                  <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                              {error && <FormHelperText>{error.message}</FormHelperText>}
-                            </FormControl>
+                            <TextField
+                              type={field.type}
+                              label={field.label}
+                              required={field.required}
+                              disabled={field.disabled}
+                              value={value || ''}
+                              onChange={onChange}
+                              error={!!error}
+                              helperText={helperTextContent}
+                              fullWidth
+                              onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  if (field.searchConfig && !field.disabled && !field.readOnly) setActiveSearch({ field, value: value ? String(value) : undefined });
+                                }
+                              }}
+                              onMouseDown={(e: MouseEvent<HTMLDivElement>) => {
+                                if ((field.readOnly || field.disabled) && !value) e.preventDefault();
+                              }}
+                              InputProps={{
+                                ...(field.readOnly && { readOnly: true }),
+                                ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
+                                ...((SelectedIcon || field.searchConfig) && {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      {field.searchConfig ? (
+                                        <IconButton edge="end" disabled={field.disabled || field.readOnly} onClick={() => !field.disabled && !field.readOnly && setActiveSearch({ field, value: value ? String(value) : undefined })}>
+                                          {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
+                                        </IconButton>
+                                      ) : (
+                                        SelectedIcon && <SelectedIcon color="action" />
+                                      )}
+                                    </InputAdornment>
+                                  )
+                                })
+                              }}
+                              inputProps={field.mask ? { maskPattern: field.mask } : undefined}
+                            />
                           );
-                        }
-
-                        const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
-                        const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
-
-                        return (
-                          <TextField
-                            type={field.type}
-                            label={field.label}
-                            required={field.required}
-                            disabled={field.disabled}
-                            value={value || ''}
-                            onChange={onChange}
-                            error={!!error}
-                            helperText={helperTextContent}
-                            fullWidth
-                            onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault();
-                                if (field.searchConfig && !field.disabled && !field.readOnly) setActiveSearch({ field, value: value ? String(value) : undefined });
-                              }
-                            }}
-                            onMouseDown={(e: MouseEvent<HTMLDivElement>) => {
-                              if ((field.readOnly || field.disabled) && !value) e.preventDefault();
-                            }}
-                            InputProps={{
-                              ...(field.readOnly && { readOnly: true }),
-                              ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
-                              ...((SelectedIcon || field.searchConfig) && {
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    {field.searchConfig ? (
-                                      <IconButton edge="end" disabled={field.disabled || field.readOnly} onClick={() => !field.disabled && !field.readOnly && setActiveSearch({ field, value: value ? String(value) : undefined })}>
-                                        {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
-                                      </IconButton>
-                                    ) : (
-                                      SelectedIcon && <SelectedIcon color="action" />
-                                    )}
-                                  </InputAdornment>
-                                )
-                              })
-                            }}
-                            inputProps={field.mask ? { maskPattern: field.mask } : undefined}
-                          />
-                        );
-                      }}
-                    />
+                        }}
+                      />
+                    )}
                   </FieldWrapper>
                 );
               })}
