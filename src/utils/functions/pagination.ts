@@ -1,0 +1,1 @@
+export const paginateArray = <T>(items: T[], page: number, limit: number) => ({ data: items.slice(page * limit, (page * limit) + limit), total: items.length });
