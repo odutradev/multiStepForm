@@ -323,7 +323,7 @@ export const mockFormConfig: FormConfig = {
         },
         {
           title: "Informações sobre a Requisição",
-          gridColumns: 1,
+          gridColumns: 2,
           fields: [
             {
               name: "naturezaCredito",
@@ -334,6 +334,19 @@ export const mockFormConfig: FormConfig = {
                 { label: "Alimentar", value: "alimentar" },
                 { label: "Comum", value: "comum" },
               ],
+            },
+            {
+              name: "dataIntimacao",
+              label: "Data da intimação das partes quanto ao inteiro teor do Formulário Ofício Precatório",
+              type: "date",
+              mask: "00/00/0000",
+              validation: {
+                pattern: "^\\d{2}/\\d{2}/\\d{4}$",
+                message: "Data inválida. Use o formato DD/MM/AAAA",
+              },
+              required: false,
+              disabled: false,
+              icon: "CalendarToday"
             },
           ],
         },
