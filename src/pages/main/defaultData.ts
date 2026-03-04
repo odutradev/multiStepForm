@@ -54,7 +54,7 @@ export const mockFormConfig: FormConfig = {
     {
       id: 'step-2',
       title: 'Informações Gerais',
-      gridColumns: 3,
+      gridColumns: 2,
       fields: [
         {
           name: 'subtitleMagistrado',
