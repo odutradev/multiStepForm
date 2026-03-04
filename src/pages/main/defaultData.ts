@@ -236,32 +236,19 @@ export const mockFormConfig: FormConfig = {
           conditionalRender: (context) => context.data.processoConhecimento === 'sim',
           fields: [
             {
-              name: 'numeroProcessoConhecimento',
-              label: 'Número do processo de conhecimento',
-              type: 'text',
-              required: true,
-              mask: '0000000-00.0000.0.00.0000'
-            },
-            {
-              name: 'dataDistribuicaoConhecimento',
-              label: 'Data de distribuição',
-              type: 'date',
-              required: true
-            },
-            {
-              name: 'dataAjuizamento',
+              name: 'dataAjuizamentoDoProcessoDeConhecimento',
               label: 'Data de ajuizamento do processo de conhecimento',
               type: 'date',
               required: true
             },
             {
-              name: 'dataCitacaoProcesso',
+              name: 'dataCitacaoDoProcessoDeConhecimento',
               label: 'Data da citação do processo de conhecimento',
               type: 'date',
               required: true
             },
             {
-              name: 'dataTransitoJulgado',
+              name: 'dataTransitoJulgadoDoProcessoDeConhecimento',
               label: 'Data do trânsito em julgado',
               type: 'date',
               required: true
