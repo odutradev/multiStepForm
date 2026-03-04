@@ -1,4 +1,4 @@
-import { stepOneAutoFillMock, fetchAssuntos, fetchUsers, fetchVaras } from "./mock";
+import { stepOneAutoFillMock, fetchSubjects, fetchCourts, fetchUsers } from "./mock";
 
 import type { FormConfig } from "@components/multiStepForm/types";
 
@@ -76,27 +76,27 @@ export const mockFormConfig: FormConfig = {
               },
               searchConfig: {
                 title: "Buscar Magistrado",
-                initialFilterName: "matricula",
+                initialFilterName: "registration",
                 pagination: true,
                 fields: [
-                  { name: "nome", label: "Nome do Magistrado", type: "text" },
+                  { name: "name", label: "Nome do Magistrado", type: "text" },
                   {
-                    name: "matricula",
+                    name: "registration",
                     label: "Matrícula",
                     type: "text",
                     mask: "a-0000000",
                   },
                 ],
                 columns: [
-                  { header: "Matrícula", key: "matricula" },
-                  { header: "Nome", key: "nome" },
+                  { header: "Matrícula", key: "registration" },
+                  { header: "Nome", key: "name" },
                 ],
                 onSearch: fetchUsers,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
-                      matriculaMagistrado: item.matricula,
-                      nomeMagistrado: item.nome,
+                      matriculaMagistrado: item.registration,
+                      nomeMagistrado: item.name,
                     },
                     true,
                   ),
@@ -128,27 +128,27 @@ export const mockFormConfig: FormConfig = {
               },
               searchConfig: {
                 title: "Buscar Gerente da Secretaria",
-                initialFilterName: "matricula",
+                initialFilterName: "registration",
                 pagination: true,
                 fields: [
-                  { name: "nome", label: "Nome do Gerente", type: "text" },
+                  { name: "name", label: "Nome do Gerente", type: "text" },
                   {
-                    name: "matricula",
+                    name: "registration",
                     label: "Matrícula",
                     type: "text",
                     mask: "a-0000000",
                   },
                 ],
                 columns: [
-                  { header: "Matrícula", key: "matricula" },
-                  { header: "Nome", key: "nome" },
+                  { header: "Matrícula", key: "registration" },
+                  { header: "Nome", key: "name" },
                 ],
                 onSearch: fetchUsers,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
-                      matriculaGerenteDaSecretaria: item.matricula,
-                      nomeGerenteDaSecretaria: item.nome,
+                      matriculaGerenteDaSecretaria: item.registration,
+                      nomeGerenteDaSecretaria: item.name,
                     },
                     true,
                   ),
@@ -180,25 +180,25 @@ export const mockFormConfig: FormConfig = {
               },
               searchConfig: {
                 title: "Buscar Vara",
-                initialFilterName: "codigo",
+                initialFilterName: "code",
                 pagination: true,
                 fields: [
-                  { name: "nome", label: "Nome da Vara", type: "text" },
+                  { name: "name", label: "Nome da Vara", type: "text" },
                   {
-                    name: "codigo",
+                    name: "code",
                     label: "Código da Vara",
                     type: "text",
                     mask: "000000000",
                   },
                 ],
                 columns: [
-                  { header: "Código", key: "codigo" },
-                  { header: "Nome", key: "nome" },
+                  { header: "Código", key: "code" },
+                  { header: "Nome", key: "name" },
                 ],
-                onSearch: fetchVaras,
+                onSearch: fetchCourts,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
-                    { codigoDaVara: item.codigo, nomeDaVara: item.nome },
+                    { codigoDaVara: item.code, nomeDaVara: item.name },
                     true,
                   ),
               },
@@ -420,23 +420,23 @@ export const mockFormConfig: FormConfig = {
                 title: "Buscar Assunto",
                 viewMode: "tree",
                 treeConfig: {
-                  labelKey: "descricao",
-                  valueKey: "codigo",
-                  childrenKey: "filhos"
+                  labelKey: "description",
+                  valueKey: "code",
+                  childrenKey: "children"
                 },
-                initialFilterName: "codigo",
+                initialFilterName: "code",
                 pagination: false,
                 fields: [
-                  { name: "codigo", label: "Código do Assunto", type: "text" },
-                  { name: "descricao", label: "Descrição", type: "text" },
+                  { name: "code", label: "Código do Assunto", type: "text" },
+                  { name: "description", label: "Descrição", type: "text" },
                 ],
                 columns: [],
-                onSearch: fetchAssuntos,
+                onSearch: fetchSubjects,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
-                      assuntoCod: item.codigo,
-                      assuntoDescricao: item.descricao,
+                      assuntoCod: item.code,
+                      assuntoDescricao: item.description,
                     },
                     true,
                   ),
