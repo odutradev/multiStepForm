@@ -1,8 +1,10 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as MuiIcons from '@mui/icons-material';
-import { forwardRef, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { forwardRef, useState } from 'react';
 import { IMaskInput } from 'react-imask';
+import dayjs from 'dayjs';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import SearchModal from '../searchModal';
@@ -69,6 +71,26 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                             );
                           }
 
+                          if (field.type === 'date') {
+                            return (
+                              <DatePicker
+                                label={field.label}
+                                disabled={field.disabled}
+                                readOnly={field.readOnly}
+                                value={value ? dayjs(value) : null}
+                                onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : null)}
+                                slotProps={{
+                                  textField: {
+                                    fullWidth: true,
+                                    required: field.required,
+                                    error: !!error,
+                                    helperText: error?.message
+                                  }
+                                }}
+                              />
+                            );
+                          }
+
                           const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
                           const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
 
@@ -83,7 +105,6 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               error={!!error}
                               helperText={helperTextContent}
                               fullWidth
-                              InputLabelProps={field.type === 'date' ? { shrink: true } : undefined}
                               onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                                 if (e.key === 'Enter') {
                                   e.preventDefault();
