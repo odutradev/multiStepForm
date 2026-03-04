@@ -481,6 +481,48 @@ export const mockFormConfig: FormConfig = {
               conditionalRender: (context) => context.data?.beneficiario === "Beneficiário Principal"
             }
           ]
+        },
+        {
+          title: "Beneficiário Principal",
+          highlight: true,
+          gridColumns: 3,
+          conditionalRender: (context) => context.data?.beneficiario === "Beneficiário Principal",
+          fields: [
+            {
+              type: "select",
+              name: "creditoCessao",
+              label: "O crédito foi objeto de cessão?",
+              required: true,
+              options: [
+                { label: "Sim", value: "true" },
+                { label: "Não", value: "false" }
+              ],
+              colSpan: 1
+            },
+            {
+              type: "select",
+              name: "existePenhora",
+              label: "O crédito foi objeto de penhora?",
+              required: true,
+              conditionalRender: (context) => context.data?.creditoCessao === "true",
+              options: [
+                { label: "Sim", value: "true" },
+                { label: "Não", value: "false" }
+              ],
+              colSpan: 1
+            },
+            {
+              type: "select",
+              name: "isObjetoSucessao",
+              label: "O crédito principal foi objeto de sucessão?",
+              required: true,
+              options: [
+                { label: "Sim", value: "true" },
+                { label: "Não", value: "false" }
+              ],
+              colSpan: 1
+            }
+          ]
         }
       ],
       actions: [
