@@ -35,7 +35,7 @@ export interface SearchConfig {
 }
 
 export interface FormField {
-  type: 'text' | 'number' | 'email' | 'select' | 'subtitle';
+  type: 'text' | 'number' | 'email' | 'select';
   searchConfig?: SearchConfig;
   mask?: string | RegExp;
   validation?: FieldValidation;
@@ -49,6 +49,12 @@ export interface FormField {
   name: string;
 }
 
+export interface FormGroup {
+  gridColumns?: number;
+  fields: FormField[];
+  title?: string;
+}
+
 export interface FormAction {
   actionType: 'next' | 'prev' | 'submit' | 'custom';
   onClick?: (context: ActionContext) => Promise<boolean | void>;
@@ -57,9 +63,8 @@ export interface FormAction {
 }
 
 export interface FormStep {
-  gridColumns?: number;
   actions: FormAction[];
-  fields: FormField[];
+  groups: FormGroup[];
   title: string;
   id: string;
 }

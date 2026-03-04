@@ -1,6 +1,17 @@
 import { Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+export const GroupsWrapper = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(4)
+}));
+
+export const GroupContainer = styled(Box)({
+  width: '100%'
+});
+
 export const FieldsContainer = styled(Box)<{ $columns?: number }>(({ theme, $columns }) => ({
   width: '100%',
   display: 'grid',
@@ -20,9 +31,7 @@ export const FieldWrapper = styled(Box)<{ $colSpan?: number }>(({ $colSpan }) =>
 }));
 
 export const SubtitleText = styled(Typography)(({ theme }) => ({
-  gridColumn: '1 / -1',
   fontWeight: theme.typography.fontWeightBold,
   color: theme.palette.text.secondary,
-  marginBottom: theme.spacing(1),
-  marginTop: theme.spacing(1)
+  marginBottom: theme.spacing(2)
 }));

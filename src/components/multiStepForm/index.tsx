@@ -29,10 +29,9 @@ const MultiStepForm = (props: MultiStepFormProps) => {
       <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
       <StepContainer>
         <FieldRenderer
-          fields={currentStep.fields}
+          groups={currentStep.groups}
           control={control}
           context={actionContext}
-          gridColumns={currentStep.gridColumns}
         />
         <ActionButtons
           actions={currentStep.actions}

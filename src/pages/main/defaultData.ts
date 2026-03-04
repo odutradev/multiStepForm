@@ -10,32 +10,36 @@ export const mockFormConfig: FormConfig = {
     {
       id: 'step-1',
       title: 'Cadastrar Processo',
-      gridColumns: 2,
-      fields: [
+      groups: [
         {
-          name: 'numeroProcesso',
-          label: 'Número do processo',
-          type: 'text',
-          required: true,
-          mask: '0000000-00.0000.0.00.0000',
-          validation: {
-            pattern: '^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$',
-            message: 'Número do processo inválido'
-          }
-        },
-        {
-          name: 'tipoJustica',
-          label: 'Instância',
-          type: 'select',
-          required: true,
-          options: [
+          gridColumns: 2,
+          fields: [
             {
-              label: 'Justiça Comum 1ª Instância',
-              value: 'JUSTICA_COMUM_1_INSTANCIA'
+              name: 'numeroProcesso',
+              label: 'Número do processo',
+              type: 'text',
+              required: true,
+              mask: '0000000-00.0000.0.00.0000',
+              validation: {
+                pattern: '^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$',
+                message: 'Número do processo inválido'
+              }
             },
             {
-              label: 'Justiça Comum 2ª Instância',
-              value: 'JUSTICA_COMUM_2_INSTANCIA'
+              name: 'tipoJustica',
+              label: 'Instância',
+              type: 'select',
+              required: true,
+              options: [
+                {
+                  label: 'Justiça Comum 1ª Instância',
+                  value: 'JUSTICA_COMUM_1_INSTANCIA'
+                },
+                {
+                  label: 'Justiça Comum 2ª Instância',
+                  value: 'JUSTICA_COMUM_2_INSTANCIA'
+                }
+              ]
             }
           ]
         }
@@ -54,158 +58,160 @@ export const mockFormConfig: FormConfig = {
     {
       id: 'step-2',
       title: 'Informações Gerais',
-      gridColumns: 2,
-      fields: [
+      groups: [
         {
-          name: 'subtitleMagistrado',
-          label: 'Magistrado Responsável',
-          type: 'subtitle'
-        },
-        {
-          name: 'matriculaMagistrado',
-          label: 'Matrícula do magistrado',
-          type: 'text',
-          required: true,
-          mask: 'a-0000000',
-          icon: 'Search',
-          validation: {
-            pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida'
-          },
-          searchConfig: {
-            title: 'Buscar Magistrado',
-            initialFilterName: 'matricula',
-            pagination: true,
-            fields: [
-              { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
-              {
-                name: 'matricula',
-                label: 'Matrícula',
-                type: 'text',
-                mask: 'a-0000000'
+          title: 'Magistrado Responsável',
+          gridColumns: 2,
+          fields: [
+            {
+              name: 'matriculaMagistrado',
+              label: 'Matrícula do magistrado',
+              type: 'text',
+              required: true,
+              mask: 'a-0000000',
+              icon: 'Search',
+              validation: {
+                pattern: '^[A-Z]-\\d{7}$',
+                message: 'Matrícula inválida'
+              },
+              searchConfig: {
+                title: 'Buscar Magistrado',
+                initialFilterName: 'matricula',
+                pagination: true,
+                fields: [
+                  { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
+                  {
+                    name: 'matricula',
+                    label: 'Matrícula',
+                    type: 'text',
+                    mask: 'a-0000000'
+                  }
+                ],
+                columns: [
+                  { header: 'Matrícula', key: 'matricula' },
+                  { header: 'Nome', key: 'nome' }
+                ],
+                onSearch: fetchUsers,
+                onSelect: (item, context) => {
+                  context.setMultipleValues(
+                    {
+                      matriculaMagistrado: item.matricula,
+                      nomeMagistrado: item.nome
+                    },
+                    true
+                  );
+                }
               }
-            ],
-            columns: [
-              { header: 'Matrícula', key: 'matricula' },
-              { header: 'Nome', key: 'nome' }
-            ],
-            onSearch: fetchUsers,
-            onSelect: (item, context) => {
-              context.setMultipleValues(
-                {
-                  matriculaMagistrado: item.matricula,
-                  nomeMagistrado: item.nome
-                },
-                true
-              );
+            },
+            {
+              name: 'nomeMagistrado',
+              label: 'Nome do magistrado',
+              type: 'text',
+              required: true,
+              readOnly: true
             }
-          }
+          ]
         },
         {
-          name: 'nomeMagistrado',
-          label: 'Nome do magistrado',
-          type: 'text',
-          required: true,
-          readOnly: true
-        },
-        {
-          name: 'subtitleSelecioneGerente',
-          label: 'Selecione o Gerente da Secretaria',
-          type: 'subtitle',
-          colSpan: 2
-        },
-        {
-          name: 'matriculaGerenteDaSecretaria',
-          label: 'Matrícula do gerente da secretaria',
-          type: 'text',
-          required: true,
-          mask: 'a-0000000',
-          icon: 'Search',
-          validation: {
-            pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida'
-          },
-          searchConfig: {
-            title: 'Buscar Gerente da Secretaria',
-            initialFilterName: 'matriculaGerenteDaSecretaria',
-            pagination: true,
-            fields: [
-              { name: 'nome', label: 'Nome do Gerente', type: 'text' },
-              {
-                name: 'matricula',
-                label: 'Matrícula',
-                type: 'text',
-                mask: 'S0000000'
+          title: 'Selecione o Gerente da Secretaria',
+          gridColumns: 2,
+          fields: [
+            {
+              name: 'matriculaGerenteDaSecretaria',
+              label: 'Matrícula do gerente da secretaria',
+              type: 'text',
+              required: true,
+              mask: 'a-0000000',
+              icon: 'Search',
+              validation: {
+                pattern: '^[A-Z]-\\d{7}$',
+                message: 'Matrícula inválida'
+              },
+              searchConfig: {
+                title: 'Buscar Gerente da Secretaria',
+                initialFilterName: 'matriculaGerenteDaSecretaria',
+                pagination: true,
+                fields: [
+                  { name: 'nome', label: 'Nome do Gerente', type: 'text' },
+                  {
+                    name: 'matricula',
+                    label: 'Matrícula',
+                    type: 'text',
+                    mask: 'S0000000'
+                  }
+                ],
+                columns: [
+                  { header: 'Matrícula', key: 'matricula' },
+                  { header: 'Nome', key: 'nome' }
+                ],
+                onSearch: fetchUsers,
+                onSelect: (item, context) => {
+                  context.setMultipleValues(
+                    {
+                      matriculaGerenteDaSecretaria: item.matricula,
+                      nomeGerenteDaSecretaria: item.nome
+                    },
+                    true
+                  );
+                }
               }
-            ],
-            columns: [
-              { header: 'Matrícula', key: 'matricula' },
-              { header: 'Nome', key: 'nome' }
-            ],
-            onSearch: fetchUsers,
-            onSelect: (item, context) => {
-              context.setMultipleValues(
-                {
-                  matriculaGerenteDaSecretaria: item.matricula,
-                  nomeGerenteDaSecretaria: item.nome
-                },
-                true
-              );
+            },
+            {
+              name: 'nomeGerenteDaSecretaria',
+              label: 'Nome do gerente da secretaria',
+              type: 'text',
+              readOnly: true,
+              required: true
             }
-          }
+          ]
         },
         {
-          name: 'nomeGerenteDaSecretaria',
-          label: 'Nome do gerente da secretaria',
-          type: 'text',
-          readOnly: true,
-          required: true
+          title: 'Dados da Requisição',
+          gridColumns: 2,
+          fields: [
+            {
+              name: 'codigoDaVara',
+              label: 'Código da vara',
+              type: 'text',
+              required: true,
+              icon: 'Search',
+              mask: '000000000'
+            },
+            {
+              name: 'nomeDaVara',
+              label: 'Nome da vara',
+              type: 'text',
+              required: true,
+              readOnly: true
+            }
+          ]
         },
         {
-          name: 'dadosDaRequisicao',
-          label: 'Dados da Requisição',
-          type: 'subtitle'
-        },
-        {
-          name: 'codigoDaVara',
-          label: 'Código da vara',
-          type: 'text',
-          required: true,
-          icon: 'Search',
-          mask: '000000000'
-        },
-        {
-          name: 'nomeDaVara',
-          label: 'Nome da vara',
-          type: 'text',
-          required: true,
-          readOnly: true
-        },
-        {
-          name: 'informacoesProcessuais',
-          label: 'Informações Processuais',
-          type: 'subtitle'
-        },
-        {
-          name: 'numeroUnicoProcessoJudicialCNJ',
-          label: 'Numeração única do processo judicial (CNJ)',
-          type: 'text',
-          required: true,
-          readOnly: true,
-          mask: '0000000-00.0000.0.00.0000'
-        },
-        {
-          name: 'numeroOriginarioAnterior',
-          label: 'Número originário anterior (se houver)',
-          type: 'text',
-          mask: '0000000-00.0000.0.00.0000'
-        },
-        {
-          name: 'processoConhecimento',
-          label: 'Houve processo de conhecimento?',
-          type: 'select',
-          required: true,
-          options: [{ label: 'Não', value: 'nao' }]
+          title: 'Informações Processuais',
+          gridColumns: 3,
+          fields: [
+            {
+              name: 'numeroUnicoProcessoJudicialCNJ',
+              label: 'Numeração única do processo judicial (CNJ)',
+              type: 'text',
+              required: true,
+              readOnly: true,
+              mask: '0000000-00.0000.0.00.0000'
+            },
+            {
+              name: 'numeroOriginarioAnterior',
+              label: 'Número originário anterior (se houver)',
+              type: 'text',
+              mask: '0000000-00.0000.0.00.0000'
+            },
+            {
+              name: 'processoConhecimento',
+              label: 'Houve processo de conhecimento?',
+              type: 'select',
+              required: true,
+              options: [{ label: 'Não', value: 'nao' }]
+            }
+          ]
         }
       ],
       actions: [

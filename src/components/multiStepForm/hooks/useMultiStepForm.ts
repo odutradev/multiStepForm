@@ -18,7 +18,7 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === steps.length - 1;
 
-  const currentFieldsToValidate = useMemo(() => currentStep.fields.filter((f) => f.type !== 'subtitle'), [currentStep]);
+  const currentFieldsToValidate = useMemo(() => currentStep.groups.flatMap((g) => g.fields), [currentStep]);
   const currentFieldNames = useMemo(() => currentFieldsToValidate.map((f) => f.name), [currentFieldsToValidate]);
   const currentValues = watch(currentFieldNames);
 
