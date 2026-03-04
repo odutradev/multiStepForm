@@ -365,14 +365,6 @@ export const mockFormConfig: FormConfig = {
               colSpan: 1
             },
             {
-              type: 'text',
-              name: 'orgaoVinculado',
-              label: 'Órgão a que estiver vinculado o empregado ou servidor publico, civil ou militar, da administração direta',
-              required: true,
-              colSpan: 1,
-              conditionalRender: (context) => context.data?.naturezaSalarial === 'Sim'
-            },
-            {
               type: 'select',
               name: 'condicaoNaturezaSalarial',
               label: 'Condição',
@@ -384,7 +376,15 @@ export const mockFormConfig: FormConfig = {
                 { label: 'Pensionista', value: 'Pensionista' }
               ],
               conditionalRender: (context) => context.data?.naturezaSalarial === 'Sim'
-            }
+            },
+            {
+              type: 'text',
+              name: 'orgaoVinculado',
+              label: 'Órgão a que estiver vinculado o empregado ou servidor publico, civil ou militar, da administração direta',
+              required: true,
+              colSpan: 1,
+              conditionalRender: (context) => context.data?.naturezaSalarial === 'Sim'
+            },
           ]
         }
       ],
