@@ -128,7 +128,7 @@ export const mockFormConfig: FormConfig = {
               },
               searchConfig: {
                 title: "Buscar Gerente da Secretaria",
-                initialFilterName: "matriculaGerenteDaSecretaria",
+                initialFilterName: "matricula",
                 pagination: true,
                 fields: [
                   { name: "nome", label: "Nome do Gerente", type: "text" },
@@ -136,7 +136,7 @@ export const mockFormConfig: FormConfig = {
                     name: "matricula",
                     label: "Matrícula",
                     type: "text",
-                    mask: "S0000000",
+                    mask: "a-0000000",
                   },
                 ],
                 columns: [

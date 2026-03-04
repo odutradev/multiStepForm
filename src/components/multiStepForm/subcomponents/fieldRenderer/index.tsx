@@ -1,7 +1,7 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import * as MuiIcons from '@mui/icons-material';
 import { Controller } from 'react-hook-form';
+import * as MuiIcons from '@mui/icons-material';
 import { forwardRef, useState } from 'react';
 import { IMaskInput } from 'react-imask';
 import dayjs from 'dayjs';
@@ -9,9 +9,9 @@ import dayjs from 'dayjs';
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import SearchModal from '../searchModal';
 
+import type { InputBaseComponentProps } from '@mui/material';
 import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
 import type { FieldRendererProps, MaskedInputProps } from './types';
-import type { InputBaseComponentProps } from '@mui/material';
 import type { FormField } from '../../types';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
@@ -108,7 +108,10 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                                 if (e.key === 'Enter') {
                                   e.preventDefault();
-                                  if (field.searchConfig && !field.disabled && !field.readOnly) setActiveSearch({ field, value: value ? String(value) : undefined });
+                                  if (field.searchConfig && !field.disabled && !field.readOnly) {
+                                    const currentValue = (e.target as HTMLInputElement).value;
+                                    setActiveSearch({ field, value: currentValue || undefined });
+                                  }
                                 }
                               }}
                               onMouseDown={(e: MouseEvent<HTMLDivElement>) => {

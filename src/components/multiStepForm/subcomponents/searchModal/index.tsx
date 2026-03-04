@@ -89,7 +89,10 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
-                    handleSearch();
+                    const target = e.target as HTMLInputElement;
+                    const updatedFilters = { ...filters, [target.name]: target.value };
+                    setFilters(updatedFilters);
+                    handleSearch(updatedFilters);
                   }
                 }}
                 InputProps={{
