@@ -174,6 +174,10 @@ export const mockFormConfig: FormConfig = {
               required: true,
               icon: "Search",
               mask: "000000000",
+              validation: {
+                pattern: "^\\d{9}$",
+                message: "O código deve conter exatamente 9 dígitos numéricos",
+              },
               searchConfig: {
                 title: "Buscar Vara",
                 initialFilterName: "codigo",
@@ -242,8 +246,7 @@ export const mockFormConfig: FormConfig = {
           title: "Processo de Conhecimento",
           highlight: true,
           gridColumns: 2,
-          conditionalRender: (context) =>
-            context.data.houveProcessoDeConhecimento === "sim",
+          conditionalRender: (context) => context.data.houveProcessoDeConhecimento === "sim",
           fields: [
             {
               name: "dataAjuizamentoDoProcessoDeConhecimento",
@@ -275,23 +278,17 @@ export const mockFormConfig: FormConfig = {
             },
             {
               name: "dataTransitoEmJulgadoDaSentenca",
-              label:
-                "Data do trânsito em julgado da sentença da fase de conhecimento",
+              label: "Data do trânsito em julgado da sentença da fase de conhecimento",
               type: "date",
               required: true,
-              conditionalRender: (context) =>
-                context.data.dataTransitoJulgadoDoProcessoDeConhecimento ===
-                "dataTransitoSentenca",
+              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === "dataTransitoSentenca",
             },
             {
               name: "dataTransitoEmJulgadoDoAcordao",
-              label:
-                "Data do trânsito em julgado do acórdão lavrado na fase de conhecimento",
+              label: "Data do trânsito em julgado do acórdão lavrado na fase de conhecimento",
               type: "date",
               required: true,
-              conditionalRender: (context) =>
-                context.data.dataTransitoJulgadoDoProcessoDeConhecimento ===
-                "dataTransitoAcordao",
+              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === "dataTransitoAcordao",
             },
           ],
         },
@@ -300,8 +297,7 @@ export const mockFormConfig: FormConfig = {
           fields: [
             {
               name: "houveEmbargosOuImpugnacao",
-              label:
-                "Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?",
+              label: "Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?",
               type: "select",
               required: true,
               options: [
@@ -314,17 +310,14 @@ export const mockFormConfig: FormConfig = {
               label: "Data do trânsito em julgado dos embargos à execução",
               type: "date",
               required: false,
-              conditionalRender: (context) =>
-                context.data.houveEmbargosOuImpugnacao === "sim",
+              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === "sim",
             },
             {
               name: "dataDecursoDePrazoDosEmbargos",
-              label:
-                "Data do decurso de prazo para apresentação dos embargos à execução",
+              label: "Data do decurso de prazo para apresentação dos embargos à execução",
               type: "date",
               required: false,
-              conditionalRender: (context) =>
-                context.data.houveEmbargosOuImpugnacao === "nao",
+              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === "nao",
             },
           ],
         },
@@ -351,9 +344,7 @@ export const mockFormConfig: FormConfig = {
           label: "Confirmar e Enviar",
           actionType: "submit",
           onClick: async () => {
-            await new Promise((resolve) =>
-              setTimeout(resolve, MOCK_SUBMIT_DELAY_MS),
-            );
+            await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS));
           },
         },
       ],
