@@ -11,10 +11,9 @@ export const GroupsWrapper = styled(Box)(({ theme }) => ({
 export const GroupContainer = styled(Box)<{ $highlight?: boolean }>(({ theme, $highlight }) => ({
   width: '100%',
   ...($highlight && {
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.primary.main}`,
-    backgroundColor: theme.palette.action.hover
+    border: `1px dashed ${theme.palette.primary.main}`
   })
 }));
 
