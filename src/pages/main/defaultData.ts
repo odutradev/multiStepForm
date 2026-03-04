@@ -158,7 +158,6 @@ export const mockFormConfig: FormConfig = {
           name: 'nomeGerenteDaSecretaria',
           label: 'Nome do gerente da secretaria',
           type: 'text',
-          icon: 'Search',
           readOnly: true,
           required: true
         },
@@ -180,7 +179,6 @@ export const mockFormConfig: FormConfig = {
           label: 'Nome da vara',
           type: 'text',
           required: true,
-          icon: 'Search',
           readOnly: true
         },
         {
