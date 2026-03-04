@@ -30,6 +30,41 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
 
   const actionContext = useMemo(() => ({ data: allData, ...formMethods }), [allData, formMethods]);
 
+  useEffect(() => {
+    const fieldsToClear: string[] = [];
+
+    config.steps.forEach((step) => {
+      const isStepVisible = step.conditionalRender ? step.conditionalRender(actionContext) : true;
+
+      if (!isStepVisible) {
+        step.groups.forEach((g) => g.fields.forEach((f) => fieldsToClear.push(f.name)));
+        return;
+      }
+
+      step.groups.forEach((group) => {
+        const isGroupVisible = group.conditionalRender ? group.conditionalRender(actionContext) : true;
+
+        if (!isGroupVisible) {
+          group.fields.forEach((f) => fieldsToClear.push(f.name));
+          return;
+        }
+
+        group.fields.forEach((field) => {
+          const isFieldVisible = field.conditionalRender ? field.conditionalRender(actionContext) : true;
+          if (!isFieldVisible) fieldsToClear.push(field.name);
+        });
+      });
+    });
+
+    fieldsToClear.forEach((name) => {
+      const value = getValues(name);
+      if (value !== undefined && value !== null && value !== '') {
+        setValue(name, undefined);
+        clearErrors(name);
+      }
+    });
+  }, [config.steps, actionContext, getValues, setValue, clearErrors]);
+
   const visibleSteps = useMemo(() => config.steps.filter((s) => (s.conditionalRender ? s.conditionalRender(actionContext) : true)), [config.steps, actionContext]);
 
   useEffect(() => {
