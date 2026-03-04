@@ -222,7 +222,10 @@ export const mockFormConfig: FormConfig = {
               label: 'Houve processo de conhecimento?',
               type: 'select',
               required: true,
-              options: [{ label: 'Não', value: 'nao' }]
+              options: [
+                { label: 'Sim', value: 'sim' },
+                { label: 'Não', value: 'nao' }
+              ]
             }
           ]
         }
