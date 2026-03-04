@@ -226,13 +226,32 @@ export const mockFormConfig: FormConfig = {
                 { label: 'Sim', value: 'sim' },
                 { label: 'Não', value: 'nao' }
               ]
+            }
+          ]
+        },
+        {
+          title: 'Processo de Conhecimento',
+          highlight: true,
+          gridColumns: 2,
+          conditionalRender: (context) => context.data.processoConhecimento === 'sim',
+          fields: [
+            {
+              name: 'numeroProcessoConhecimento',
+              label: 'Número do processo de conhecimento',
+              type: 'text',
+              required: true,
+              mask: '0000000-00.0000.0.00.0000'
             },
             {
-              name: 'infoProcessoConhecimento',
-              label: 'Atenção: Como houve processo de conhecimento, verifique os prazos adicionais aplicáveis.',
-              type: 'info',
-              colSpan: 3,
-              conditionalRender: (context) => context.data.processoConhecimento === 'sim'
+              name: 'dataDistribuicaoConhecimento',
+              label: 'Data de distribuição',
+              type: 'text',
+              required: true,
+              mask: '00/00/0000',
+              validation: {
+                pattern: '^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/((19|20)\\d\\d)$',
+                message: 'Data inválida'
+              }
             }
           ]
         }

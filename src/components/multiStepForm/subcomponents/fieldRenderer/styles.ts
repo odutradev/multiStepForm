@@ -8,9 +8,15 @@ export const GroupsWrapper = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4)
 }));
 
-export const GroupContainer = styled(Box)({
-  width: '100%'
-});
+export const GroupContainer = styled(Box)<{ $highlight?: boolean }>(({ theme, $highlight }) => ({
+  width: '100%',
+  ...($highlight && {
+    padding: theme.spacing(3),
+    borderRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.primary.main}`,
+    backgroundColor: theme.palette.action.hover
+  })
+}));
 
 export const FieldsContainer = styled(Box)<{ $columns?: number }>(({ theme, $columns }) => ({
   width: '100%',
@@ -30,8 +36,8 @@ export const FieldWrapper = styled(Box)<{ $colSpan?: number }>(({ $colSpan }) =>
   gridColumn: $colSpan ? `span ${$colSpan}` : 'auto',
 }));
 
-export const SubtitleText = styled(Typography)(({ theme }) => ({
+export const SubtitleText = styled(Typography)<{ $highlight?: boolean }>(({ theme, $highlight }) => ({
   fontWeight: theme.typography.fontWeightBold,
-  color: theme.palette.text.secondary,
+  color: $highlight ? theme.palette.primary.main : theme.palette.text.secondary,
   marginBottom: theme.spacing(2)
 }));

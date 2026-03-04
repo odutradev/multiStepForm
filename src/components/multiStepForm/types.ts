@@ -53,6 +53,7 @@ export interface FormField {
 export interface FormGroup {
   conditionalRender?: (context: ActionContext) => boolean;
   gridColumns?: number;
+  highlight?: boolean;
   fields: FormField[];
   title?: string;
 }

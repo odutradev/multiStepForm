@@ -1,7 +1,7 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import * as MuiIcons from '@mui/icons-material';
-import { forwardRef, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { forwardRef, useState } from 'react';
 import { IMaskInput } from 'react-imask';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
@@ -32,8 +32,8 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
     <>
       <GroupsWrapper>
         {groups.map((group, groupIndex) => (
-          <GroupContainer key={`group-${groupIndex}`}>
-            {group.title && <SubtitleText variant="subtitle1">{group.title}</SubtitleText>}
+          <GroupContainer key={`group-${groupIndex}`} $highlight={group.highlight}>
+            {group.title && <SubtitleText variant="subtitle1" $highlight={group.highlight}>{group.title}</SubtitleText>}
             <FieldsContainer $columns={group.gridColumns}>
               {group.fields.map((field) => {
                 const SelectedIcon = field.icon ? MuiIcons[field.icon as keyof typeof MuiIcons] : null;
