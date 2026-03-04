@@ -1,6 +1,6 @@
-import { stepOneAutoFillMock, fetchUsers, fetchVaras } from './mock';
+import { stepOneAutoFillMock, fetchUsers, fetchVaras } from "./mock";
 
-import type { FormConfig } from '@components/multiStepForm/types';
+import type { FormConfig } from "@components/multiStepForm/types";
 
 const MOCK_SUBMIT_DELAY_MS = 2000;
 const MOCK_DELAY_MS = 1500;
@@ -8,332 +8,355 @@ const MOCK_DELAY_MS = 1500;
 export const mockFormConfig: FormConfig = {
   steps: [
     {
-      id: 'step-1',
-      title: 'Cadastrar Processo',
+      id: "step-1",
+      title: "Cadastrar Processo",
       groups: [
         {
           gridColumns: 2,
           fields: [
             {
-              name: 'numeroProcesso',
-              label: 'Número do processo',
-              type: 'text',
+              name: "numeroProcesso",
+              label: "Número do processo",
+              type: "text",
               required: true,
-              mask: '0000000-00.0000.0.00.0000',
+              mask: "0000000-00.0000.0.00.0000",
               validation: {
-                pattern: '^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$',
-                message: 'Número do processo inválido'
-              }
+                pattern: "^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$",
+                message: "Número do processo inválido",
+              },
             },
             {
-              name: 'tipoJustica',
-              label: 'Instância',
-              type: 'select',
+              name: "tipoJustica",
+              label: "Instância",
+              type: "select",
               required: true,
               options: [
                 {
-                  label: 'Justiça Comum 1ª Instância',
-                  value: 'JUSTICA_COMUM_1_INSTANCIA'
+                  label: "Justiça Comum 1ª Instância",
+                  value: "JUSTICA_COMUM_1_INSTANCIA",
                 },
                 {
-                  label: 'Justiça Comum 2ª Instância',
-                  value: 'JUSTICA_COMUM_2_INSTANCIA'
-                }
-              ]
-            }
-          ]
-        }
+                  label: "Justiça Comum 2ª Instância",
+                  value: "JUSTICA_COMUM_2_INSTANCIA",
+                },
+              ],
+            },
+          ],
+        },
       ],
       actions: [
         {
-          label: 'Buscar e Avançar',
-          actionType: 'next',
+          label: "Buscar e Avançar",
+          actionType: "next",
           onClick: async (context) => {
             await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
             context.setMultipleValues(stepOneAutoFillMock, true);
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
-      id: 'step-2',
-      title: 'Informações Gerais',
+      id: "step-2",
+      title: "Informações Gerais",
       groups: [
         {
-          title: 'Magistrado Responsável',
+          title: "Magistrado Responsável",
           gridColumns: 2,
           fields: [
             {
-              name: 'matriculaMagistrado',
-              label: 'Matrícula do magistrado',
-              type: 'text',
+              name: "matriculaMagistrado",
+              label: "Matrícula do magistrado",
+              type: "text",
               required: true,
-              mask: 'a-0000000',
-              icon: 'Search',
+              mask: "a-0000000",
+              icon: "Search",
               validation: {
-                pattern: '^[A-Z]-\\d{7}$',
-                message: 'Matrícula inválida'
+                pattern: "^[A-Z]-\\d{7}$",
+                message: "Matrícula inválida",
               },
               searchConfig: {
-                title: 'Buscar Magistrado',
-                initialFilterName: 'matricula',
+                title: "Buscar Magistrado",
+                initialFilterName: "matricula",
                 pagination: true,
                 fields: [
-                  { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
+                  { name: "nome", label: "Nome do Magistrado", type: "text" },
                   {
-                    name: 'matricula',
-                    label: 'Matrícula',
-                    type: 'text',
-                    mask: 'a-0000000'
-                  }
+                    name: "matricula",
+                    label: "Matrícula",
+                    type: "text",
+                    mask: "a-0000000",
+                  },
                 ],
                 columns: [
-                  { header: 'Matrícula', key: 'matricula' },
-                  { header: 'Nome', key: 'nome' }
+                  { header: "Matrícula", key: "matricula" },
+                  { header: "Nome", key: "nome" },
                 ],
                 onSearch: fetchUsers,
-                onSelect: (item, context) => {
+                onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
                       matriculaMagistrado: item.matricula,
-                      nomeMagistrado: item.nome
+                      nomeMagistrado: item.nome,
                     },
-                    true
-                  );
-                }
-              }
+                    true,
+                  ),
+              },
             },
             {
-              name: 'nomeMagistrado',
-              label: 'Nome do magistrado',
-              type: 'text',
+              name: "nomeMagistrado",
+              label: "Nome do magistrado",
+              type: "text",
               required: true,
-              readOnly: true
-            }
-          ]
+              readOnly: true,
+            },
+          ],
         },
         {
-          title: 'Selecione o Gerente da Secretaria',
+          title: "Selecione o Gerente da Secretaria",
           gridColumns: 2,
           fields: [
             {
-              name: 'matriculaGerenteDaSecretaria',
-              label: 'Matrícula do gerente da secretaria',
-              type: 'text',
+              name: "matriculaGerenteDaSecretaria",
+              label: "Matrícula do gerente da secretaria",
+              type: "text",
               required: true,
-              mask: 'a-0000000',
-              icon: 'Search',
+              mask: "a-0000000",
+              icon: "Search",
               validation: {
-                pattern: '^[A-Z]-\\d{7}$',
-                message: 'Matrícula inválida'
+                pattern: "^[A-Z]-\\d{7}$",
+                message: "Matrícula inválida",
               },
               searchConfig: {
-                title: 'Buscar Gerente da Secretaria',
-                initialFilterName: 'matriculaGerenteDaSecretaria',
+                title: "Buscar Gerente da Secretaria",
+                initialFilterName: "matriculaGerenteDaSecretaria",
                 pagination: true,
                 fields: [
-                  { name: 'nome', label: 'Nome do Gerente', type: 'text' },
+                  { name: "nome", label: "Nome do Gerente", type: "text" },
                   {
-                    name: 'matricula',
-                    label: 'Matrícula',
-                    type: 'text',
-                    mask: 'S0000000'
-                  }
+                    name: "matricula",
+                    label: "Matrícula",
+                    type: "text",
+                    mask: "S0000000",
+                  },
                 ],
                 columns: [
-                  { header: 'Matrícula', key: 'matricula' },
-                  { header: 'Nome', key: 'nome' }
+                  { header: "Matrícula", key: "matricula" },
+                  { header: "Nome", key: "nome" },
                 ],
                 onSearch: fetchUsers,
-                onSelect: (item, context) => {
+                onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
                       matriculaGerenteDaSecretaria: item.matricula,
-                      nomeGerenteDaSecretaria: item.nome
+                      nomeGerenteDaSecretaria: item.nome,
                     },
-                    true
-                  );
-                }
-              }
+                    true,
+                  ),
+              },
             },
             {
-              name: 'nomeGerenteDaSecretaria',
-              label: 'Nome do gerente da secretaria',
-              type: 'text',
+              name: "nomeGerenteDaSecretaria",
+              label: "Nome do gerente da secretaria",
+              type: "text",
               readOnly: true,
-              required: true
-            }
-          ]
+              required: true,
+            },
+          ],
         },
         {
-          title: 'Dados da Requisição',
+          title: "Dados da Requisição",
           gridColumns: 2,
           fields: [
             {
-              name: 'codigoDaVara',
-              label: 'Código da vara',
-              type: 'text',
+              name: "codigoDaVara",
+              label: "Código da vara",
+              type: "text",
               required: true,
-              icon: 'Search',
-              mask: '000000000',
+              icon: "Search",
+              mask: "000000000",
               searchConfig: {
-                title: 'Buscar Vara',
-                initialFilterName: 'codigo',
+                title: "Buscar Vara",
+                initialFilterName: "codigo",
                 pagination: true,
                 fields: [
-                  { name: 'nome', label: 'Nome da Vara', type: 'text' },
+                  { name: "nome", label: "Nome da Vara", type: "text" },
                   {
-                    name: 'codigo',
-                    label: 'Código da Vara',
-                    type: 'text',
-                    mask: '000000000'
-                  }
+                    name: "codigo",
+                    label: "Código da Vara",
+                    type: "text",
+                    mask: "000000000",
+                  },
                 ],
                 columns: [
-                  { header: 'Código', key: 'codigo' },
-                  { header: 'Nome', key: 'nome' }
+                  { header: "Código", key: "codigo" },
+                  { header: "Nome", key: "nome" },
                 ],
                 onSearch: fetchVaras,
-                onSelect: (item, context) => {
+                onSelect: (item, context) =>
                   context.setMultipleValues(
-                    {
-                      codigoDaVara: item.codigo,
-                      nomeDaVara: item.nome
-                    },
-                    true
-                  );
-                }
-              }
+                    { codigoDaVara: item.codigo, nomeDaVara: item.nome },
+                    true,
+                  ),
+              },
             },
             {
-              name: 'nomeDaVara',
-              label: 'Nome da vara',
-              type: 'text',
+              name: "nomeDaVara",
+              label: "Nome da vara",
+              type: "text",
               required: true,
-              readOnly: true
-            }
-          ]
+              readOnly: true,
+            },
+          ],
         },
         {
-          title: 'Informações Processuais',
+          title: "Informações Processuais",
           gridColumns: 3,
           fields: [
             {
-              name: 'numeroUnicoProcessoJudicialCNJ',
-              label: 'Numeração única do processo judicial (CNJ)',
-              type: 'text',
+              name: "numeroUnicoProcessoJudicialCNJ",
+              label: "Numeração única do processo judicial (CNJ)",
+              type: "text",
               required: true,
               readOnly: true,
-              mask: '0000000-00.0000.0.00.0000'
+              mask: "0000000-00.0000.0.00.0000",
             },
             {
-              name: 'numeroOriginarioAnterior',
-              label: 'Número originário anterior (se houver)',
-              type: 'text',
-              mask: '0000000-00.0000.0.00.0000'
+              name: "numeroOriginarioAnterior",
+              label: "Número originário anterior (se houver)",
+              type: "text",
+              mask: "0000000-00.0000.0.00.0000",
             },
             {
-              name: 'houveProcessoDeConhecimento',
-              label: 'Houve processo de conhecimento?',
-              type: 'select',
+              name: "houveProcessoDeConhecimento",
+              label: "Houve processo de conhecimento?",
+              type: "select",
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
-              ]
-            }
-          ]
+                { label: "Sim", value: "sim" },
+                { label: "Não", value: "nao" },
+              ],
+            },
+          ],
         },
         {
-          title: 'Processo de Conhecimento',
+          title: "Processo de Conhecimento",
           highlight: true,
           gridColumns: 2,
-          conditionalRender: (context) => context.data.houveProcessoDeConhecimento === 'sim',
+          conditionalRender: (context) =>
+            context.data.houveProcessoDeConhecimento === "sim",
           fields: [
             {
-              name: 'dataAjuizamentoDoProcessoDeConhecimento',
-              label: 'Data de ajuizamento do processo de conhecimento',
-              type: 'date',
-              required: true
+              name: "dataAjuizamentoDoProcessoDeConhecimento",
+              label: "Data de ajuizamento do processo de conhecimento",
+              type: "date",
+              required: true,
             },
             {
-              name: 'dataCitacaoDoProcessoDeConhecimento',
-              label: 'Data da citação do processo de conhecimento',
-              type: 'date',
-              required: true
+              name: "dataCitacaoDoProcessoDeConhecimento",
+              label: "Data da citação do processo de conhecimento",
+              type: "date",
+              required: true,
             },
             {
-              type: 'select',
-              name: 'dataTransitoJulgadoDoProcessoDeConhecimento',
-              label: 'Data do trânsito em julgado',
+              name: "dataTransitoJulgadoDoProcessoDeConhecimento",
+              label: "Data do trânsito em julgado",
+              type: "select",
               required: true,
               options: [
                 {
-                  label: 'Data do trânsito em julgado da sentença',
-                  value: 'dataTransitoSentenca'
+                  label: "Data do trânsito em julgado da sentença",
+                  value: "dataTransitoSentenca",
                 },
                 {
-                  label: 'Data do trânsito em julgado do acórdão',
-                  value: 'dataTransitoAcordao'
-                }
-              ]
+                  label: "Data do trânsito em julgado do acórdão",
+                  value: "dataTransitoAcordao",
+                },
+              ],
             },
             {
-              type: 'date',
-              name: 'dataTransitoEmJulgadoDaSentenca',
-              label: 'Data do trânsito em julgado da sentença da fase de conhecimento',
+              name: "dataTransitoEmJulgadoDaSentenca",
+              label:
+                "Data do trânsito em julgado da sentença da fase de conhecimento",
+              type: "date",
               required: true,
-              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoSentenca'
+              conditionalRender: (context) =>
+                context.data.dataTransitoJulgadoDoProcessoDeConhecimento ===
+                "dataTransitoSentenca",
             },
             {
-              type: 'date',
-              name: 'dataTransitoEmJulgadoDoAcordao',
-              label: 'Data do trânsito em julgado do acórdão lavrado na fase de conhecimento',
+              name: "dataTransitoEmJulgadoDoAcordao",
+              label:
+                "Data do trânsito em julgado do acórdão lavrado na fase de conhecimento",
+              type: "date",
               required: true,
-              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoAcordao'
-            }
-          ]
+              conditionalRender: (context) =>
+                context.data.dataTransitoJulgadoDoProcessoDeConhecimento ===
+                "dataTransitoAcordao",
+            },
+          ],
         },
         {
           gridColumns: 2,
           fields: [
             {
-              type: 'select',
-              name: 'houveEmbargosOuImpugnacao',
-              label: 'Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?',
+              name: "houveEmbargosOuImpugnacao",
+              label:
+                "Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?",
+              type: "select",
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
-              ]
+                { label: "Sim", value: "sim" },
+                { label: "Não", value: "nao" },
+              ],
             },
             {
-              type: 'date',
-              name: 'dataTransitoEmJulgadoDosEmbargos',
-              label: 'Data do trânsito em julgado dos embargos à execução',
+              name: "dataTransitoEmJulgadoDosEmbargos",
+              label: "Data do trânsito em julgado dos embargos à execução",
+              type: "date",
               required: false,
-              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'sim'
+              conditionalRender: (context) =>
+                context.data.houveEmbargosOuImpugnacao === "sim",
             },
             {
-              type: 'date',
-              name: 'dataDecursoDePrazoDosEmbargos',
-              label: 'Data do decurso de prazo para apresentação dos embargos à execução',
+              name: "dataDecursoDePrazoDosEmbargos",
+              label:
+                "Data do decurso de prazo para apresentação dos embargos à execução",
+              type: "date",
               required: false,
-              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'nao'
-            }
-          ]
-        }
+              conditionalRender: (context) =>
+                context.data.houveEmbargosOuImpugnacao === "nao",
+            },
+          ],
+        },
+        {
+          title: "Informações sobre a Requisição",
+          gridColumns: 1,
+          fields: [
+            {
+              name: "naturezaCredito",
+              label: "Natureza do crédito",
+              type: "select",
+              required: true,
+              options: [
+                { label: "Alimentar", value: "alimentar" },
+                { label: "Comum", value: "comum" },
+              ],
+            },
+          ],
+        },
       ],
       actions: [
-        { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
+        { label: "Voltar", actionType: "prev", variant: "outlined" },
         {
-          label: 'Confirmar e Enviar',
-          actionType: 'submit',
+          label: "Confirmar e Enviar",
+          actionType: "submit",
           onClick: async () => {
-            await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS));
-          }
-        }
-      ]
-    }
-  ]
+            await new Promise((resolve) =>
+              setTimeout(resolve, MOCK_SUBMIT_DELAY_MS),
+            );
+          },
+        },
+      ],
+    },
+  ],
 };
