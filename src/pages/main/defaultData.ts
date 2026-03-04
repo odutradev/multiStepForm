@@ -1,4 +1,4 @@
-import { fetchUsers, stepOneAutoFillMock } from './mock';
+import { fetchUsers, fetchVaras, stepOneAutoFillMock } from './mock';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -80,12 +80,7 @@ export const mockFormConfig: FormConfig = {
                 pagination: true,
                 fields: [
                   { name: 'nome', label: 'Nome do Magistrado', type: 'text' },
-                  {
-                    name: 'matricula',
-                    label: 'Matrícula',
-                    type: 'text',
-                    mask: 'a-0000000'
-                  }
+                  { name: 'matricula', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
                 ],
                 columns: [
                   { header: 'Matrícula', key: 'matricula' },
@@ -133,12 +128,7 @@ export const mockFormConfig: FormConfig = {
                 pagination: true,
                 fields: [
                   { name: 'nome', label: 'Nome do Gerente', type: 'text' },
-                  {
-                    name: 'matricula',
-                    label: 'Matrícula',
-                    type: 'text',
-                    mask: 'S0000000'
-                  }
+                  { name: 'matricula', label: 'Matrícula', type: 'text', mask: 'S0000000' }
                 ],
                 columns: [
                   { header: 'Matrícula', key: 'matricula' },
@@ -175,7 +165,30 @@ export const mockFormConfig: FormConfig = {
               type: 'text',
               required: true,
               icon: 'Search',
-              mask: '000000000'
+              mask: '000000000',
+              searchConfig: {
+                title: 'Buscar Vara',
+                initialFilterName: 'codigo',
+                pagination: true,
+                fields: [
+                  { name: 'nome', label: 'Nome da Vara', type: 'text' },
+                  { name: 'codigo', label: 'Código da Vara', type: 'text', mask: '000000000' }
+                ],
+                columns: [
+                  { header: 'Código', key: 'codigo' },
+                  { header: 'Nome', key: 'nome' }
+                ],
+                onSearch: fetchVaras,
+                onSelect: (item, context) => {
+                  context.setMultipleValues(
+                    {
+                      codigoDaVara: item.codigo,
+                      nomeDaVara: item.nome
+                    },
+                    true
+                  );
+                }
+              }
             },
             {
               name: 'nomeDaVara',

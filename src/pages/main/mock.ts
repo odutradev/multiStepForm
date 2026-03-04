@@ -30,20 +30,37 @@ export const usersMock = [
   { matricula: 'S9876543', nome: 'João Guimarães Rosa' }
 ];
 
+export const varasMock = [
+  { codigo: '100240412', nome: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte' },
+  { codigo: '100240413', nome: '2ª Vara Cível da Comarca de São Paulo' },
+  { codigo: '100240414', nome: '3ª Vara Criminal da Comarca de Rio de Janeiro' },
+  { codigo: '100240415', nome: 'Vara Única da Comarca de Interiorzinho' },
+  { codigo: '100240416', nome: 'Juizado Especial Cível da Comarca de Curitiba' },
+  { codigo: '100240417', nome: '4ª Vara de Família e Sucessões de Porto Alegre' },
+  { codigo: '100240418', nome: '1ª Vara do Trabalho de Manaus' },
+  { codigo: '100240419', nome: 'Juizado Especial Federal de Brasília' }
+];
+
 export const stepOneAutoFillMock = {
-  matriculaGerenteDaSecretaria: 'S9876543',
   numeroUnicoProcessoJudicialCNJ: '00185037520118130251',
   nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
+  matriculaGerenteDaSecretaria: 'S9876543',
   nomeGerenteDaSecretaria: 'João Guimarães Rosa',
   codigoDaVara: '100240412'
 };
 
 const MOCK_DELAY_MS = 800;
 
-
 export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
   await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
   const searchName = String(filters.nome || '').toLowerCase();
   const searchMatricula = String(filters.matricula || '').toLowerCase();
   return usersMock.filter((item) => item.nome.toLowerCase().includes(searchName) && item.matricula.toLowerCase().includes(searchMatricula));
+};
+
+export const fetchVaras = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {
+  await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
+  const searchNome = String(filters.nome || '').toLowerCase();
+  const searchCodigo = String(filters.codigo || '').toLowerCase();
+  return varasMock.filter((item) => item.nome.toLowerCase().includes(searchNome) && item.codigo.toLowerCase().includes(searchCodigo));
 };
