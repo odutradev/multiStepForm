@@ -32,7 +32,7 @@ export const usersMock = [
 
 export const stepOneAutoFillMock = {
   matriculaGerenteDaSecretaria: 'S9876543',
-  numeroUnicoProcessoJudicialCNJ: '0018503-75.2011.8.13.0251',
+  numeroUnicoProcessoJudicialCNJ: '00185037520118130251',
   nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
   nomeGerenteDaSecretaria: 'João Guimarães Rosa',
   codigoDaVara: '100240412'

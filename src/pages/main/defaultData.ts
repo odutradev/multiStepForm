@@ -20,8 +20,8 @@ export const mockFormConfig: FormConfig = {
           mask: '0000000-00.0000.0.00.0000',
           validation: {
             pattern: '^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$',
-            message: 'Número do processo inválido',
-          },
+            message: 'Número do processo inválido'
+          }
         },
         {
           name: 'tipoJustica',
@@ -31,14 +31,14 @@ export const mockFormConfig: FormConfig = {
           options: [
             {
               label: 'Justiça Comum 1ª Instância',
-              value: 'JUSTICA_COMUM_1_INSTANCIA',
+              value: 'JUSTICA_COMUM_1_INSTANCIA'
             },
             {
               label: 'Justiça Comum 2ª Instância',
-              value: 'JUSTICA_COMUM_2_INSTANCIA',
-            },
-          ],
-        },
+              value: 'JUSTICA_COMUM_2_INSTANCIA'
+            }
+          ]
+        }
       ],
       actions: [
         {
@@ -47,9 +47,9 @@ export const mockFormConfig: FormConfig = {
           onClick: async (context) => {
             await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
             context.setMultipleValues(stepOneAutoFillMock, true);
-          },
-        },
-      ],
+          }
+        }
+      ]
     },
     {
       id: 'step-2',
@@ -59,7 +59,7 @@ export const mockFormConfig: FormConfig = {
         {
           name: 'subtitleMagistrado',
           label: 'Magistrado Responsável',
-          type: 'subtitle',
+          type: 'subtitle'
         },
         {
           name: 'matriculaMagistrado',
@@ -70,7 +70,7 @@ export const mockFormConfig: FormConfig = {
           icon: 'Search',
           validation: {
             pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida',
+            message: 'Matrícula inválida'
           },
           searchConfig: {
             title: 'Buscar Magistrado',
@@ -82,34 +82,37 @@ export const mockFormConfig: FormConfig = {
                 name: 'matricula',
                 label: 'Matrícula',
                 type: 'text',
-                mask: 'a-0000000',
-              },
+                mask: 'a-0000000'
+              }
             ],
             columns: [
               { header: 'Matrícula', key: 'matricula' },
-              { header: 'Nome', key: 'nome' },
+              { header: 'Nome', key: 'nome' }
             ],
             onSearch: fetchUsers,
             onSelect: (item, context) => {
-              context.setMultipleValues({
-                matriculaMagistrado: item.matricula,
-                nomeMagistrado: item.nome
-              }, true);
-            },
-          },
+              context.setMultipleValues(
+                {
+                  matriculaMagistrado: item.matricula,
+                  nomeMagistrado: item.nome
+                },
+                true
+              );
+            }
+          }
         },
         {
           name: 'nomeMagistrado',
           label: 'Nome do magistrado',
           type: 'text',
           required: true,
-          readOnly: true,
+          readOnly: true
         },
         {
           name: 'subtitleSelecioneGerente',
           label: 'Selecione o Gerente da Secretaria',
           type: 'subtitle',
-          colSpan: 2,
+          colSpan: 2
         },
         {
           name: 'matriculaGerenteDaSecretaria',
@@ -120,7 +123,7 @@ export const mockFormConfig: FormConfig = {
           icon: 'Search',
           validation: {
             pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida',
+            message: 'Matrícula inválida'
           },
           searchConfig: {
             title: 'Buscar Gerente da Secretaria',
@@ -132,21 +135,24 @@ export const mockFormConfig: FormConfig = {
                 name: 'matricula',
                 label: 'Matrícula',
                 type: 'text',
-                mask: 'S0000000',
-              },
+                mask: 'S0000000'
+              }
             ],
             columns: [
               { header: 'Matrícula', key: 'matricula' },
-              { header: 'Nome', key: 'nome' },
+              { header: 'Nome', key: 'nome' }
             ],
             onSearch: fetchUsers,
             onSelect: (item, context) => {
-              context.setMultipleValues({
-                matriculaGerenteDaSecretaria: item.matricula,
-                nomeGerenteDaSecretaria: item.nome
-              }, true);
-            },
-          },
+              context.setMultipleValues(
+                {
+                  matriculaGerenteDaSecretaria: item.matricula,
+                  nomeGerenteDaSecretaria: item.nome
+                },
+                true
+              );
+            }
+          }
         },
         {
           name: 'nomeGerenteDaSecretaria',
@@ -154,12 +160,12 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           icon: 'Search',
           readOnly: true,
-          required: true,
+          required: true
         },
         {
           name: 'dadosDaRequisicao',
           label: 'Dados da Requisição',
-          type: 'subtitle',
+          type: 'subtitle'
         },
         {
           name: 'codigoDaVara',
@@ -167,7 +173,7 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           required: true,
           icon: 'Search',
-          mask: '9*',
+          mask: '000000000'
         },
         {
           name: 'nomeDaVara',
@@ -175,11 +181,12 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           required: true,
           icon: 'Search',
+          readOnly: true
         },
         {
           name: 'informacoesProcessuais',
           label: 'Informações Processuais',
-          type: 'subtitle',
+          type: 'subtitle'
         },
         {
           name: 'numeroUnicoProcessoJudicialCNJ',
@@ -187,21 +194,21 @@ export const mockFormConfig: FormConfig = {
           type: 'text',
           required: true,
           readOnly: true,
-          mask: '0000000-00.0000.0.00.0000',
+          mask: '0000000-00.0000.0.00.0000'
         },
         {
           name: 'numeroOriginarioAnterior',
           label: 'Número originário anterior (se houver)',
           type: 'text',
-          mask: '0000000-00.0000.0.00.0000',
+          mask: '0000000-00.0000.0.00.0000'
         },
         {
           name: 'processoConhecimento',
           label: 'Houve processo de conhecimento?',
           type: 'select',
           required: true,
-          options: [{ label: 'Não', value: 'nao' }],
-        },
+          options: [{ label: 'Não', value: 'nao' }]
+        }
       ],
       actions: [
         { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
@@ -210,9 +217,9 @@ export const mockFormConfig: FormConfig = {
           actionType: 'submit',
           onClick: async () => {
             await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS));
-          },
-        },
-      ],
-    },
-  ],
+          }
+        }
+      ]
+    }
+  ]
 };

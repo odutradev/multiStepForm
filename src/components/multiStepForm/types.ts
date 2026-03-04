@@ -37,6 +37,7 @@ export interface SearchConfig {
 export interface FormField {
   type: 'text' | 'number' | 'email' | 'select' | 'subtitle';
   searchConfig?: SearchConfig;
+  mask?: string | RegExp;
   validation?: FieldValidation;
   options?: FieldOption[];
   disabled?: boolean;
@@ -46,7 +47,6 @@ export interface FormField {
   label: string;
   icon?: string;
   name: string;
-  mask?: string;
 }
 
 export interface FormAction {
