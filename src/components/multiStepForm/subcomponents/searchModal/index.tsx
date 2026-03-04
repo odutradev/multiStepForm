@@ -1,9 +1,11 @@
-import { Dialog, DialogTitle, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography, TablePagination } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions, Button, TextField, CircularProgress, TablePagination } from '@mui/material';
 import { useState, useCallback, forwardRef, useEffect, useRef } from 'react';
 import { Search } from '@mui/icons-material';
 import { IMaskInput } from 'react-imask';
 
-import { TableContainerWrapper, FiltersContainer, ContentContainer, ModalContainer, StyledTableRow, SearchButton, CenterContent, EmptyIcon } from './styles';
+import { FiltersContainer, ContentContainer, ModalContainer, SearchButton } from './styles';
+import TableView from './components/tableView';
+import TreeView from './components/treeView';
 
 import type { ChangeEvent, ElementType, KeyboardEvent } from 'react';
 import type { SearchModalProps, MaskedInputProps } from './types';
@@ -69,6 +71,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
   }, [initialValue, config.initialFilterName, handleSearch]);
 
   const displayedResults = config.pagination ? results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : results;
+  const isTreeView = config.viewMode === 'tree' && config.treeConfig;
 
   return (
     <Dialog open maxWidth="lg" fullWidth onClose={onClose}>
@@ -106,54 +109,22 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
             </SearchButton>
           </FiltersContainer>
 
-          <TableContainerWrapper>
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  {config.columns.map((col) => (
-                    <TableCell key={col.key}>{col.header}</TableCell>
-                  ))}
-                  <TableCell align="right">Ação</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {isLoading ? (
-                  <StyledTableRow>
-                    <TableCell colSpan={config.columns.length + 1}>
-                      <CenterContent>
-                        <CircularProgress size={40} />
-                        <Typography variant="body1">Buscando resultados...</Typography>
-                      </CenterContent>
-                    </TableCell>
-                  </StyledTableRow>
-                ) : displayedResults.length > 0 ? (
-                  displayedResults.map((row, index) => (
-                    <StyledTableRow key={index} hover>
-                      {config.columns.map((col) => (
-                        <TableCell key={col.key}>{String(row[col.key] ?? '-')}</TableCell>
-                      ))}
-                      <TableCell align="right">
-                        <Button size="small" variant="outlined" onClick={() => handleSelect(row)}>
-                          Selecionar
-                        </Button>
-                      </TableCell>
-                    </StyledTableRow>
-                  ))
-                ) : (
-                  <StyledTableRow>
-                    <TableCell colSpan={config.columns.length + 1}>
-                      <CenterContent>
-                        <EmptyIcon />
-                        <Typography variant="body1">Nenhum resultado encontrado.</Typography>
-                      </CenterContent>
-                    </TableCell>
-                  </StyledTableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainerWrapper>
-          
-          {config.pagination && results.length > 0 && (
+          {isTreeView ? (
+            <TreeView
+              results={results}
+              config={config.treeConfig!}
+              onSelect={handleSelect}
+            />
+          ) : (
+            <TableView
+              results={displayedResults}
+              columns={config.columns}
+              isLoading={isLoading}
+              onSelect={handleSelect}
+            />
+          )}
+
+          {config.pagination && !isTreeView && results.length > 0 && (
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"

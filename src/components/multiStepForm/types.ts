@@ -24,11 +24,19 @@ export interface SearchResultColumn {
   key: string;
 }
 
+export interface TreeConfig {
+  childrenKey: string;
+  valueKey: string;
+  labelKey: string;
+}
+
 export interface SearchConfig {
   onSearch: (filters: Record<string, unknown>) => Promise<Record<string, unknown>[]>;
   onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
   columns: SearchResultColumn[];
+  viewMode?: 'table' | 'tree';
   initialFilterName?: string;
+  treeConfig?: TreeConfig;
   pagination?: boolean;
   fields: FormField[];
   title: string;

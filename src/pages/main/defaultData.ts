@@ -1,4 +1,4 @@
-import { stepOneAutoFillMock, fetchUsers, fetchVaras } from "./mock";
+import { stepOneAutoFillMock, fetchAssuntos, fetchUsers, fetchVaras } from "./mock";
 
 import type { FormConfig } from "@components/multiStepForm/types";
 
@@ -418,17 +418,20 @@ export const mockFormConfig: FormConfig = {
               },
               searchConfig: {
                 title: "Buscar Assunto",
+                viewMode: "tree",
+                treeConfig: {
+                  labelKey: "descricao",
+                  valueKey: "codigo",
+                  childrenKey: "filhos"
+                },
                 initialFilterName: "codigo",
-                pagination: true,
+                pagination: false,
                 fields: [
                   { name: "codigo", label: "Código do Assunto", type: "text" },
                   { name: "descricao", label: "Descrição", type: "text" },
                 ],
-                columns: [
-                  { header: "Código", key: "codigo" },
-                  { header: "Descrição", key: "descricao" },
-                ],
-                onSearch: async () => [],
+                columns: [],
+                onSearch: fetchAssuntos,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {

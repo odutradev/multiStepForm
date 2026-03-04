@@ -41,6 +41,36 @@ export const varasMock = [
   { codigo: '100240419', nome: 'Juizado Especial Federal de Brasília' }
 ];
 
+export const assuntosTreeMock = [
+  {
+    codigo: '14',
+    descricao: 'DIREITO TRIBUTÁRIO',
+    filhos: [
+      {
+        codigo: '5913',
+        descricao: 'Limitações ao Poder de Tributar',
+        filhos: [
+          {
+            codigo: '5914',
+            descricao: 'Imunidade',
+            filhos: [
+              { codigo: '10527', descricao: 'Livros / Jornais / Periódicos' },
+              { codigo: '10528', descricao: 'Entidades Sem Fins Lucrativos' },
+              { codigo: '10529', descricao: 'Partidos Políticos' },
+              { codigo: '10530', descricao: 'Imunidade Recíproca' }
+            ]
+          },
+          { codigo: '5915', descricao: 'Isenção' },
+          { codigo: '10540', descricao: 'Competência Tributária' }
+        ]
+      },
+      { codigo: '5916', descricao: 'Impostos' },
+      { codigo: '5956', descricao: 'Taxas' },
+      { codigo: '5973', descricao: 'Empréstimos Compulsórios' }
+    ]
+  }
+];
+
 export const stepOneAutoFillMock = {
   numeroUnicoProcessoJudicialCNJ: '12345678912345678912',
   nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
@@ -63,4 +93,9 @@ export const fetchVaras = async (filters: Record<string, unknown>): Promise<Reco
   const searchNome = String(filters.nome || '').toLowerCase();
   const searchCodigo = String(filters.codigo || '').toLowerCase();
   return varasMock.filter((item) => item.nome.toLowerCase().includes(searchNome) && item.codigo.toLowerCase().includes(searchCodigo));
+};
+
+export const fetchAssuntos = async (): Promise<Record<string, unknown>[]> => {
+  await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
+  return assuntosTreeMock;
 };
