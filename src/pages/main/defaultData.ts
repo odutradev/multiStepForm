@@ -1,4 +1,4 @@
-import { fetchUsers, fetchVaras, stepOneAutoFillMock } from './mock';
+import { stepOneAutoFillMock, fetchUsers, fetchVaras } from './mock';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -233,7 +233,7 @@ export const mockFormConfig: FormConfig = {
               mask: '0000000-00.0000.0.00.0000'
             },
             {
-              name: 'processoConhecimento',
+              name: 'houveProcessoDeConhecimento',
               label: 'Houve processo de conhecimento?',
               type: 'select',
               required: true,
@@ -248,7 +248,7 @@ export const mockFormConfig: FormConfig = {
           title: 'Processo de Conhecimento',
           highlight: true,
           gridColumns: 2,
-          conditionalRender: (context) => context.data.processoConhecimento === 'sim',
+          conditionalRender: (context) => context.data.houveProcessoDeConhecimento === 'sim',
           fields: [
             {
               name: 'dataAjuizamentoDoProcessoDeConhecimento',
@@ -280,14 +280,14 @@ export const mockFormConfig: FormConfig = {
             },
             {
               type: 'date',
-              name: 'dataTransitoSentencaText',
+              name: 'dataTransitoEmJulgadoDaSentenca',
               label: 'Data do trânsito em julgado da sentença da fase de conhecimento',
               required: true,
               conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoSentenca'
             },
             {
               type: 'date',
-              name: 'dataTransitoAcordaoText',
+              name: 'dataTransitoEmJulgadoDoAcordao',
               label: 'Data do trânsito em julgado do acórdão lavrado na fase de conhecimento',
               required: true,
               conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoAcordao'
@@ -299,7 +299,7 @@ export const mockFormConfig: FormConfig = {
           fields: [
             {
               type: 'select',
-              name: 'impugnacaoCumpSentenca',
+              name: 'houveEmbargosOuImpugnacao',
               label: 'Houve embargos à execução ou impugnação ao cálculo no cumprimento de sentença?',
               required: true,
               options: [
@@ -309,17 +309,17 @@ export const mockFormConfig: FormConfig = {
             },
             {
               type: 'date',
-              name: 'dataDecisaoImpugnacaoText',
+              name: 'dataTransitoEmJulgadoDosEmbargos',
               label: 'Data do trânsito em julgado dos embargos à execução',
               required: false,
-              conditionalRender: (context) => context.data.impugnacaoCumpSentenca === 'sim'
+              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'sim'
             },
             {
               type: 'date',
-              name: 'dataDecursoImpugnacaoText',
+              name: 'dataDecursoDePrazoDosEmbargos',
               label: 'Data do decurso de prazo para apresentação dos embargos à execução',
               required: false,
-              conditionalRender: (context) => context.data.impugnacaoCumpSentenca === 'nao'
+              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'nao'
             }
           ]
         }
