@@ -3,6 +3,7 @@ import type { TreeConfig } from '../../../../types';
 export interface TreeViewProps {
   onSelect: (item: Record<string, unknown>) => void;
   results: Record<string, unknown>[];
+  isLoading: boolean;
   config: TreeConfig;
 }
 

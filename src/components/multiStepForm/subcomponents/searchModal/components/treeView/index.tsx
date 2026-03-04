@@ -1,5 +1,5 @@
+import { Collapse, Checkbox, IconButton, Box, CircularProgress, Typography } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowRight } from '@mui/icons-material';
-import { Collapse, Checkbox, IconButton, Box } from '@mui/material';
 import { useState, useCallback } from 'react';
 
 import { TreeContainer, NodeContainer, NodeText, Spacer, CenterContent, EmptyIcon, EmptyText } from './styles';
@@ -51,7 +51,18 @@ const TreeNode = ({ item, config, level = 0, onSelect }: TreeNodeProps) => {
   );
 };
 
-const TreeView = ({ results, config, onSelect }: TreeViewProps) => {
+const TreeView = ({ results, config, isLoading, onSelect }: TreeViewProps) => {
+  if (isLoading) {
+    return (
+      <TreeContainer>
+        <CenterContent>
+          <CircularProgress size={40} />
+          <Typography variant="body1">Buscando resultados...</Typography>
+        </CenterContent>
+      </TreeContainer>
+    );
+  }
+
   if (!results?.length) {
     return (
       <TreeContainer>

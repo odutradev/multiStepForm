@@ -113,6 +113,7 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
             <TreeView
               results={results}
               config={config.treeConfig!}
+              isLoading={isLoading}
               onSelect={handleSelect}
             />
           ) : (
