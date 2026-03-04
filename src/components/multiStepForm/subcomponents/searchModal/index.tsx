@@ -1,13 +1,13 @@
 import { Dialog, DialogTitle, DialogActions, Button, TextField, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Typography, TablePagination } from '@mui/material';
-import { useState, useCallback, forwardRef, useEffect } from 'react';
+import { useState, useCallback, forwardRef, useEffect, useRef } from 'react';
 import { Search } from '@mui/icons-material';
 import { IMaskInput } from 'react-imask';
 
 import { TableContainerWrapper, FiltersContainer, ContentContainer, ModalContainer, StyledTableRow, SearchButton, CenterContent, EmptyIcon } from './styles';
 
+import type { ChangeEvent, ElementType, KeyboardEvent } from 'react';
 import type { SearchModalProps, MaskedInputProps } from './types';
 import type { InputBaseComponentProps } from '@mui/material';
-import type { ChangeEvent, ElementType } from 'react';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
   <IMaskInput
@@ -21,6 +21,7 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
 ));
 
 const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProps) => {
+  const initialSearchDone = useRef(false);
   const [filters, setFilters] = useState<Record<string, unknown>>(() => {
     if (initialValue && config.initialFilterName) return { [config.initialFilterName]: initialValue };
     return {};
@@ -61,7 +62,10 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
   }, []);
 
   useEffect(() => {
-    if (initialValue && config.initialFilterName) handleSearch({ [config.initialFilterName]: initialValue });
+    if (initialValue && config.initialFilterName && !initialSearchDone.current) {
+      initialSearchDone.current = true;
+      handleSearch({ [config.initialFilterName]: initialValue });
+    }
   }, [initialValue, config.initialFilterName, handleSearch]);
 
   const displayedResults = config.pagination ? results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : results;
@@ -82,6 +86,12 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
                 fullWidth
                 disabled={isLoading}
                 onChange={handleFilterChange}
+                onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearch();
+                  }
+                }}
                 InputProps={{
                   ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> })
                 }}
