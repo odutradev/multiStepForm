@@ -33,21 +33,22 @@ export interface TreeConfig {
 export interface SearchConfig {
   onSearch: (filters: Record<string, unknown>) => Promise<Record<string, unknown>[]>;
   onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
+  initialFilterName?: string;
   columns: SearchResultColumn[];
   viewMode?: 'table' | 'tree';
-  initialFilterName?: string;
-  treeConfig?: TreeConfig;
   pagination?: boolean;
+  treeConfig?: TreeConfig;
   fields: FormField[];
   title: string;
 }
 
 export interface FormField {
   type: 'text' | 'number' | 'email' | 'select' | 'info' | 'date';
+  onChange?: (value: unknown, context: ActionContext) => void;
   conditionalRender?: (context: ActionContext) => boolean;
   searchConfig?: SearchConfig;
-  mask?: string | RegExp;
   validation?: FieldValidation;
+  mask?: string | RegExp;
   options?: FieldOption[];
   disabled?: boolean;
   required?: boolean;
@@ -67,8 +68,8 @@ export interface FormGroup {
 }
 
 export interface FormAction {
-  actionType: 'next' | 'prev' | 'submit' | 'custom';
   onClick?: (context: ActionContext) => Promise<boolean | void>;
+  actionType: 'next' | 'prev' | 'submit' | 'custom';
   variant?: 'contained' | 'outlined' | 'text';
   label: string;
 }

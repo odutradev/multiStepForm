@@ -677,6 +677,42 @@ export const mockFormConfig: FormConfig = {
               colSpan: 1
             }
           ]
+        },
+        {
+          title: 'Entidade Devedora / Ente Devedor',
+          gridColumns: 2,
+          fields: [
+            {
+              type: 'select',
+              name: 'devedor',
+              label: 'Entidade Devedora / Ente Devedor',
+              options: [
+                { label: 'JD COMARCA EXTREMA', value: 'JD COMARCA EXTREMA' },
+                { label: 'ESTADO DE MINAS GERAIS', value: 'ESTADO DE MINAS GERAIS' }
+              ],
+              required: false,
+              disabled: false,
+              onChange: (value, context) => {
+                if (value === 'ESTADO DE MINAS GERAIS') {
+                  context.setMultipleValues({ cnpj: '18.715.615/0001-60' });
+                } else {
+                  context.setMultipleValues({ cnpj: '' });
+                }
+              }
+            },
+            {
+              type: 'text',
+              name: 'cnpj',
+              label: 'CNPJ',
+              mask: '00.000.000/0000-00',
+              readOnly: true,
+              conditionalRender: ({ data }) => !!data.devedor,
+              validation: {
+                pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$',
+                message: 'CNPJ inválido'
+              }
+            }
+          ]
         }
       ],
       actions: [

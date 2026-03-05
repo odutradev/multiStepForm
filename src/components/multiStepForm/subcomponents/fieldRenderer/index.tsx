@@ -1,7 +1,7 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Controller } from 'react-hook-form';
 import * as MuiIcons from '@mui/icons-material';
+import { Controller } from 'react-hook-form';
 import { forwardRef, useState } from 'react';
 import { IMaskInput } from 'react-imask';
 import dayjs from 'dayjs';
@@ -9,9 +9,9 @@ import dayjs from 'dayjs';
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
 import SearchModal from '../searchModal';
 
-import type { InputBaseComponentProps } from '@mui/material';
 import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
 import type { FieldRendererProps, MaskedInputProps } from './types';
+import type { InputBaseComponentProps } from '@mui/material';
 import type { FormField } from '../../types';
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
@@ -55,11 +55,16 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                           pattern: field.validation ? { value: new RegExp(field.validation.pattern), message: field.validation.message } : undefined
                         }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => {
+                          const handleFieldChange = (newValue: unknown) => {
+                            onChange(newValue);
+                            if (field.onChange) field.onChange(newValue, context);
+                          };
+
                           if (field.type === 'select') {
                             return (
                               <FormControl fullWidth required={field.required} error={!!error} disabled={field.disabled}>
                                 <InputLabel>{field.label}</InputLabel>
-                                <Select value={value || ''} label={field.label} onChange={onChange}>
+                                <Select value={value || ''} label={field.label} onChange={(e) => handleFieldChange(e.target.value)}>
                                   {field.options?.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                       {option.label}
@@ -78,7 +83,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                 disabled={field.disabled}
                                 readOnly={field.readOnly}
                                 value={value ? dayjs(value) : null}
-                                onChange={(newValue) => onChange(newValue ? newValue.format('YYYY-MM-DD') : null)}
+                                onChange={(newValue) => handleFieldChange(newValue ? newValue.format('YYYY-MM-DD') : null)}
                                 slotProps={{
                                   textField: {
                                     fullWidth: true,
@@ -101,7 +106,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               required={field.required}
                               disabled={field.disabled}
                               value={value || ''}
-                              onChange={onChange}
+                              onChange={(e) => handleFieldChange(e.target.value)}
                               error={!!error}
                               helperText={helperTextContent}
                               fullWidth
