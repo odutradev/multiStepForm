@@ -589,6 +589,55 @@ export const mockFormConfig: FormConfig = {
           ]
         },
         {
+          title: 'Honorários Sucumbenciais',
+          highlight: true,
+          gridColumns: 3,
+          conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Honorários Sucumbenciais',
+          fields: [
+            {
+              type: 'select',
+              label: 'O crédito foi objeto de cessão?',
+              name: 'creditoCessao',
+              required: true,
+              options: [
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
+              ],
+              validation: {
+                pattern: '^(Sim|Não)$',
+                message: 'Campo obrigatório'
+              },
+              colSpan: 1
+            },
+            {
+              type: 'select',
+              label: 'O crédito foi objeto de penhora?',
+              name: 'existePenhora',
+              required: true,
+              options: [
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
+              ],
+              validation: {
+                pattern: '^(Sim|Não)$',
+                message: 'Campo obrigatório'
+              },
+              colSpan: 1
+            },
+            {
+              type: 'select',
+              label: 'Os honorários sucumbenciais foram objeto de sucessão?',
+              name: 'isObjetoSucessao',
+              required: false,
+              options: [
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
+              ],
+              colSpan: 1
+            }
+          ]
+        },
+        {
           title: 'Honorários Periciais',
           highlight: true,
           gridColumns: 3,
