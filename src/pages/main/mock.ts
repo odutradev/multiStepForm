@@ -201,11 +201,11 @@ export const subjectsTreeMock = [
 ];
 
 export const stepOneAutoFillMock = {
-  numeroUnicoProcessoJudicialCNJ: '12345678912345678912',
-  nomeDaVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
-  matriculaGerenteDaSecretaria: 'S-1234567',
-  nomeGerenteDaSecretaria: 'João Guimarães Rosa',
-  codigoDaVara: '123456789'
+  numeroUnicoProcessoJudicialCnj: '12345678912345678912',
+  nomeVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
+  matriculaGerenteSecretaria: 'S-1234567',
+  nomeGerenteSecretaria: 'João Guimarães Rosa',
+  codigoVara: '123456789'
 };
 
 export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {

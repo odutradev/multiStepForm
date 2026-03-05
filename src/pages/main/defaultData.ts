@@ -1,4 +1,4 @@
-import { stepOneAutoFillMock, fetchSubjects, fetchCourts, fetchUsers } from './mock';
+import { fetchCourts, fetchSubjects, fetchUsers, stepOneAutoFillMock } from './mock';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -26,18 +26,18 @@ export const mockFormConfig: FormConfig = {
               }
             },
             {
-              name: 'tipoJustica',
+              name: 'instanciaJustica',
               label: 'Instância',
               type: 'select',
               required: true,
               options: [
                 {
                   label: 'Justiça Comum 1ª Instância',
-                  value: 'JUSTICA_COMUM_1_INSTANCIA'
+                  value: 'Justiça Comum 1ª Instância'
                 },
                 {
                   label: 'Justiça Comum 2ª Instância',
-                  value: 'JUSTICA_COMUM_2_INSTANCIA'
+                  value: 'Justiça Comum 2ª Instância'
                 }
               ]
             }
@@ -116,7 +116,7 @@ export const mockFormConfig: FormConfig = {
           gridColumns: 2,
           fields: [
             {
-              name: 'matriculaGerenteDaSecretaria',
+              name: 'matriculaGerenteSecretaria',
               label: 'Matrícula do gerente da secretaria',
               type: 'text',
               required: true,
@@ -147,15 +147,15 @@ export const mockFormConfig: FormConfig = {
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
-                      matriculaGerenteDaSecretaria: item.registration,
-                      nomeGerenteDaSecretaria: item.name
+                      matriculaGerenteSecretaria: item.registration,
+                      nomeGerenteSecretaria: item.name
                     },
                     true
                   )
               }
             },
             {
-              name: 'nomeGerenteDaSecretaria',
+              name: 'nomeGerenteSecretaria',
               label: 'Nome do gerente da secretaria',
               type: 'text',
               readOnly: true,
@@ -168,7 +168,7 @@ export const mockFormConfig: FormConfig = {
           gridColumns: 2,
           fields: [
             {
-              name: 'codigoDaVara',
+              name: 'codigoVara',
               label: 'Código da vara',
               type: 'text',
               required: true,
@@ -198,13 +198,13 @@ export const mockFormConfig: FormConfig = {
                 onSearch: fetchCourts,
                 onSelect: (item, context) =>
                   context.setMultipleValues(
-                    { codigoDaVara: item.code, nomeDaVara: item.name },
+                    { codigoVara: item.code, nomeVara: item.name },
                     true
                   )
               }
             },
             {
-              name: 'nomeDaVara',
+              name: 'nomeVara',
               label: 'Nome da vara',
               type: 'text',
               required: true,
@@ -217,7 +217,7 @@ export const mockFormConfig: FormConfig = {
           gridColumns: 3,
           fields: [
             {
-              name: 'numeroUnicoProcessoJudicialCNJ',
+              name: 'numeroUnicoProcessoJudicialCnj',
               label: 'Numeração única do processo judicial (CNJ)',
               type: 'text',
               required: true,
@@ -231,13 +231,13 @@ export const mockFormConfig: FormConfig = {
               mask: '0000000-00.0000.0.00.0000'
             },
             {
-              name: 'houveProcessoDeConhecimento',
+              name: 'houveProcessoConhecimento',
               label: 'Houve processo de conhecimento?',
               type: 'select',
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ]
             }
           ]
@@ -246,49 +246,49 @@ export const mockFormConfig: FormConfig = {
           title: 'Processo de Conhecimento',
           highlight: true,
           gridColumns: 2,
-          conditionalRender: (context) => context.data.houveProcessoDeConhecimento === 'sim',
+          conditionalRender: ({ data }) => data.houveProcessoConhecimento === 'Sim',
           fields: [
             {
-              name: 'dataAjuizamentoDoProcessoDeConhecimento',
+              name: 'dataAjuizamentoProcessoConhecimento',
               label: 'Data de ajuizamento do processo de conhecimento',
               type: 'date',
               required: true
             },
             {
-              name: 'dataCitacaoDoProcessoDeConhecimento',
+              name: 'dataCitacaoProcessoConhecimento',
               label: 'Data da citação do processo de conhecimento',
               type: 'date',
               required: true
             },
             {
-              name: 'dataTransitoJulgadoDoProcessoDeConhecimento',
+              name: 'tipoDataTransitoJulgado',
               label: 'Data do trânsito em julgado',
               type: 'select',
               required: true,
               options: [
                 {
                   label: 'Data do trânsito em julgado da sentença',
-                  value: 'dataTransitoSentenca'
+                  value: 'Sentença'
                 },
                 {
                   label: 'Data do trânsito em julgado do acórdão',
-                  value: 'dataTransitoAcordao'
+                  value: 'Acórdão'
                 }
               ]
             },
             {
-              name: 'dataTransitoEmJulgadoDaSentenca',
+              name: 'dataTransitoJulgadoSentenca',
               label: 'Data do trânsito em julgado da sentença da fase de conhecimento',
               type: 'date',
               required: true,
-              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoSentenca'
+              conditionalRender: ({ data }) => data.tipoDataTransitoJulgado === 'Sentença'
             },
             {
-              name: 'dataTransitoEmJulgadoDoAcordao',
+              name: 'dataTransitoJulgadoAcordao',
               label: 'Data do trânsito em julgado do acórdão lavrado na fase de conhecimento',
               type: 'date',
               required: true,
-              conditionalRender: (context) => context.data.dataTransitoJulgadoDoProcessoDeConhecimento === 'dataTransitoAcordao'
+              conditionalRender: ({ data }) => data.tipoDataTransitoJulgado === 'Acórdão'
             }
           ]
         },
@@ -301,23 +301,23 @@ export const mockFormConfig: FormConfig = {
               type: 'select',
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ]
             },
             {
-              name: 'dataTransitoEmJulgadoDosEmbargos',
+              name: 'dataTransitoJulgadoEmbargos',
               label: 'Data do trânsito em julgado dos embargos à execução',
               type: 'date',
               required: false,
-              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'sim'
+              conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Sim'
             },
             {
-              name: 'dataDecursoDePrazoDosEmbargos',
+              name: 'dataDecursoPrazoEmbargos',
               label: 'Data do decurso de prazo para apresentação dos embargos à execução',
               type: 'date',
               required: false,
-              conditionalRender: (context) => context.data.houveEmbargosOuImpugnacao === 'nao'
+              conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Não'
             }
           ]
         },
@@ -331,12 +331,12 @@ export const mockFormConfig: FormConfig = {
               type: 'select',
               required: true,
               options: [
-                { label: 'Alimentar', value: 'alimentar' },
-                { label: 'Comum', value: 'comum' }
+                { label: 'Alimentar', value: 'Alimentar' },
+                { label: 'Comum', value: 'Comum' }
               ]
             },
             {
-              name: 'dataIntimacao',
+              name: 'dataIntimacaoFormulario',
               label: 'Data da intimação das partes quanto ao inteiro teor do Formulário Ofício Precatório',
               type: 'date',
               mask: '00/00/0000',
@@ -355,7 +355,7 @@ export const mockFormConfig: FormConfig = {
           fields: [
             {
               type: 'select',
-              name: 'naturezaSalarial',
+              name: 'acaoNaturezaSalarial',
               label: 'Ação de natureza salarial?',
               required: true,
               options: [
@@ -375,15 +375,15 @@ export const mockFormConfig: FormConfig = {
                 { label: 'Inativo', value: 'Inativo' },
                 { label: 'Pensionista', value: 'Pensionista' }
               ],
-              conditionalRender: (context) => context.data?.naturezaSalarial === 'Sim'
+              conditionalRender: ({ data }) => data.acaoNaturezaSalarial === 'Sim'
             },
             {
               type: 'text',
-              name: 'orgaoVinculado',
+              name: 'orgaoVinculadoEmpregado',
               label: 'Órgão a que estiver vinculado o empregado ou servidor publico, civil ou militar, da administração direta',
               required: true,
               colSpan: 1,
-              conditionalRender: (context) => context.data?.naturezaSalarial === 'Sim'
+              conditionalRender: ({ data }) => data.acaoNaturezaSalarial === 'Sim'
             }
           ]
         },
@@ -391,7 +391,7 @@ export const mockFormConfig: FormConfig = {
           gridColumns: 2,
           fields: [
             {
-              name: 'assuntoCod',
+              name: 'codigoAssunto',
               label: 'Código do assunto',
               type: 'text',
               required: true,
@@ -420,15 +420,15 @@ export const mockFormConfig: FormConfig = {
                 onSelect: (item, context) =>
                   context.setMultipleValues(
                     {
-                      assuntoCod: item.code,
-                      assuntoDescricao: item.description
+                      codigoAssunto: item.code,
+                      descricaoAssunto: item.description
                     },
                     true
                   )
               }
             },
             {
-              name: 'assuntoDescricao',
+              name: 'descricaoAssunto',
               label: 'Descrição do assunto',
               type: 'text',
               required: true,
@@ -442,7 +442,7 @@ export const mockFormConfig: FormConfig = {
           fields: [
             {
               type: 'select',
-              name: 'beneficiario',
+              name: 'tipoBeneficiarioRequisicao',
               label: 'A requisição será expedida em favor de qual beneficiário?',
               required: true,
               options: [
@@ -454,16 +454,16 @@ export const mockFormConfig: FormConfig = {
             },
             {
               type: 'select',
-              name: 'existeDestaque',
+              name: 'previsaoDestaqueHonorarios',
               label: 'Existe a previsão de destaque de honorários contratuais?',
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               required: true,
               disabled: false,
               colSpan: 2,
-              conditionalRender: (context) => context.data?.beneficiario === 'Beneficiário Principal'
+              conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Beneficiário Principal'
             }
           ]
         },
@@ -471,37 +471,37 @@ export const mockFormConfig: FormConfig = {
           title: 'Beneficiário Principal',
           highlight: true,
           gridColumns: 4,
-          conditionalRender: (context) => context.data?.beneficiario === 'Beneficiário Principal',
+          conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Beneficiário Principal',
           fields: [
             {
               type: 'select',
-              name: 'creditoCessao',
+              name: 'creditoObjetoCessaoPrincipal',
               label: 'O crédito foi objeto de cessão?',
               required: true,
               options: [
-                { label: 'Sim', value: 'true' },
-                { label: 'Não', value: 'false' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             },
             {
               type: 'select',
-              name: 'isObjetoSucessao',
+              name: 'creditoObjetoSucessaoPrincipal',
               label: 'O crédito principal foi objeto de sucessão?',
               required: true,
               options: [
-                { label: 'Sim', value: 'true' },
-                { label: 'Não', value: 'false' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             },
             {
               type: 'select',
-              name: 'tipoCreditoCessao',
+              name: 'tipoCessaoCreditoPrincipal',
               label: 'Tipo de cessão do crédito principal',
               options: [
-                { label: 'Total', value: 'TOTAL' },
-                { label: 'Parcial', value: 'PARCIAL' }
+                { label: 'Total', value: 'Total' },
+                { label: 'Parcial', value: 'Parcial' }
               ],
               required: false,
               disabled: false,
@@ -510,13 +510,13 @@ export const mockFormConfig: FormConfig = {
             },
             {
               type: 'select',
-              name: 'existePenhora',
+              name: 'creditoObjetoPenhoraPrincipal',
               label: 'O crédito foi objeto de penhora?',
               required: true,
-              conditionalRender: (context) => context.data?.creditoCessao === 'true',
+              conditionalRender: ({ data }) => data.creditoObjetoCessaoPrincipal === 'Sim',
               options: [
-                { label: 'Sim', value: 'true' },
-                { label: 'Não', value: 'false' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             }
@@ -526,7 +526,7 @@ export const mockFormConfig: FormConfig = {
           title: 'Beneficiário Originário',
           highlight: true,
           gridColumns: 3,
-          conditionalRender: (context) => context.data?.isObjetoSucessao === 'true',
+          conditionalRender: ({ data }) => data.creditoObjetoSucessaoPrincipal === 'Sim',
           fields: [
             {
               type: 'text',
@@ -541,49 +541,49 @@ export const mockFormConfig: FormConfig = {
               name: 'tipoDocumentoBeneficiarioOriginario',
               required: true,
               options: [
-                { label: 'CPF', value: '0' },
-                { label: 'CNPJ', value: '1' },
-                { label: 'RNE Nº', value: '2' }
+                { label: 'CPF', value: 'CPF' },
+                { label: 'CNPJ', value: 'CNPJ' },
+                { label: 'RNE Nº', value: 'RNE' }
               ],
               colSpan: 1
             },
             {
               type: 'text',
               label: 'Número do documento',
-              name: 'numeroDocumentoBeneficiarioOriginario',
+              name: 'numeroCpfBeneficiarioOriginario',
               required: true,
               mask: '000.000.000-00',
               validation: {
                 pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$',
                 message: 'CPF inválido'
               },
-              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === '0',
+              conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF',
               colSpan: 1
             },
             {
               type: 'text',
               label: 'Número do documento',
-              name: 'numeroDocumentoBeneficiarioOriginario',
+              name: 'numeroCnpjBeneficiarioOriginario',
               required: true,
               mask: '00.000.000/0000-00',
               validation: {
                 pattern: '^\\d{2}\\.\\d{2}\\.\\d{2}/\\d{4}-\\d{2}$',
                 message: 'CNPJ inválido'
               },
-              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === '1',
+              conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
               colSpan: 1
             },
             {
               type: 'text',
               label: 'Número do documento',
-              name: 'numeroDocumentoBeneficiarioOriginario',
+              name: 'numeroRneBeneficiarioOriginario',
               required: true,
               mask: 'a000000-a',
               validation: {
                 pattern: '^[A-Z]\\d{6}[A-Z]$',
                 message: 'RNE inválido'
               },
-              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === '2',
+              conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
               colSpan: 1
             }
           ]
@@ -592,38 +592,38 @@ export const mockFormConfig: FormConfig = {
           title: 'Honorários Periciais',
           highlight: true,
           gridColumns: 3,
-          conditionalRender: (context) => context.data?.beneficiario === 'Honorários Periciais',
+          conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Honorários Periciais',
           fields: [
             {
               type: 'select',
               label: 'O crédito foi objeto de cessão?',
-              name: 'creditoCessao',
+              name: 'creditoObjetoCessaoPericial',
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             },
             {
               type: 'select',
               label: 'O crédito foi objeto de penhora?',
-              name: 'existePenhora',
+              name: 'creditoObjetoPenhoraPericial',
               required: true,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             },
             {
               type: 'select',
               label: 'O crédito principal foi objeto de sucessão?',
-              name: 'isObjetoSucessao2',
+              name: 'creditoObjetoSucessaoPericial',
               required: false,
               options: [
-                { label: 'Sim', value: 'sim' },
-                { label: 'Não', value: 'nao' }
+                { label: 'Sim', value: 'Sim' },
+                { label: 'Não', value: 'Não' }
               ],
               colSpan: 1
             }
