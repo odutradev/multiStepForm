@@ -536,6 +536,78 @@ export const mockFormConfig: FormConfig = {
               colSpan: 1
             }
           ]
+        },
+        {
+          title: "Beneficiário Originário",
+          highlight: true,
+          gridColumns: 3,
+          conditionalRender: (context) => context.data?.isObjetoSucessao === "true",
+          fields: [
+            {
+              type: "info",
+              label: "Beneficiário Originário",
+              name: "headerBeneficiarioOriginario",
+              colSpan: 3
+            },
+            {
+              type: "text",
+              label: "Beneficiário Originário",
+              name: "nomeBeneficiarioOriginario",
+              required: true,
+              colSpan: 1
+            },
+            {
+              type: "select",
+              label: "Tipo do documento",
+              name: "tipoDocumentoBeneficiarioOriginario",
+              required: true,
+              options: [
+                { label: "CPF", value: "0" },
+                { label: "CNPJ", value: "1" },
+                { label: "RNE Nº", value: "2" }
+              ],
+              colSpan: 1
+            },
+            {
+              type: "text",
+              label: "Número do documento",
+              name: "numeroDocumentoBeneficiarioOriginario",
+              required: true,
+              mask: "000.000.000-00",
+              validation: {
+                pattern: "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$",
+                message: "CPF inválido"
+              },
+              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === "0",
+              colSpan: 1
+            },
+            {
+              type: "text",
+              label: "Número do documento",
+              name: "numeroDocumentoBeneficiarioOriginario",
+              required: true,
+              mask: "00.000.000/0000-00",
+              validation: {
+                pattern: "^\\d{2}\\.\\d{2}\\.\\d{2}/\\d{4}-\\d{2}$",
+                message: "CNPJ inválido"
+              },
+              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === "1",
+              colSpan: 1
+            },
+            {
+              type: "text",
+              label: "Número do documento",
+              name: "numeroDocumentoBeneficiarioOriginario",
+              required: true,
+              mask: "a000000-a",
+              validation: {
+                pattern: "^[A-Z]\\d{6}[A-Z]$",
+                message: "RNE inválido"
+              },
+              conditionalRender: (context) => context.data?.tipoDocumentoBeneficiarioOriginario === "2",
+              colSpan: 1
+            }
+          ]
         }
       ],
       actions: [
