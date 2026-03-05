@@ -1,8 +1,6 @@
-import { stepOneAutoFillMock } from '../mocks';
+import { stepOneAutoFillMock, MOCK_DELAY_MS } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
-
-const MOCK_DELAY_MS = 1500;
 
 export const step1: FormConfig['steps'][number] = {
   id: 'step-1',

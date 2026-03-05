@@ -1,4 +1,5 @@
-const MOCK_DELAY_MS = 800;
+export const MOCK_SUBMIT_DELAY_MS = 2000;
+export const MOCK_DELAY_MS = 1500;
 
 export const usersMock = [
   { registration: 'P-1234567', name: 'João da Silva' },

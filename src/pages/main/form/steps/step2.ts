@@ -1,8 +1,6 @@
-import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
+import { fetchSubjects, fetchCourts, fetchUsers, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
-
-const MOCK_SUBMIT_DELAY_MS = 2000;
 
 export const step2: FormConfig['steps'][number] = {
   id: 'step-2',
