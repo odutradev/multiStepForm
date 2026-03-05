@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
 
 import MultiStepForm from '@components/multiStepForm';
-import { mockFormConfig } from './defaultData';
-import { MainContainer} from './styles';
+import { MainContainer } from './styles';
+import { mockFormConfig } from './form';
 
 const Main = () => {
-
   const handleFormSubmit = useCallback((data: Record<string, unknown>) => {
     console.log('Payload enviado:', data);
   }, []);
