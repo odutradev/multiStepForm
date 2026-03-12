@@ -1,4 +1,4 @@
-import { beneficiariesOptions, MOCK_SUBMIT_DELAY_MS, beneficiariesMock } from '../mocks';
+import { beneficiariesOptions, beneficiariesMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -239,6 +239,68 @@ export const step3: FormConfig['steps'][number] = {
             { label: 'SE', value: 'SE' },
             { label: 'TO', value: 'TO' }
           ]
+        }
+      ]
+    },
+    {
+      title: 'Dados Bancários',
+      gridColumns: 2,
+      fields: [
+        {
+          name: 'titularConta',
+          label: 'Titular da Conta',
+          type: 'select',
+          required: true,
+          colSpan: 2,
+          options: [
+            { label: 'Beneficiário do crédito', value: 'BeneficiarioCredito' },
+            { label: 'Representante legal', value: 'RepresentanteLegal' }
+          ]
+        },
+        {
+          name: 'bancoTitular',
+          label: 'Banco do Titular',
+          type: 'select',
+          required: true,
+          options: [
+            { label: '001 - Banco do Brasil S.A.', value: '001' },
+            { label: '033 - Banco Santander (Brasil) S.A.', value: '033' },
+            { label: '077 - Banco Inter S.A.', value: '077' },
+            { label: '104 - Caixa Econômica Federal', value: '104' },
+            { label: '237 - Banco Bradesco S.A.', value: '237' },
+            { label: '260 - Nubank', value: '260' },
+            { label: '341 - Itaú Unibanco S.A.', value: '341' }
+          ]
+        },
+        {
+          name: 'tipoConta',
+          label: 'Tipo de Conta',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Conta Corrente', value: 'Corrente' },
+            { label: 'Conta Poupança', value: 'Poupanca' }
+          ]
+        },
+        {
+          name: 'agenciaConta',
+          label: 'Agência',
+          type: 'text',
+          required: true,
+          validation: {
+            pattern: '^\\d{1,20}$',
+            message: 'Apenas números (máximo 20 dígitos)'
+          }
+        },
+        {
+          name: 'numeroConta',
+          label: 'Número da Conta',
+          type: 'text',
+          required: true,
+          validation: {
+            pattern: '^\\d{1,20}$',
+            message: 'Apenas números (máximo 20 dígitos)'
+          }
         }
       ]
     }
