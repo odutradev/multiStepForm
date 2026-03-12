@@ -45,7 +45,6 @@ export const step3: FormConfig['steps'][number] = {
           name: 'nomeBeneficiario',
           label: 'Nome',
           type: 'text',
-          required: true,
           colSpan: 3
         },
         {
@@ -53,6 +52,21 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Nome Social',
           type: 'text',
           colSpan: 3
+        },
+        {
+          name: 'dataNascimentoBeneficiario',
+          label: 'Data de Nascimento',
+          required: true,
+          type: 'date',
+          colSpan: 3,
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
+        },
+        {
+          name: 'idadeBeneficiario',
+          label: 'Idade',
+          type: 'number',
+          colSpan: 3,
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
         },
         {
           name: 'tipoDocumentoBeneficiario',
@@ -81,7 +95,6 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Doença Grave?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true,
           colSpan: 2
         },
         {
@@ -89,7 +102,6 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Pessoa com Deficiência?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true,
           colSpan: 2
         },
         {
@@ -97,22 +109,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true,
           colSpan: 2
-        },
-        {
-          name: 'dataNascimentoBeneficiario',
-          label: 'Data de Nascimento',
-          type: 'date',
-          colSpan: 3,
-          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
-        },
-        {
-          name: 'idadeBeneficiario',
-          label: 'Idade',
-          type: 'number',
-          colSpan: 3,
-          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
         }
       ]
     }
