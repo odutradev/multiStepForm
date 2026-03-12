@@ -2,10 +2,13 @@ import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procurado
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
-const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ', value: 'CNPJ' }, { label: 'RNE N°', value: 'RNE' }];
-const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
-const CATEGORIA_OAB_OPTIONS = [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'E', value: 'E' }, { label: 'N', value: 'N' }];
 const SECAO_OAB_OPTIONS = [{ label: 'AC', value: 'AC' }, { label: 'AL', value: 'AL' }, { label: 'AP', value: 'AP' }, { label: 'AM', value: 'AM' }, { label: 'BA', value: 'BA' }, { label: 'CE', value: 'CE' }, { label: 'DF', value: 'DF' }, { label: 'ES', value: 'ES' }, { label: 'GO', value: 'GO' }, { label: 'MA', value: 'MA' }, { label: 'MT', value: 'MT' }, { label: 'MS', value: 'MS' }, { label: 'MG', value: 'MG' }, { label: 'PA', value: 'PA' }, { label: 'PB', value: 'PB' }, { label: 'PR', value: 'PR' }, { label: 'PE', value: 'PE' }, { label: 'PI', value: 'PI' }, { label: 'RJ', value: 'RJ' }, { label: 'RN', value: 'RN' }, { label: 'RS', value: 'RS' }, { label: 'RO', value: 'RO' }, { label: 'RR', value: 'RR' }, { label: 'SC', value: 'SC' }, { label: 'SP', value: 'SP' }, { label: 'SE', value: 'SE' }, { label: 'TO', value: 'TO' }];
+const BANCOS_OPTIONS = [{ label: '001 - Banco do Brasil S.A.', value: '001' }, { label: '033 - Banco Santander (Brasil) S.A.', value: '033' }, { label: '077 - Banco Inter S.A.', value: '077' }, { label: '104 - Caixa Econômica Federal', value: '104' }, { label: '237 - Banco Bradesco S.A.', value: '237' }, { label: '260 - Nubank', value: '260' }, { label: '341 - Itaú Unibanco S.A.', value: '341' }];
+const CATEGORIA_OAB_OPTIONS = [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'E', value: 'E' }, { label: 'N', value: 'N' }];
+const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ', value: 'CNPJ' }, { label: 'RNE N°', value: 'RNE' }];
+const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
+const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
+const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
@@ -282,25 +285,14 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Banco do Titular',
           type: 'select',
           required: true,
-          options: [
-            { label: '001 - Banco do Brasil S.A.', value: '001' },
-            { label: '033 - Banco Santander (Brasil) S.A.', value: '033' },
-            { label: '077 - Banco Inter S.A.', value: '077' },
-            { label: '104 - Caixa Econômica Federal', value: '104' },
-            { label: '237 - Banco Bradesco S.A.', value: '237' },
-            { label: '260 - Nubank', value: '260' },
-            { label: '341 - Itaú Unibanco S.A.', value: '341' }
-          ]
+          options: BANCOS_OPTIONS
         },
         {
           name: 'tipoConta',
           label: 'Tipo de Conta',
           type: 'select',
           required: true,
-          options: [
-            { label: 'Conta Corrente', value: 'Corrente' },
-            { label: 'Conta Poupança', value: 'Poupanca' }
-          ]
+          options: TIPO_CONTA_OPTIONS
         },
         {
           name: 'agenciaConta',
@@ -523,6 +515,117 @@ export const step3: FormConfig['steps'][number] = {
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      title: 'Dados Bancários do Advogado',
+      gridColumns: 2,
+      conditionalRender: ({ data }) => Array.isArray(data.tabelaProcuradores) && data.tabelaProcuradores.length > 0,
+      fields: [
+        {
+          name: 'informarDadosBancariosAdvogado',
+          label: 'Deseja informar dados bancários do advogado?',
+          type: 'select',
+          required: true,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'titularContaAdvogado',
+          label: 'Titular da Conta',
+          type: 'select',
+          required: true,
+          options: TITULAR_ADVOGADO_OPTIONS,
+          conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S'
+        }
+      ]
+    },
+    {
+      title: 'Titular da Conta',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S' && !!data.titularContaAdvogado,
+      fields: [
+        {
+          name: 'nomeTitularAdvogado',
+          label: 'Nome do Titular',
+          type: 'text',
+          required: true
+        },
+        {
+          name: 'tipoDocumentoTitularAdvogado',
+          label: 'Tipo de Documento',
+          type: 'select',
+          required: true,
+          options: TIPO_DOCUMENTO_OPTIONS
+        },
+        {
+          name: 'numeroDocumentoTitularAdvogadoPlaceholder',
+          label: 'Número do Documento',
+          type: 'text',
+          disabled: true,
+          conditionalRender: ({ data }) => !data.tipoDocumentoTitularAdvogado
+        },
+        {
+          name: 'numeroDocumentoTitularAdvogadoCPF',
+          label: 'Número do Documento',
+          type: 'text',
+          required: true,
+          mask: '000.000.000-00',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CPF',
+          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+        },
+        {
+          name: 'numeroDocumentoTitularAdvogadoCNPJ',
+          label: 'Número do Documento',
+          type: 'text',
+          required: true,
+          mask: '00.000.000/0000-00',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CNPJ',
+          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+        },
+        {
+          name: 'numeroDocumentoTitularAdvogadoRNE',
+          label: 'Número do Documento',
+          type: 'text',
+          required: true,
+          mask: 'a000000-a',
+          validation: { pattern: '^[A-Z]\\d{6}[A-Z]$', message: 'RNE inválido' },
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'RNE'
+        }
+      ]
+    },
+    {
+      gridColumns: 2,
+      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S',
+      fields: [
+        {
+          name: 'bancoTitularAdvogado',
+          label: 'Banco do Titular',
+          type: 'select',
+          required: true,
+          options: BANCOS_OPTIONS
+        },
+        {
+          name: 'tipoContaAdvogado',
+          label: 'Tipo de Conta',
+          type: 'select',
+          required: true,
+          options: TIPO_CONTA_OPTIONS
+        },
+        {
+          name: 'agenciaContaAdvogado',
+          label: 'Agência',
+          type: 'text',
+          required: true,
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
+        },
+        {
+          name: 'numeroContaAdvogado',
+          label: 'Número da Conta',
+          type: 'text',
+          required: true,
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
         }
       ]
     }
