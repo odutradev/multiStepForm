@@ -2,6 +2,8 @@ import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
+const MOCK_SUBMIT_DELAY_MS = 2000;
+
 export const step2: FormConfig['steps'][number] = {
   id: 'step-2',
   title: 'Informações Gerais',
@@ -411,6 +413,253 @@ export const step2: FormConfig['steps'][number] = {
           disabled: false,
           colSpan: 2,
           conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Beneficiário Principal'
+        }
+      ]
+    },
+    {
+      title: 'Beneficiário Principal',
+      highlight: true,
+      gridColumns: 4,
+      conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Beneficiário Principal',
+      fields: [
+        {
+          type: 'select',
+          name: 'creditoObjetoCessaoPrincipal',
+          label: 'O crédito foi objeto de cessão?',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          name: 'creditoObjetoSucessaoPrincipal',
+          label: 'O crédito principal foi objeto de sucessão?',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          name: 'tipoCessaoCreditoPrincipal',
+          label: 'Tipo de cessão do crédito principal',
+          options: [
+            { label: 'Total', value: 'Total' },
+            { label: 'Parcial', value: 'Parcial' }
+          ],
+          required: false,
+          disabled: false,
+          readOnly: false,
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          name: 'creditoObjetoPenhoraPrincipal',
+          label: 'O crédito foi objeto de penhora?',
+          required: true,
+          conditionalRender: ({ data }) => data.creditoObjetoCessaoPrincipal === 'Sim',
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        }
+      ]
+    },
+    {
+      title: 'Beneficiário Originário',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.creditoObjetoSucessaoPrincipal === 'Sim',
+      fields: [
+        {
+          type: 'text',
+          label: 'Beneficiário Originário',
+          name: 'nomeBeneficiarioOriginario',
+          required: true,
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          label: 'Tipo do documento',
+          name: 'tipoDocumentoBeneficiarioOriginario',
+          required: true,
+          options: [
+            { label: 'CPF', value: 'CPF' },
+            { label: 'CNPJ', value: 'CNPJ' },
+            { label: 'RNE Nº', value: 'RNE' }
+          ],
+          colSpan: 1
+        },
+        {
+          type: 'text',
+          label: 'Número do documento',
+          name: 'numeroCpfBeneficiarioOriginario',
+          required: true,
+          mask: '000.000.000-00',
+          validation: {
+            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$',
+            message: 'CPF inválido'
+          },
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF',
+          colSpan: 1
+        },
+        {
+          type: 'text',
+          label: 'Número do documento',
+          name: 'numeroCnpjBeneficiarioOriginario',
+          required: true,
+          mask: '00.000.000/0000-00',
+          validation: {
+            pattern: '^\\d{2}\\.\\d{2}\\.\\d{2}/\\d{4}-\\d{2}$',
+            message: 'CNPJ inválido'
+          },
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
+          colSpan: 1
+        },
+        {
+          type: 'text',
+          label: 'Número do documento',
+          name: 'numeroRneBeneficiarioOriginario',
+          required: true,
+          mask: 'a000000-a',
+          validation: {
+            pattern: '^[A-Z]\\d{6}[A-Z]$',
+            message: 'RNE inválido'
+          },
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
+          colSpan: 1
+        }
+      ]
+    },
+    {
+      title: 'Honorários Sucumbenciais',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Honorários Sucumbenciais',
+      fields: [
+        {
+          type: 'select',
+          label: 'O crédito foi objeto de cessão?',
+          name: 'creditoCessao',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          validation: {
+            pattern: '^(Sim|Não)$',
+            message: 'Campo obrigatório'
+          },
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          label: 'O crédito foi objeto de penhora?',
+          name: 'existePenhora',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          validation: {
+            pattern: '^(Sim|Não)$',
+            message: 'Campo obrigatório'
+          },
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          label: 'Os honorários sucumbenciais foram objeto de sucessão?',
+          name: 'isObjetoSucessao',
+          required: false,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        }
+      ]
+    },
+    {
+      title: 'Honorários Periciais',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Honorários Periciais',
+      fields: [
+        {
+          type: 'select',
+          label: 'O crédito foi objeto de cessão?',
+          name: 'creditoObjetoCessaoPericial',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          label: 'O crédito foi objeto de penhora?',
+          name: 'creditoObjetoPenhoraPericial',
+          required: true,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        },
+        {
+          type: 'select',
+          label: 'O crédito principal foi objeto de sucessão?',
+          name: 'creditoObjetoSucessaoPericial',
+          required: false,
+          options: [
+            { label: 'Sim', value: 'Sim' },
+            { label: 'Não', value: 'Não' }
+          ],
+          colSpan: 1
+        }
+      ]
+    },
+    {
+      title: 'Entidade Devedora / Ente Devedor',
+      gridColumns: 2,
+      fields: [
+        {
+          type: 'select',
+          name: 'devedor',
+          label: 'Entidade Devedora / Ente Devedor',
+          options: [
+            { label: 'JD COMARCA EXTREMA', value: 'JD COMARCA EXTREMA' },
+            { label: 'ESTADO DE MINAS GERAIS', value: 'ESTADO DE MINAS GERAIS' }
+          ],
+          required: false,
+          disabled: false,
+          onChange: (value, context) => {
+            if (value === 'ESTADO DE MINAS GERAIS') {
+              context.setMultipleValues({ cnpj: '18.715.615/0001-60' });
+            } else {
+              context.setMultipleValues({ cnpj: '' });
+            }
+          }
+        },
+        {
+          type: 'text',
+          name: 'cnpj',
+          label: 'CNPJ',
+          mask: '00.000.000/0000-00',
+          readOnly: true,
+          conditionalRender: ({ data }) => !!data.devedor,
+          validation: {
+            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$',
+            message: 'CNPJ inválido'
+          }
         }
       ]
     }
