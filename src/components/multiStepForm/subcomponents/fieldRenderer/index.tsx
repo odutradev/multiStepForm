@@ -7,6 +7,8 @@ import { IMaskInput } from 'react-imask';
 import dayjs from 'dayjs';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
+import FormButton from './components/formButton';
+import FormTable from './components/formTable';
 import SearchModal from '../searchModal';
 
 import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
@@ -46,6 +48,10 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                       <Typography variant="body2" color="text.secondary">
                         {field.label}
                       </Typography>
+                    ) : field.type === 'button' ? (
+                      <FormButton field={field} context={context} />
+                    ) : field.type === 'table' ? (
+                      <FormTable field={field} context={context} />
                     ) : (
                       <Controller
                         name={field.name}

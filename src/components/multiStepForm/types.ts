@@ -42,10 +42,26 @@ export interface SearchConfig {
   title: string;
 }
 
+export interface TableAction {
+  onClick: (row: Record<string, unknown>, context: ActionContext) => void;
+  label: string;
+  icon?: string;
+}
+
+export interface TableColumn {
+  header: string;
+  key: string;
+}
+
 export interface FormField {
-  type: 'text' | 'number' | 'email' | 'select' | 'info' | 'date';
+  type: 'text' | 'number' | 'email' | 'select' | 'info' | 'date' | 'button' | 'table';
+  onButtonClick?: (context: ActionContext) => void;
   onChange?: (value: unknown, context: ActionContext) => void;
   conditionalRender?: (context: ActionContext) => boolean;
+  buttonVariant?: 'text' | 'outlined' | 'contained';
+  tableData?: Record<string, unknown>[];
+  tableActions?: TableAction[];
+  tableColumns?: TableColumn[];
   searchConfig?: SearchConfig;
   validation?: FieldValidation;
   mask?: string | RegExp;
