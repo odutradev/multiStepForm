@@ -269,10 +269,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'text',
           required: true,
           mask: 'a000000-a',
-          validation: {
-            pattern: '^[A-Z]\\d{6}[A-Z]$',
-            message: 'RNE inválido'
-          },
+          validation: { pattern: '^[A-Z]\\d{6}[A-Z]$', message: 'RNE inválido' },
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
         }
       ]
@@ -310,20 +307,14 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Agência',
           type: 'text',
           required: true,
-          validation: {
-            pattern: '^\\d{1,20}$',
-            message: 'Apenas números (máximo 20 dígitos)'
-          }
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
         },
         {
           name: 'numeroConta',
           label: 'Número da Conta',
           type: 'text',
           required: true,
-          validation: {
-            pattern: '^\\d{1,20}$',
-            message: 'Apenas números (máximo 20 dígitos)'
-          }
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
         }
       ]
     },
@@ -424,19 +415,17 @@ export const step3: FormConfig['steps'][number] = {
           type: 'button',
           buttonVariant: 'outlined',
           colSpan: 1,
-          onButtonClick: (context) => {
-            context.setMultipleValues({
-              selecioneProcurador: '',
-              nomeProcurador: '',
-              tipoDocumentoProcurador: '',
-              numeroDocumentoProcuradorCPF: '',
-              numeroDocumentoProcuradorCNPJ: '',
-              numeroDocumentoProcuradorRNE: '',
-              numeroOABProcurador: '',
-              categoriaOABProcurador: '',
-              secaoOABProcurador: ''
-            });
-          }
+          onButtonClick: (context) => context.setMultipleValues({
+            selecioneProcurador: '',
+            nomeProcurador: '',
+            tipoDocumentoProcurador: '',
+            numeroDocumentoProcuradorCPF: '',
+            numeroDocumentoProcuradorCNPJ: '',
+            numeroDocumentoProcuradorRNE: '',
+            numeroOABProcurador: '',
+            categoriaOABProcurador: '',
+            secaoOABProcurador: ''
+          })
         },
         {
           name: 'btnAdicionarProcurador',
@@ -491,6 +480,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Procuradores Adicionados',
           type: 'table',
           colSpan: 3,
+          conditionalRender: ({ data }) => Array.isArray(data.tabelaProcuradores) && data.tabelaProcuradores.length > 0,
           tableColumns: [
             { header: 'Nome', key: 'nome' },
             { header: 'Documento', key: 'documento' },
@@ -503,21 +493,22 @@ export const step3: FormConfig['steps'][number] = {
               label: 'Editar',
               icon: 'Edit',
               onClick: (row, context) => {
-                const currentList = Array.isArray(context.data.tabelaProcuradores) ? context.data.tabelaProcuradores : [];
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
                 const newList = currentList.filter((p) => p.id !== row.id);
                 const rawData = row.rawData as Record<string, string>;
 
                 context.setMultipleValues({
                   tabelaProcuradores: newList,
                   selecioneProcurador: '',
-                  nomeProcurador: row.nome,
+                  nomeProcurador: String(row.nome || ''),
                   tipoDocumentoProcurador: rawData.tipoDoc,
                   numeroDocumentoProcuradorCPF: rawData.docCpf,
                   numeroDocumentoProcuradorCNPJ: rawData.docCnpj,
                   numeroDocumentoProcuradorRNE: rawData.docRne,
-                  numeroOABProcurador: row.oab !== '-' ? row.oab : '',
-                  categoriaOABProcurador: row.categoria !== '-' ? row.categoria : '',
-                  secaoOABProcurador: row.secao !== '-' ? row.secao : ''
+                  numeroOABProcurador: String(row.oab !== '-' ? row.oab : ''),
+                  categoriaOABProcurador: String(row.categoria !== '-' ? row.categoria : ''),
+                  secaoOABProcurador: String(row.secao !== '-' ? row.secao : '')
                 });
               }
             },
@@ -525,7 +516,8 @@ export const step3: FormConfig['steps'][number] = {
               label: 'Remover',
               icon: 'Delete',
               onClick: (row, context) => {
-                const currentList = Array.isArray(context.data.tabelaProcuradores) ? context.data.tabelaProcuradores : [];
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
                 const newList = currentList.filter((p) => p.id !== row.id);
                 context.setMultipleValues({ tabelaProcuradores: newList });
               }
