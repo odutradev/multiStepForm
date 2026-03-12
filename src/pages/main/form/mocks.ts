@@ -234,9 +234,50 @@ export const beneficiariesMock = [
   }
 ];
 
+export const procuradoresMock = [
+  {
+    id: '1',
+    nome: 'Dr. Roberto Alves',
+    tipoDocumento: 'CPF',
+    documentoCPF: '123.456.789-00',
+    documentoCNPJ: '',
+    documentoRNE: '',
+    oab: '12345',
+    categoria: 'A',
+    secao: 'SP'
+  },
+  {
+    id: '2',
+    nome: 'Dra. Camila Santos',
+    tipoDocumento: 'CPF',
+    documentoCPF: '987.654.321-11',
+    documentoCNPJ: '',
+    documentoRNE: '',
+    oab: '54321',
+    categoria: 'B',
+    secao: 'RJ'
+  },
+  {
+    id: '3',
+    nome: 'Advocacia Lima & Associados',
+    tipoDocumento: 'CNPJ',
+    documentoCPF: '',
+    documentoCNPJ: '12.345.678/0001-90',
+    documentoRNE: '',
+    oab: '99999',
+    categoria: 'E',
+    secao: 'MG'
+  }
+];
+
 export const beneficiariesOptions = beneficiariesMock.map((beneficiary) => ({
   label: beneficiary.nome,
   value: beneficiary.id
+}));
+
+export const procuradoresOptions = procuradoresMock.map((procurador) => ({
+  label: procurador.nome,
+  value: procurador.id
 }));
 
 export const fetchUsers = async (filters: Record<string, unknown>): Promise<Record<string, unknown>[]> => {

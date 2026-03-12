@@ -1,6 +1,11 @@
-import { beneficiariesOptions, beneficiariesMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
+import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
+
+const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ', value: 'CNPJ' }, { label: 'RNE N°', value: 'RNE' }];
+const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
+const CATEGORIA_OAB_OPTIONS = [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'E', value: 'E' }, { label: 'N', value: 'N' }];
+const SECAO_OAB_OPTIONS = [{ label: 'AC', value: 'AC' }, { label: 'AL', value: 'AL' }, { label: 'AP', value: 'AP' }, { label: 'AM', value: 'AM' }, { label: 'BA', value: 'BA' }, { label: 'CE', value: 'CE' }, { label: 'DF', value: 'DF' }, { label: 'ES', value: 'ES' }, { label: 'GO', value: 'GO' }, { label: 'MA', value: 'MA' }, { label: 'MT', value: 'MT' }, { label: 'MS', value: 'MS' }, { label: 'MG', value: 'MG' }, { label: 'PA', value: 'PA' }, { label: 'PB', value: 'PB' }, { label: 'PR', value: 'PR' }, { label: 'PE', value: 'PE' }, { label: 'PI', value: 'PI' }, { label: 'RJ', value: 'RJ' }, { label: 'RN', value: 'RN' }, { label: 'RS', value: 'RS' }, { label: 'RO', value: 'RO' }, { label: 'RR', value: 'RR' }, { label: 'SC', value: 'SC' }, { label: 'SP', value: 'SP' }, { label: 'SE', value: 'SE' }, { label: 'TO', value: 'TO' }];
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
@@ -93,30 +98,21 @@ export const step3: FormConfig['steps'][number] = {
           name: 'doencaGrave',
           label: 'Doença Grave?',
           type: 'select',
-          options: [
-            { label: 'Sim', value: 'S' },
-            { label: 'Não', value: 'N' }
-          ],
+          options: SIM_NAO_OPTIONS,
           colSpan: 2
         },
         {
           name: 'pessoaDeficiencia',
           label: 'Pessoa com Deficiência?',
           type: 'select',
-          options: [
-            { label: 'Sim', value: 'S' },
-            { label: 'Não', value: 'N' }
-          ],
+          options: SIM_NAO_OPTIONS,
           colSpan: 2
         },
         {
           name: 'beneficiarioCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           type: 'select',
-          options: [
-            { label: 'Sim', value: 'S' },
-            { label: 'Não', value: 'N' }
-          ],
+          options: SIM_NAO_OPTIONS,
           colSpan: 2
         }
       ]
@@ -157,11 +153,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Tipo de Documento',
           type: 'select',
           required: true,
-          options: [
-            { label: 'CPF', value: 'CPF' },
-            { label: 'CNPJ', value: 'CNPJ' },
-            { label: 'RNE N°', value: 'RNE' }
-          ]
+          options: TIPO_DOCUMENTO_OPTIONS
         },
         {
           name: 'numeroDocumentoRepresentantePlaceholder',
@@ -205,47 +197,14 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Categoria',
           type: 'select',
           required: true,
-          options: [
-            { label: 'A', value: 'A' },
-            { label: 'B', value: 'B' },
-            { label: 'E', value: 'E' },
-            { label: 'N', value: 'N' }
-          ]
+          options: CATEGORIA_OAB_OPTIONS
         },
         {
           name: 'secaoOABRepresentante',
           label: 'Seção',
           type: 'select',
           required: true,
-          options: [
-            { label: 'AC', value: 'AC' },
-            { label: 'AL', value: 'AL' },
-            { label: 'AP', value: 'AP' },
-            { label: 'AM', value: 'AM' },
-            { label: 'BA', value: 'BA' },
-            { label: 'CE', value: 'CE' },
-            { label: 'DF', value: 'DF' },
-            { label: 'ES', value: 'ES' },
-            { label: 'GO', value: 'GO' },
-            { label: 'MA', value: 'MA' },
-            { label: 'MT', value: 'MT' },
-            { label: 'MS', value: 'MS' },
-            { label: 'MG', value: 'MG' },
-            { label: 'PA', value: 'PA' },
-            { label: 'PB', value: 'PB' },
-            { label: 'PR', value: 'PR' },
-            { label: 'PE', value: 'PE' },
-            { label: 'PI', value: 'PI' },
-            { label: 'RJ', value: 'RJ' },
-            { label: 'RN', value: 'RN' },
-            { label: 'RS', value: 'RS' },
-            { label: 'RO', value: 'RO' },
-            { label: 'RR', value: 'RR' },
-            { label: 'SC', value: 'SC' },
-            { label: 'SP', value: 'SP' },
-            { label: 'SE', value: 'SE' },
-            { label: 'TO', value: 'TO' }
-          ]
+          options: SECAO_OAB_OPTIONS
         }
       ]
     },
@@ -277,11 +236,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Tipo de Documento',
           type: 'select',
           required: true,
-          options: [
-            { label: 'CPF', value: 'CPF' },
-            { label: 'CNPJ', value: 'CNPJ' },
-            { label: 'RNE N°', value: 'RNE' }
-          ]
+          options: TIPO_DOCUMENTO_OPTIONS
         },
         {
           name: 'numeroDocumentoTitularCreditoPlaceholder',
@@ -369,6 +324,213 @@ export const step3: FormConfig['steps'][number] = {
             pattern: '^\\d{1,20}$',
             message: 'Apenas números (máximo 20 dígitos)'
           }
+        }
+      ]
+    },
+    {
+      title: 'Procurador(es)',
+      gridColumns: 3,
+      fields: [
+        {
+          name: 'selecioneProcurador',
+          label: 'Selecione o Procurador',
+          type: 'select',
+          colSpan: 3,
+          options: procuradoresOptions,
+          onChange: (value, context) => {
+            const selected = procuradoresMock.find((p) => p.id === String(value));
+            if (!selected) return;
+            context.setMultipleValues({
+              nomeProcurador: selected.nome,
+              tipoDocumentoProcurador: selected.tipoDocumento,
+              numeroDocumentoProcuradorCPF: selected.documentoCPF,
+              numeroDocumentoProcuradorCNPJ: selected.documentoCNPJ,
+              numeroDocumentoProcuradorRNE: selected.documentoRNE,
+              numeroOABProcurador: selected.oab,
+              categoriaOABProcurador: selected.categoria,
+              secaoOABProcurador: selected.secao
+            });
+          }
+        },
+        {
+          name: 'nomeProcurador',
+          label: 'Nome do Procurador',
+          type: 'text',
+          colSpan: 1
+        },
+        {
+          name: 'tipoDocumentoProcurador',
+          label: 'Tipo de Documento',
+          type: 'select',
+          colSpan: 1,
+          options: TIPO_DOCUMENTO_OPTIONS
+        },
+        {
+          name: 'numeroDocumentoProcuradorPlaceholder',
+          label: 'Número do Documento',
+          type: 'text',
+          disabled: true,
+          colSpan: 1,
+          conditionalRender: ({ data }) => !data.tipoDocumentoProcurador
+        },
+        {
+          name: 'numeroDocumentoProcuradorCPF',
+          label: 'Número do Documento',
+          type: 'text',
+          mask: '000.000.000-00',
+          colSpan: 1,
+          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF',
+          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+        },
+        {
+          name: 'numeroDocumentoProcuradorCNPJ',
+          label: 'Número do Documento',
+          type: 'text',
+          mask: '00.000.000/0000-00',
+          colSpan: 1,
+          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ',
+          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+        },
+        {
+          name: 'numeroDocumentoProcuradorRNE',
+          label: 'Número do Documento',
+          type: 'text',
+          colSpan: 1,
+          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'RNE'
+        },
+        {
+          name: 'numeroOABProcurador',
+          label: 'Número da OAB',
+          type: 'text',
+          colSpan: 1
+        },
+        {
+          name: 'categoriaOABProcurador',
+          label: 'Categoria',
+          type: 'select',
+          colSpan: 1,
+          options: CATEGORIA_OAB_OPTIONS
+        },
+        {
+          name: 'secaoOABProcurador',
+          label: 'Seção',
+          type: 'select',
+          colSpan: 1,
+          options: SECAO_OAB_OPTIONS
+        },
+        {
+          name: 'btnLimparProcurador',
+          label: 'Limpar Formulário',
+          type: 'button',
+          buttonVariant: 'outlined',
+          colSpan: 1,
+          onButtonClick: (context) => {
+            context.setMultipleValues({
+              selecioneProcurador: '',
+              nomeProcurador: '',
+              tipoDocumentoProcurador: '',
+              numeroDocumentoProcuradorCPF: '',
+              numeroDocumentoProcuradorCNPJ: '',
+              numeroDocumentoProcuradorRNE: '',
+              numeroOABProcurador: '',
+              categoriaOABProcurador: '',
+              secaoOABProcurador: ''
+            });
+          }
+        },
+        {
+          name: 'btnAdicionarProcurador',
+          label: 'Adicionar Procurador',
+          type: 'button',
+          buttonVariant: 'contained',
+          colSpan: 2,
+          onButtonClick: (context) => {
+            const formValues = context.getValues();
+            const nome = String(formValues.nomeProcurador || '');
+            const tipoDoc = String(formValues.tipoDocumentoProcurador || '');
+            const docCpf = String(formValues.numeroDocumentoProcuradorCPF || '');
+            const docCnpj = String(formValues.numeroDocumentoProcuradorCNPJ || '');
+            const docRne = String(formValues.numeroDocumentoProcuradorRNE || '');
+            const oab = String(formValues.numeroOABProcurador || '');
+            const categoria = String(formValues.categoriaOABProcurador || '');
+            const secao = String(formValues.secaoOABProcurador || '');
+
+            if (!nome || !tipoDoc || (!docCpf && !docCnpj && !docRne)) return;
+
+            const docNum = tipoDoc === 'CPF' ? docCpf : tipoDoc === 'CNPJ' ? docCnpj : docRne;
+            const docFormatado = `${tipoDoc} - ${docNum}`;
+
+            const novoProcurador = {
+              id: Date.now().toString(),
+              nome,
+              documento: docFormatado,
+              oab: oab || '-',
+              categoria: categoria || '-',
+              secao: secao || '-',
+              rawData: { tipoDoc, docCpf, docCnpj, docRne }
+            };
+
+            const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
+
+            context.setMultipleValues({
+              tabelaProcuradores: [...currentList, novoProcurador],
+              selecioneProcurador: '',
+              nomeProcurador: '',
+              tipoDocumentoProcurador: '',
+              numeroDocumentoProcuradorCPF: '',
+              numeroDocumentoProcuradorCNPJ: '',
+              numeroDocumentoProcuradorRNE: '',
+              numeroOABProcurador: '',
+              categoriaOABProcurador: '',
+              secaoOABProcurador: ''
+            });
+          }
+        },
+        {
+          name: 'tabelaProcuradores',
+          label: 'Procuradores Adicionados',
+          type: 'table',
+          colSpan: 3,
+          tableColumns: [
+            { header: 'Nome', key: 'nome' },
+            { header: 'Documento', key: 'documento' },
+            { header: 'OAB', key: 'oab' },
+            { header: 'Categoria', key: 'categoria' },
+            { header: 'Seção', key: 'secao' }
+          ],
+          tableActions: [
+            {
+              label: 'Editar',
+              icon: 'Edit',
+              onClick: (row, context) => {
+                const currentList = Array.isArray(context.data.tabelaProcuradores) ? context.data.tabelaProcuradores : [];
+                const newList = currentList.filter((p) => p.id !== row.id);
+                const rawData = row.rawData as Record<string, string>;
+
+                context.setMultipleValues({
+                  tabelaProcuradores: newList,
+                  selecioneProcurador: '',
+                  nomeProcurador: row.nome,
+                  tipoDocumentoProcurador: rawData.tipoDoc,
+                  numeroDocumentoProcuradorCPF: rawData.docCpf,
+                  numeroDocumentoProcuradorCNPJ: rawData.docCnpj,
+                  numeroDocumentoProcuradorRNE: rawData.docRne,
+                  numeroOABProcurador: row.oab !== '-' ? row.oab : '',
+                  categoriaOABProcurador: row.categoria !== '-' ? row.categoria : '',
+                  secaoOABProcurador: row.secao !== '-' ? row.secao : ''
+                });
+              }
+            },
+            {
+              label: 'Remover',
+              icon: 'Delete',
+              onClick: (row, context) => {
+                const currentList = Array.isArray(context.data.tabelaProcuradores) ? context.data.tabelaProcuradores : [];
+                const newList = currentList.filter((p) => p.id !== row.id);
+                context.setMultipleValues({ tabelaProcuradores: newList });
+              }
+            }
+          ]
         }
       ]
     }
