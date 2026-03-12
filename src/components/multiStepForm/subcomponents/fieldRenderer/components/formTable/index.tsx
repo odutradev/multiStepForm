@@ -1,12 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { MoreVert } from '@mui/icons-material';
 import * as MuiIcons from '@mui/icons-material';
 import { useState } from 'react';
 
 import { TableContainerWrapper, MenuIconWrapper, HeaderContainer } from './styles';
 
-import type { MouseEvent } from 'react';
 import type { FormTableProps } from './types';
+import type { MouseEvent } from 'react';
 
 const FormTable = ({ field, context }: FormTableProps) => {
   const [selectedRow, setSelectedRow] = useState<Record<string, unknown> | null>(null);
@@ -27,7 +26,9 @@ const FormTable = ({ field, context }: FormTableProps) => {
     handleCloseMenu();
   };
 
-  if (!field.tableColumns || !field.tableData) return null;
+  const tableData = (context.data[field.name] as Record<string, unknown>[]) || field.tableData;
+
+  if (!field.tableColumns || !tableData || !tableData.length) return null;
 
   return (
     <TableContainerWrapper>
@@ -44,7 +45,7 @@ const FormTable = ({ field, context }: FormTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {field.tableData.map((row, rowIndex) => (
+          {tableData.map((row, rowIndex) => (
             <TableRow key={rowIndex} hover>
               {field.tableColumns!.map((col) => (
                 <TableCell key={col.key}>{String(row[col.key] ?? '-')}</TableCell>
@@ -52,7 +53,7 @@ const FormTable = ({ field, context }: FormTableProps) => {
               {field.tableActions && (
                 <TableCell align="right">
                   <IconButton size="small" onClick={(e) => handleOpenMenu(e, row)}>
-                    <MoreVert fontSize="small" />
+                    <MuiIcons.MoreVert fontSize="small" />
                   </IconButton>
                 </TableCell>
               )}
