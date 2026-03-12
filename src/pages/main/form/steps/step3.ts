@@ -164,8 +164,15 @@ export const step3: FormConfig['steps'][number] = {
           ]
         },
         {
+          name: 'numeroDocumentoRepresentantePlaceholder',
+          label: 'Número do Documento',
+          type: 'text',
+          disabled: true,
+          conditionalRender: ({ data }) => !data.tipoDocumentoRepresentante
+        },
+        {
           name: 'numeroDocumentoRepresentanteCPF',
-          label: 'Número do Documento (CPF)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           mask: '000.000.000-00',
@@ -174,7 +181,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'numeroDocumentoRepresentanteCNPJ',
-          label: 'Número do Documento (CNPJ)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           mask: '00.000.000/0000-00',
@@ -183,7 +190,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'numeroDocumentoRepresentanteRNE',
-          label: 'Número do Documento (RNE N°)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'RNE'
@@ -277,8 +284,15 @@ export const step3: FormConfig['steps'][number] = {
           ]
         },
         {
+          name: 'numeroDocumentoTitularCreditoPlaceholder',
+          label: 'Número do Documento',
+          type: 'text',
+          disabled: true,
+          conditionalRender: ({ data }) => !data.tipoDocumentoTitularCredito
+        },
+        {
           name: 'numeroDocumentoTitularCreditoCPF',
-          label: 'Número do Documento (CPF)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           mask: '000.000.000-00',
@@ -287,7 +301,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'numeroDocumentoTitularCreditoCNPJ',
-          label: 'Número do Documento (CNPJ)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           mask: '00.000.000/0000-00',
@@ -296,7 +310,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'numeroDocumentoTitularCreditoRNE',
-          label: 'Número do Documento (RNE N°)',
+          label: 'Número do Documento',
           type: 'text',
           required: true,
           mask: 'a000000-a',
