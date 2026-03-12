@@ -1,5 +1,4 @@
-import { beneficiariesMock, beneficiariesOptions, YES_NO_OPTIONS } from '../mocks/beneficiaries';
-import { MOCK_SUBMIT_DELAY_MS } from '../mocks';
+import { beneficiariesOptions, MOCK_SUBMIT_DELAY_MS, beneficiariesMock } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -94,21 +93,30 @@ export const step3: FormConfig['steps'][number] = {
           name: 'doencaGrave',
           label: 'Doença Grave?',
           type: 'select',
-          options: YES_NO_OPTIONS,
+          options: [
+            { label: 'Sim', value: 'S' },
+            { label: 'Não', value: 'N' }
+          ],
           colSpan: 2
         },
         {
           name: 'pessoaDeficiencia',
           label: 'Pessoa com Deficiência?',
           type: 'select',
-          options: YES_NO_OPTIONS,
+          options: [
+            { label: 'Sim', value: 'S' },
+            { label: 'Não', value: 'N' }
+          ],
           colSpan: 2
         },
         {
           name: 'beneficiarioCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           type: 'select',
-          options: YES_NO_OPTIONS,
+          options: [
+            { label: 'Sim', value: 'S' },
+            { label: 'Não', value: 'N' }
+          ],
           colSpan: 2
         }
       ]
