@@ -299,6 +299,11 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Número do Documento (RNE N°)',
           type: 'text',
           required: true,
+          mask: 'a000000-a',
+          validation: {
+            pattern: '^[A-Z]\\d{6}[A-Z]$',
+            message: 'RNE inválido'
+          },
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
         }
       ]
