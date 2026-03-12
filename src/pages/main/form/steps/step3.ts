@@ -256,7 +256,56 @@ export const step3: FormConfig['steps'][number] = {
             { label: 'Beneficiário do crédito', value: 'BeneficiarioCredito' },
             { label: 'Representante legal', value: 'RepresentanteLegal' }
           ]
+        }
+      ]
+    },
+    {
+      title: 'Beneficiário de Crédito',
+      highlight: true,
+      gridColumns: 2,
+      conditionalRender: ({ data }) => data.titularConta === 'BeneficiarioCredito',
+      fields: [
+        {
+          name: 'tipoDocumentoTitularCredito',
+          label: 'Tipo de Documento',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'CPF', value: 'CPF' },
+            { label: 'CNPJ', value: 'CNPJ' },
+            { label: 'RNE N°', value: 'RNE' }
+          ]
         },
+        {
+          name: 'numeroDocumentoTitularCreditoCPF',
+          label: 'Número do Documento (CPF)',
+          type: 'text',
+          required: true,
+          mask: '000.000.000-00',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CPF',
+          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+        },
+        {
+          name: 'numeroDocumentoTitularCreditoCNPJ',
+          label: 'Número do Documento (CNPJ)',
+          type: 'text',
+          required: true,
+          mask: '00.000.000/0000-00',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CNPJ',
+          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+        },
+        {
+          name: 'numeroDocumentoTitularCreditoRNE',
+          label: 'Número do Documento (RNE N°)',
+          type: 'text',
+          required: true,
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
+        }
+      ]
+    },
+    {
+      gridColumns: 2,
+      fields: [
         {
           name: 'bancoTitular',
           label: 'Banco do Titular',
