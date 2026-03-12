@@ -2,8 +2,6 @@ import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
-const MOCK_SUBMIT_DELAY_MS = 2000;
-
 export const step2: FormConfig['steps'][number] = {
   id: 'step-2',
   title: 'Informações Gerais',
@@ -29,26 +27,14 @@ export const step2: FormConfig['steps'][number] = {
             pagination: true,
             fields: [
               { name: 'name', label: 'Nome do Magistrado', type: 'text' },
-              {
-                name: 'registration',
-                label: 'Matrícula',
-                type: 'text',
-                mask: 'a-0000000'
-              }
+              { name: 'registration', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
             ],
             columns: [
               { header: 'Matrícula', key: 'registration' },
               { header: 'Nome', key: 'name' }
             ],
             onSearch: fetchUsers,
-            onSelect: (item, context) =>
-              context.setMultipleValues(
-                {
-                  matriculaMagistrado: item.registration,
-                  nomeMagistrado: item.name
-                },
-                true
-              )
+            onSelect: (item, context) => context.setMultipleValues({ matriculaMagistrado: item.registration, nomeMagistrado: item.name }, true)
           }
         },
         {
@@ -81,26 +67,14 @@ export const step2: FormConfig['steps'][number] = {
             pagination: true,
             fields: [
               { name: 'name', label: 'Nome do Gerente', type: 'text' },
-              {
-                name: 'registration',
-                label: 'Matrícula',
-                type: 'text',
-                mask: 'a-0000000'
-              }
+              { name: 'registration', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
             ],
             columns: [
               { header: 'Matrícula', key: 'registration' },
               { header: 'Nome', key: 'name' }
             ],
             onSearch: fetchUsers,
-            onSelect: (item, context) =>
-              context.setMultipleValues(
-                {
-                  matriculaGerenteSecretaria: item.registration,
-                  nomeGerenteSecretaria: item.name
-                },
-                true
-              )
+            onSelect: (item, context) => context.setMultipleValues({ matriculaGerenteSecretaria: item.registration, nomeGerenteSecretaria: item.name }, true)
           }
         },
         {
@@ -133,23 +107,14 @@ export const step2: FormConfig['steps'][number] = {
             pagination: true,
             fields: [
               { name: 'name', label: 'Nome da Vara', type: 'text' },
-              {
-                name: 'code',
-                label: 'Código da Vara',
-                type: 'text',
-                mask: '000000000'
-              }
+              { name: 'code', label: 'Código da Vara', type: 'text', mask: '000000000' }
             ],
             columns: [
               { header: 'Código', key: 'code' },
               { header: 'Nome', key: 'name' }
             ],
             onSearch: fetchCourts,
-            onSelect: (item, context) =>
-              context.setMultipleValues(
-                { codigoVara: item.code, nomeVara: item.name },
-                true
-              )
+            onSelect: (item, context) => context.setMultipleValues({ codigoVara: item.code, nomeVara: item.name }, true)
           }
         },
         {
@@ -215,14 +180,8 @@ export const step2: FormConfig['steps'][number] = {
           type: 'select',
           required: true,
           options: [
-            {
-              label: 'Data do trânsito em julgado da sentença',
-              value: 'Sentença'
-            },
-            {
-              label: 'Data do trânsito em julgado do acórdão',
-              value: 'Acórdão'
-            }
+            { label: 'Data do trânsito em julgado da sentença', value: 'Sentença' },
+            { label: 'Data do trânsito em julgado do acórdão', value: 'Acórdão' }
           ]
         },
         {
@@ -288,11 +247,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'dataIntimacaoFormulario',
           label: 'Data da intimação das partes quanto ao inteiro teor do Formulário Ofício Precatório',
           type: 'date',
-          mask: '00/00/0000',
-          validation: {
-            pattern: '^\\d{2}/\\d{2}/\\d{4}$',
-            message: 'Data inválida. Use o formato DD/MM/AAAA'
-          },
           required: false,
           disabled: false,
           icon: 'CalendarToday'
@@ -366,14 +320,7 @@ export const step2: FormConfig['steps'][number] = {
             ],
             columns: [],
             onSearch: fetchSubjects,
-            onSelect: (item, context) =>
-              context.setMultipleValues(
-                {
-                  codigoAssunto: item.code,
-                  descricaoAssunto: item.description
-                },
-                true
-              )
+            onSelect: (item, context) => context.setMultipleValues({ codigoAssunto: item.code, descricaoAssunto: item.description }, true)
           }
         },
         {
