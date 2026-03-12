@@ -39,69 +39,79 @@ export const step3: FormConfig['steps'][number] = {
     },
     {
       title: 'Informações Básicas',
-      gridColumns: 2,
+      gridColumns: 6,
       fields: [
         {
           name: 'nomeBeneficiario',
           label: 'Nome',
           type: 'text',
-          required: true
+          required: true,
+          colSpan: 3
         },
         {
           name: 'nomeSocialBeneficiario',
           label: 'Nome Social',
-          type: 'text'
+          type: 'text',
+          colSpan: 3
         },
         {
           name: 'tipoDocumentoBeneficiario',
           label: 'Tipo de Documento',
           type: 'text',
           readOnly: true,
-          required: true
+          required: true,
+          colSpan: 2
         },
         {
           name: 'numeroDocumentoBeneficiario',
           label: 'Número do Documento',
           type: 'text',
           readOnly: true,
-          required: true
+          required: true,
+          colSpan: 2
         },
         {
           name: 'numeroPixPasepNit',
           label: 'Número PIX / PASEP ou NIT',
-          type: 'text'
+          type: 'text',
+          colSpan: 2
         },
         {
           name: 'doencaGrave',
           label: 'Doença Grave?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true
+          required: true,
+          colSpan: 2
         },
         {
           name: 'pessoaDeficiencia',
           label: 'Pessoa com Deficiência?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true
+          required: true,
+          colSpan: 2
         },
         {
           name: 'beneficiarioCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           type: 'select',
           options: YES_NO_OPTIONS,
-          required: true
+          required: true,
+          colSpan: 2
         },
         {
           name: 'dataNascimentoBeneficiario',
           label: 'Data de Nascimento',
           type: 'date',
+          colSpan: 3,
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
         },
         {
           name: 'idadeBeneficiario',
           label: 'Idade',
           type: 'number',
+          colSpan: 3,
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
         }
       ]
