@@ -206,7 +206,7 @@ export const stepOneAutoFillMock = {
   nomeVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
   matriculaGerenteSecretaria: 'S-1234567',
   nomeGerenteSecretaria: 'João Guimarães Rosa',
-  codigoVara: '123456789'
+  codigoVara: '100240413'
 };
 
 export const beneficiariesMock = [
