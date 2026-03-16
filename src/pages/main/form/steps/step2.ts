@@ -463,7 +463,7 @@ export const step2: FormConfig['steps'][number] = {
           required: true,
           mask: '00.000.000/0000-00',
           validation: {
-            pattern: '^\\d{2}\\.\\d{2}\\.\\d{2}/\\d{4}-\\d{2}$',
+            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$',
             message: 'CNPJ inválido'
           },
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
@@ -476,7 +476,7 @@ export const step2: FormConfig['steps'][number] = {
           required: true,
           mask: 'a000000-a',
           validation: {
-            pattern: '^[A-Z]\\d{6}[A-Z]$',
+            pattern: '^[A-Z]\\d{6}-[A-Z]$',
             message: 'RNE inválido'
           },
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
