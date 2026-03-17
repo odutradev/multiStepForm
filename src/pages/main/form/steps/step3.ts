@@ -759,14 +759,14 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Nome do órgão previdenciário',
           type: 'text',
           required: true,
-          colSpan: 3
+          colSpan: 2
         },
         {
           name: 'cnpjOrgaoPrevidenciario',
           label: 'CNPJ',
           type: 'text',
           required: true,
-          colSpan: 3,
+          colSpan: 2,
           mask: '00.000.000/0000-00',
           validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
         },
@@ -775,7 +775,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Deseja informar os dados bancários do órgão previdenciário?',
           type: 'select',
           required: true,
-          colSpan: 6,
+          colSpan: 2,
           options: SIM_NAO_OPTIONS
         },
         {
