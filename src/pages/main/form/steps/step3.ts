@@ -660,7 +660,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'valorJurosMoratorios',
-          label: 'Valor',
+          label: 'Valor dos Juros Moratórios',
           type: 'text',
           required: true,
           colSpan: 3,
@@ -684,7 +684,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'valorJurosCompensatorios',
-          label: 'Valor',
+          label: 'Valor dos Juros Compensatórios',
           type: 'text',
           required: true,
           colSpan: 3,
@@ -708,7 +708,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'valorCustasDespesasMulta',
-          label: 'Valor',
+          label: 'Valor das Custas/Despesas/Multa',
           type: 'text',
           required: true,
           colSpan: 3,
@@ -732,7 +732,7 @@ export const step3: FormConfig['steps'][number] = {
         },
         {
           name: 'valorDescontoPrevidenciario',
-          label: 'Valor',
+          label: 'Valor do Desconto Previdenciário',
           type: 'text',
           required: true,
           colSpan: 2,
