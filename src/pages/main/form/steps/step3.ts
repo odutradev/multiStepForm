@@ -1,6 +1,8 @@
+import dayjs from 'dayjs';
+
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 
-import type { FormConfig } from '@components/multiStepForm/types';
+import type { ActionContext, FormConfig } from '@components/multiStepForm/types';
 
 const SECAO_OAB_OPTIONS = [{ label: 'AC', value: 'AC' }, { label: 'AL', value: 'AL' }, { label: 'AP', value: 'AP' }, { label: 'AM', value: 'AM' }, { label: 'BA', value: 'BA' }, { label: 'CE', value: 'CE' }, { label: 'DF', value: 'DF' }, { label: 'ES', value: 'ES' }, { label: 'GO', value: 'GO' }, { label: 'MA', value: 'MA' }, { label: 'MT', value: 'MT' }, { label: 'MS', value: 'MS' }, { label: 'MG', value: 'MG' }, { label: 'PA', value: 'PA' }, { label: 'PB', value: 'PB' }, { label: 'PR', value: 'PR' }, { label: 'PE', value: 'PE' }, { label: 'PI', value: 'PI' }, { label: 'RJ', value: 'RJ' }, { label: 'RN', value: 'RN' }, { label: 'RS', value: 'RS' }, { label: 'RO', value: 'RO' }, { label: 'RR', value: 'RR' }, { label: 'SC', value: 'SC' }, { label: 'SP', value: 'SP' }, { label: 'SE', value: 'SE' }, { label: 'TO', value: 'TO' }];
 const BANCOS_OPTIONS = [{ label: '001 - Banco do Brasil S.A.', value: '001' }, { label: '033 - Banco Santander (Brasil) S.A.', value: '033' }, { label: '077 - Banco Inter S.A.', value: '077' }, { label: '104 - Caixa Econômica Federal', value: '104' }, { label: '237 - Banco Bradesco S.A.', value: '237' }, { label: '260 - Nubank', value: '260' }, { label: '341 - Itaú Unibanco S.A.', value: '341' }];
@@ -11,6 +13,22 @@ const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { la
 const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
 const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
 const CURRENCY_MASK = 'R$ 000.000.000,00';
+
+const calcularMesesRRA = (context: ActionContext): void => {
+  const { dataInicialRRA, dataFinalRRA } = context.getValues();
+  if (!dataInicialRRA || !dataFinalRRA) {
+    context.setMultipleValues({ numeroMesesRRA: '' });
+    return;
+  }
+  const start = dayjs(String(dataInicialRRA));
+  const end = dayjs(String(dataFinalRRA));
+  if (!start.isValid() || !end.isValid()) {
+    context.setMultipleValues({ numeroMesesRRA: '' });
+    return;
+  }
+  const diff = end.diff(start, 'month');
+  context.setMultipleValues({ numeroMesesRRA: Math.max(0, diff) });
+};
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
@@ -856,6 +874,51 @@ export const step3: FormConfig['steps'][number] = {
           type: 'info',
           colSpan: 1,
           conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'S'
+        },
+        {
+          name: 'haTributacaoRRA',
+          label: 'Há tributação RRA a título de imposto de renda com incidência de imposto de renda?',
+          type: 'select',
+          required: true,
+          colSpan: 2,
+          options: SIM_NAO_OPTIONS
+        }
+      ]
+    },
+    {
+      title: 'Tributação RRA a título de imposto de renda',
+      highlight: true,
+      gridColumns: 2,
+      conditionalRender: ({ data }) => data.haTributacaoRRA === 'S',
+      fields: [
+        {
+          name: 'dataInicialRRA',
+          label: 'Período Inicial',
+          type: 'date',
+          required: true,
+          colSpan: 1,
+          onChange: (_, context) => calcularMesesRRA(context)
+        },
+        {
+          name: 'dataFinalRRA',
+          label: 'Período Final',
+          type: 'date',
+          required: true,
+          colSpan: 1,
+          onChange: (_, context) => calcularMesesRRA(context)
+        },
+        {
+          name: 'parcelas13RRA',
+          label: 'Número de parcelas do 13° (se houver)',
+          type: 'number',
+          colSpan: 1
+        },
+        {
+          name: 'numeroMesesRRA',
+          label: 'Número de meses (NM) a que se refere a tributação RRA',
+          type: 'number',
+          readOnly: true,
+          colSpan: 1
         }
       ]
     }
