@@ -4,6 +4,7 @@ import type { FormConfig } from '@components/multiStepForm/types';
 
 const SECAO_OAB_OPTIONS = [{ label: 'AC', value: 'AC' }, { label: 'AL', value: 'AL' }, { label: 'AP', value: 'AP' }, { label: 'AM', value: 'AM' }, { label: 'BA', value: 'BA' }, { label: 'CE', value: 'CE' }, { label: 'DF', value: 'DF' }, { label: 'ES', value: 'ES' }, { label: 'GO', value: 'GO' }, { label: 'MA', value: 'MA' }, { label: 'MT', value: 'MT' }, { label: 'MS', value: 'MS' }, { label: 'MG', value: 'MG' }, { label: 'PA', value: 'PA' }, { label: 'PB', value: 'PB' }, { label: 'PR', value: 'PR' }, { label: 'PE', value: 'PE' }, { label: 'PI', value: 'PI' }, { label: 'RJ', value: 'RJ' }, { label: 'RN', value: 'RN' }, { label: 'RS', value: 'RS' }, { label: 'RO', value: 'RO' }, { label: 'RR', value: 'RR' }, { label: 'SC', value: 'SC' }, { label: 'SP', value: 'SP' }, { label: 'SE', value: 'SE' }, { label: 'TO', value: 'TO' }];
 const BANCOS_OPTIONS = [{ label: '001 - Banco do Brasil S.A.', value: '001' }, { label: '033 - Banco Santander (Brasil) S.A.', value: '033' }, { label: '077 - Banco Inter S.A.', value: '077' }, { label: '104 - Caixa Econômica Federal', value: '104' }, { label: '237 - Banco Bradesco S.A.', value: '237' }, { label: '260 - Nubank', value: '260' }, { label: '341 - Itaú Unibanco S.A.', value: '341' }];
+const REGIME_PREVIDENCIARIO_OPTIONS = [{ label: 'Geral/INSS', value: 'GeralINSS' }, { label: 'Próprio', value: 'Proprio' }];
 const CATEGORIA_OAB_OPTIONS = [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'E', value: 'E' }, { label: 'N', value: 'N' }];
 const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ', value: 'CNPJ' }, { label: 'RNE N°', value: 'RNE' }];
 const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
@@ -632,26 +633,29 @@ export const step3: FormConfig['steps'][number] = {
     },
     {
       title: 'Valor Devido ao Titular',
-      gridColumns: 2,
+      gridColumns: 6,
       fields: [
         {
           name: 'valorPrincipalCorrigido',
           label: 'Valor Principal Corrigido',
           type: 'text',
           required: true,
+          colSpan: 3,
           mask: CURRENCY_MASK
         },
         {
           name: 'dataLiquidacao',
           label: 'Data de Liquidação',
           type: 'date',
-          required: true
+          required: true,
+          colSpan: 3
         },
         {
           name: 'haJurosMoratorios',
           label: 'Há juros moratórios?',
           type: 'select',
           required: true,
+          colSpan: 3,
           options: SIM_NAO_OPTIONS
         },
         {
@@ -659,6 +663,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Valor',
           type: 'text',
           required: true,
+          colSpan: 3,
           mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haJurosMoratorios === 'S'
         },
@@ -666,6 +671,7 @@ export const step3: FormConfig['steps'][number] = {
           name: 'spacerJurosMoratorios',
           label: ' ',
           type: 'info',
+          colSpan: 3,
           conditionalRender: ({ data }) => data.haJurosMoratorios !== 'S'
         },
         {
@@ -673,6 +679,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Há incidência de juros compensatórios (remuneratórios)?',
           type: 'select',
           required: true,
+          colSpan: 3,
           options: SIM_NAO_OPTIONS
         },
         {
@@ -680,6 +687,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Valor',
           type: 'text',
           required: true,
+          colSpan: 3,
           mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S'
         },
@@ -687,6 +695,7 @@ export const step3: FormConfig['steps'][number] = {
           name: 'spacerJurosCompensatorios',
           label: ' ',
           type: 'info',
+          colSpan: 3,
           conditionalRender: ({ data }) => data.haJurosCompensatorios !== 'S'
         },
         {
@@ -694,6 +703,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Há custas/despesas antecipadas/multa?',
           type: 'select',
           required: true,
+          colSpan: 3,
           options: SIM_NAO_OPTIONS
         },
         {
@@ -701,6 +711,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Valor',
           type: 'text',
           required: true,
+          colSpan: 3,
           mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S'
         },
@@ -708,7 +719,100 @@ export const step3: FormConfig['steps'][number] = {
           name: 'spacerCustasDespesasMulta',
           label: ' ',
           type: 'info',
+          colSpan: 3,
           conditionalRender: ({ data }) => data.haCustasDespesasMulta !== 'S'
+        },
+        {
+          name: 'haDescontoPrevidenciario',
+          label: 'Há desconto previdenciário?',
+          type: 'select',
+          required: true,
+          colSpan: 2,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'valorDescontoPrevidenciario',
+          label: 'Valor',
+          type: 'text',
+          required: true,
+          colSpan: 2,
+          mask: CURRENCY_MASK
+        },
+        {
+          name: 'regimePrevidenciario',
+          label: 'Regime previdenciário',
+          type: 'select',
+          required: true,
+          colSpan: 2,
+          options: REGIME_PREVIDENCIARIO_OPTIONS
+        }
+      ]
+    },
+    {
+      title: 'Regime Previdenciário Próprio',
+      highlight: true,
+      gridColumns: 6,
+      conditionalRender: ({ data }) => data.regimePrevidenciario === 'Proprio',
+      fields: [
+        {
+          name: 'nomeOrgaoPrevidenciario',
+          label: 'Nome do órgão previdenciário',
+          type: 'text',
+          required: true,
+          colSpan: 3
+        },
+        {
+          name: 'cnpjOrgaoPrevidenciario',
+          label: 'CNPJ',
+          type: 'text',
+          required: true,
+          colSpan: 3,
+          mask: '00.000.000/0000-00',
+          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+        },
+        {
+          name: 'informarDadosBancariosOrgao',
+          label: 'Deseja informar os dados bancários do órgão previdenciário?',
+          type: 'select',
+          required: true,
+          colSpan: 6,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'bancoOrgao',
+          label: 'Banco do Titular',
+          type: 'select',
+          required: true,
+          colSpan: 3,
+          options: BANCOS_OPTIONS,
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+        },
+        {
+          name: 'tipoContaOrgao',
+          label: 'Tipo de Conta',
+          type: 'select',
+          required: true,
+          colSpan: 3,
+          options: TIPO_CONTA_OPTIONS,
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+        },
+        {
+          name: 'agenciaOrgao',
+          label: 'Agência',
+          type: 'text',
+          required: true,
+          colSpan: 3,
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+        },
+        {
+          name: 'numeroContaOrgao',
+          label: 'Número da Conta',
+          type: 'text',
+          required: true,
+          colSpan: 3,
+          validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
         }
       ]
     }
