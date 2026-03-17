@@ -817,7 +817,6 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Outros Valores e Tributos',
       gridColumns: 2,
       fields: [
         {
