@@ -12,7 +12,30 @@ const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ',
 const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
 const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
 const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
+const PARSE_BRL_REGEX = /[R$\s.]/g;
 const CURRENCY_MASK = 'R$ 000.000.000,00';
+
+const parseCurrency = (value: unknown): number => {
+  if (typeof value !== 'string') return 0;
+  const cleanValue = value.replace(PARSE_BRL_REGEX, '').replace(',', '.');
+  const parsedNumber = parseFloat(cleanValue);
+  return Number.isNaN(parsedNumber) ? 0 : parsedNumber;
+};
+
+const formatCurrency = (value: number): string => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
+const calcularValorBruto = (context: ActionContext, changedField?: string, newValue?: unknown): void => {
+  const formValues = context.getValues();
+  const getValue = (field: string) => (changedField === field ? newValue : formValues[field]);
+
+  const principal = parseCurrency(getValue('valorPrincipalCorrigido'));
+  const jurosMoratorios = getValue('haJurosMoratorios') === 'S' ? parseCurrency(getValue('valorJurosMoratorios')) : 0;
+  const jurosCompensatorios = getValue('haJurosCompensatorios') === 'S' ? parseCurrency(getValue('valorJurosCompensatorios')) : 0;
+  const custasDespesas = getValue('haCustasDespesasMulta') === 'S' ? parseCurrency(getValue('valorCustasDespesasMulta')) : 0;
+
+  const valorTotal = principal + jurosMoratorios + jurosCompensatorios + custasDespesas;
+  context.setMultipleValues({ valorBruto: formatCurrency(valorTotal) });
+};
 
 const calcularMesesRRA = (context: ActionContext): void => {
   const { dataInicialRRA, dataFinalRRA } = context.getValues();
@@ -659,7 +682,8 @@ export const step3: FormConfig['steps'][number] = {
           type: 'text',
           required: true,
           colSpan: 3,
-          mask: CURRENCY_MASK
+          mask: CURRENCY_MASK,
+          onChange: (val, context) => calcularValorBruto(context, 'valorPrincipalCorrigido', val)
         },
         {
           name: 'dataLiquidacao',
@@ -674,7 +698,8 @@ export const step3: FormConfig['steps'][number] = {
           type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS
+          options: SIM_NAO_OPTIONS,
+          onChange: (val, context) => calcularValorBruto(context, 'haJurosMoratorios', val)
         },
         {
           name: 'valorJurosMoratorios',
@@ -683,7 +708,8 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           mask: CURRENCY_MASK,
-          conditionalRender: ({ data }) => data.haJurosMoratorios === 'S'
+          conditionalRender: ({ data }) => data.haJurosMoratorios === 'S',
+          onChange: (val, context) => calcularValorBruto(context, 'valorJurosMoratorios', val)
         },
         {
           name: 'spacerJurosMoratorios',
@@ -698,7 +724,8 @@ export const step3: FormConfig['steps'][number] = {
           type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS
+          options: SIM_NAO_OPTIONS,
+          onChange: (val, context) => calcularValorBruto(context, 'haJurosCompensatorios', val)
         },
         {
           name: 'valorJurosCompensatorios',
@@ -707,7 +734,8 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           mask: CURRENCY_MASK,
-          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S'
+          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S',
+          onChange: (val, context) => calcularValorBruto(context, 'valorJurosCompensatorios', val)
         },
         {
           name: 'spacerJurosCompensatorios',
@@ -722,7 +750,8 @@ export const step3: FormConfig['steps'][number] = {
           type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS
+          options: SIM_NAO_OPTIONS,
+          onChange: (val, context) => calcularValorBruto(context, 'haCustasDespesasMulta', val)
         },
         {
           name: 'valorCustasDespesasMulta',
@@ -731,7 +760,8 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           mask: CURRENCY_MASK,
-          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S'
+          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S',
+          onChange: (val, context) => calcularValorBruto(context, 'valorCustasDespesasMulta', val)
         },
         {
           name: 'spacerCustasDespesasMulta',
@@ -919,6 +949,17 @@ export const step3: FormConfig['steps'][number] = {
           type: 'number',
           readOnly: true,
           colSpan: 1
+        }
+      ]
+    },
+    {
+      gridColumns: 1,
+      fields: [
+        {
+          name: 'valorBruto',
+          label: 'Valor Bruto',
+          type: 'text',
+          readOnly: true
         }
       ]
     }
