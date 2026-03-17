@@ -815,6 +815,50 @@ export const step3: FormConfig['steps'][number] = {
           conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
         }
       ]
+    },
+    {
+      title: 'Outros Valores e Tributos',
+      gridColumns: 2,
+      fields: [
+        {
+          name: 'valorAssistenciaMedica',
+          label: 'Valor da Assistência Médica',
+          type: 'text',
+          colSpan: 1,
+          mask: CURRENCY_MASK
+        },
+        {
+          name: 'valorFundoAposentadoria',
+          label: 'Valor do Fundo de Aposentadoria',
+          type: 'text',
+          colSpan: 1,
+          mask: CURRENCY_MASK
+        },
+        {
+          name: 'haIncidenciaITCD',
+          label: 'Há incidência de ITCD?',
+          type: 'select',
+          required: true,
+          colSpan: 1,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'percentualAliquotaITCD',
+          label: 'Percentual / Alíquota',
+          type: 'text',
+          required: true,
+          colSpan: 1,
+          mask: '0000,00%',
+          conditionalRender: ({ data }) => data.haIncidenciaITCD === 'S'
+        },
+        {
+          name: 'spacerITCD',
+          label: ' ',
+          type: 'info',
+          colSpan: 1,
+          conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'S'
+        }
+      ]
     }
   ],
   actions: [
