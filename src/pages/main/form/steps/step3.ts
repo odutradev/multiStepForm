@@ -9,6 +9,7 @@ const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ',
 const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
 const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
 const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
+const CURRENCY_MASK = 'R$ 000.000.000,00';
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
@@ -626,6 +627,88 @@ export const step3: FormConfig['steps'][number] = {
           type: 'text',
           required: true,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
+        }
+      ]
+    },
+    {
+      title: 'Valor Devido ao Titular',
+      gridColumns: 2,
+      fields: [
+        {
+          name: 'valorPrincipalCorrigido',
+          label: 'Valor Principal Corrigido',
+          type: 'text',
+          required: true,
+          mask: CURRENCY_MASK
+        },
+        {
+          name: 'dataLiquidacao',
+          label: 'Data de Liquidação',
+          type: 'date',
+          required: true
+        },
+        {
+          name: 'haJurosMoratorios',
+          label: 'Há juros moratórios?',
+          type: 'select',
+          required: true,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'valorJurosMoratorios',
+          label: 'Valor',
+          type: 'text',
+          required: true,
+          mask: CURRENCY_MASK,
+          conditionalRender: ({ data }) => data.haJurosMoratorios === 'S'
+        },
+        {
+          name: 'spacerJurosMoratorios',
+          label: ' ',
+          type: 'info',
+          conditionalRender: ({ data }) => data.haJurosMoratorios !== 'S'
+        },
+        {
+          name: 'haJurosCompensatorios',
+          label: 'Há incidência de juros compensatórios (remuneratórios)?',
+          type: 'select',
+          required: true,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'valorJurosCompensatorios',
+          label: 'Valor',
+          type: 'text',
+          required: true,
+          mask: CURRENCY_MASK,
+          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S'
+        },
+        {
+          name: 'spacerJurosCompensatorios',
+          label: ' ',
+          type: 'info',
+          conditionalRender: ({ data }) => data.haJurosCompensatorios !== 'S'
+        },
+        {
+          name: 'haCustasDespesasMulta',
+          label: 'Há custas/despesas antecipadas/multa?',
+          type: 'select',
+          required: true,
+          options: SIM_NAO_OPTIONS
+        },
+        {
+          name: 'valorCustasDespesasMulta',
+          label: 'Valor',
+          type: 'text',
+          required: true,
+          mask: CURRENCY_MASK,
+          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S'
+        },
+        {
+          name: 'spacerCustasDespesasMulta',
+          label: ' ',
+          type: 'info',
+          conditionalRender: ({ data }) => data.haCustasDespesasMulta !== 'S'
         }
       ]
     }
