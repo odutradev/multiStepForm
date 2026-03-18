@@ -1,20 +1,20 @@
-import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import * as MuiIcons from '@mui/icons-material';
-import { forwardRef, useState } from 'react';
-import { Controller } from 'react-hook-form';
-import { IMaskInput } from 'react-imask';
-import dayjs from 'dayjs';
+import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import * as MuiIcons from '@mui/icons-material'
+import { Controller } from 'react-hook-form'
+import { forwardRef, useState } from 'react'
+import { IMaskInput } from 'react-imask'
+import dayjs from 'dayjs'
 
-import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
-import FormButton from './components/formButton';
-import FormTable from './components/formTable';
-import SearchModal from '../searchModal';
+import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles'
+import FormButton from './components/formButton'
+import FormTable from './components/formTable'
+import SearchModal from '../searchModal'
 
-import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
-import type { FieldRendererProps, MaskedInputProps } from './types';
-import type { InputBaseComponentProps } from '@mui/material';
-import type { FormField } from '../../types';
+import type { ElementType, KeyboardEvent, MouseEvent } from 'react'
+import type { FieldRendererProps, MaskedInputProps } from './types'
+import type { InputBaseComponentProps } from '@mui/material'
+import type { FormField } from '../../types'
 
 const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, maskPattern, name, ...other }, ref) => (
   <IMaskInput
@@ -25,21 +25,21 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
     onAccept={(value: string) => onChange({ target: { name, value } })}
     overwrite
   />
-));
+))
 
 const formatCustomValue = (val: string | number, type: string): string => {
-  if (!val && val !== 0) return '';
-  const digits = String(val).replace(/\D/g, '');
-  if (!digits) return '';
-  const num = parseInt(digits, 10) / 100;
-  if (type === 'percentage') return num.toFixed(2).replace('.', ',');
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
-};
+  if (!val && val !== 0) return ''
+  const digits = String(val).replace(/\D/g, '')
+  if (!digits) return ''
+  const num = parseInt(digits, 10) / 100
+  if (type === 'percentage') return num.toFixed(2).replace('.', ',')
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num)
+}
 
 const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
-  const [activeSearch, setActiveSearch] = useState<{ field: FormField; value?: string } | null>(null);
+  const [activeSearch, setActiveSearch] = useState<{ field: FormField; value?: string } | null>(null)
 
-  if (!groups?.length) return null;
+  if (!groups?.length) return null
 
   return (
     <>
@@ -49,7 +49,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
             {group.title && <SubtitleText variant="subtitle1" $highlight={group.highlight}>{group.title}</SubtitleText>}
             <FieldsContainer $columns={group.gridColumns}>
               {group.fields.map((field) => {
-                const SelectedIcon = field.icon ? MuiIcons[field.icon as keyof typeof MuiIcons] : null;
+                const SelectedIcon = field.icon ? MuiIcons[field.icon as keyof typeof MuiIcons] : null
 
                 return (
                   <FieldWrapper key={field.name} $colSpan={field.colSpan}>
@@ -71,14 +71,14 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                         }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => {
                           const handleFieldChange = (newValue: unknown) => {
-                            const isCustomFormat = field.type === 'currency' || field.type === 'percentage';
+                            const isCustomFormat = field.type === 'currency' || field.type === 'percentage'
                             const finalValue = isCustomFormat && (typeof newValue === 'string' || typeof newValue === 'number')
-                              ? formatCustomValue(newValue, field.type)
-                              : newValue;
+                              ? formatCustomValue(newValue, field.type || '')
+                              : newValue
 
-                            onChange(finalValue);
-                            if (field.onChange) field.onChange(finalValue, context);
-                          };
+                            onChange(finalValue)
+                            if (field.onChange) field.onChange(finalValue, context)
+                          }
 
                           if (field.type === 'select') {
                             return (
@@ -93,7 +93,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                 </Select>
                                 {error && <FormHelperText>{error.message}</FormHelperText>}
                               </FormControl>
-                            );
+                            )
                           }
 
                           if (field.type === 'date') {
@@ -117,7 +117,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                   }
                                 }}
                               />
-                            );
+                            )
                           }
 
                           const renderEndAdornment = () => {
@@ -128,7 +128,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                     {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
                                   </IconButton>
                                 </InputAdornment>
-                              );
+                              )
                             }
                             if (SelectedIcon || field.type === 'percentage') {
                               return (
@@ -136,14 +136,14 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                   {field.type === 'percentage' && <Typography color="text.secondary" sx={{ mr: SelectedIcon ? 1 : 0 }}>%</Typography>}
                                   {SelectedIcon && <SelectedIcon color="action" />}
                                 </InputAdornment>
-                              );
+                              )
                             }
-                            return undefined;
-                          };
+                            return undefined
+                          }
 
-                          const isCustomTextType = field.type === 'currency' || field.type === 'percentage';
-                          const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
-                          const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
+                          const isCustomTextType = field.type === 'currency' || field.type === 'percentage'
+                          const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined
+                          const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint
 
                           return (
                             <TextField
@@ -158,15 +158,15 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               fullWidth
                               onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
                                 if (e.key === 'Enter') {
-                                  e.preventDefault();
+                                  e.preventDefault()
                                   if (field.searchConfig && !field.disabled && !field.readOnly) {
-                                    const currentValue = (e.target as HTMLInputElement).value;
-                                    setActiveSearch({ field, value: currentValue || undefined });
+                                    const currentValue = (e.target as HTMLInputElement).value
+                                    setActiveSearch({ field, value: currentValue || undefined })
                                   }
                                 }
                               }}
                               onMouseDown={(e: MouseEvent<HTMLDivElement>) => {
-                                if ((field.readOnly || field.disabled) && !value) e.preventDefault();
+                                if ((field.readOnly || field.disabled) && !value) e.preventDefault()
                               }}
                               InputProps={{
                                 ...(field.readOnly && { readOnly: true }),
@@ -175,12 +175,12 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               }}
                               inputProps={field.mask ? { maskPattern: field.mask } : undefined}
                             />
-                          );
+                          )
                         }}
                       />
                     )}
                   </FieldWrapper>
-                );
+                )
               })}
             </FieldsContainer>
           </GroupContainer>
@@ -196,7 +196,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default FieldRenderer;
+export default FieldRenderer
