@@ -1,20 +1,20 @@
+import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 
 import MultiStepForm from '@components/multiStepForm';
-import { MainContainer } from './styles';
 import { mockFormConfig } from './form';
+import { MainContainer } from './styles';
 
 const Main = () => {
+  const navigate = useNavigate();
+
   const handleFormSubmit = useCallback((data: Record<string, unknown>) => {
-    console.log('Payload enviado:', data);
-  }, []);
+    navigate('/view', { state: { formData: data } });
+  }, [navigate]);
 
   return (
     <MainContainer>
-      <MultiStepForm
-        config={mockFormConfig}
-        onSubmit={handleFormSubmit}
-      />
+      <MultiStepForm config={mockFormConfig} onSubmit={handleFormSubmit} />
     </MainContainer>
   );
 };
