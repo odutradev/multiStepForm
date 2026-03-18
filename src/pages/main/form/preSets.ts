@@ -1,6 +1,11 @@
 import type { FormConfig } from '@components/multiStepForm/types'
 
 export const formPreSets: FormConfig['fieldPreSets'] = {
+  numeroProcesso: {
+    type: 'text',
+    mask: '0000000-00.0000.0.00.0000',
+    validation: { pattern: '^\\d{7}-\\d{2}\\.\\d{4}\\.\\d\\.\\d{2}\\.\\d{4}$', message: 'Número do processo inválido' }
+  },
   cpf: {
     type: 'text',
     mask: '000.000.000-00',

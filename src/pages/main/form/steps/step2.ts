@@ -123,16 +123,14 @@ export const step2: FormConfig['steps'][number] = {
         {
           name: 'numeroUnicoProcessoJudicialCnj',
           label: 'Numeração única do processo judicial (CNJ)',
-          type: 'text',
+          preSet: 'numeroProcesso',
           required: true,
-          readOnly: true,
-          mask: '0000000-00.0000.0.00.0000'
+          readOnly: true
         },
         {
           name: 'numeroOriginarioAnterior',
           label: 'Número originário anterior (se houver)',
-          type: 'text',
-          mask: '0000000-00.0000.0.00.0000'
+          preSet: 'numeroProcesso'
         },
         {
           name: 'houveProcessoConhecimento',
