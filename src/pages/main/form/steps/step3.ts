@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
+import dayjs from 'dayjs';
 
 import type { ActionContext, FormConfig } from '@components/multiStepForm/types';
 
@@ -212,24 +211,23 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '000.000.000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CPF',
-          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+          preSet: 'cpf',
+          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CPF'
         },
         {
           name: 'numeroDocumentoRepresentanteCNPJ',
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '00.000.000/0000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CNPJ',
-          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+          preSet: 'cnpj',
+          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CNPJ'
         },
         {
           name: 'numeroDocumentoRepresentanteRNE',
           label: 'Número do Documento',
           type: 'text',
           required: true,
+          preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'RNE'
         },
         {
@@ -295,26 +293,23 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '000.000.000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CPF',
-          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+          preSet: 'cpf',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CPF'
         },
         {
           name: 'numeroDocumentoTitularCreditoCNPJ',
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '00.000.000/0000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CNPJ',
-          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+          preSet: 'cnpj',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CNPJ'
         },
         {
           name: 'numeroDocumentoTitularCreditoRNE',
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: 'a000000-a',
-          validation: { pattern: '^[A-Z]\\d{6}[A-Z]$', message: 'RNE inválido' },
+          preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
         }
       ]
@@ -402,24 +397,23 @@ export const step3: FormConfig['steps'][number] = {
           name: 'numeroDocumentoProcuradorCPF',
           label: 'Número do Documento',
           type: 'text',
-          mask: '000.000.000-00',
+          preSet: 'cpf',
           colSpan: 1,
-          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF',
-          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF'
         },
         {
           name: 'numeroDocumentoProcuradorCNPJ',
           label: 'Número do Documento',
           type: 'text',
-          mask: '00.000.000/0000-00',
+          preSet: 'cnpj',
           colSpan: 1,
-          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ',
-          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+          conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ'
         },
         {
           name: 'numeroDocumentoProcuradorRNE',
           label: 'Número do Documento',
           type: 'text',
+          preSet: 'rne',
           colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'RNE'
         },
@@ -613,26 +607,23 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '000.000.000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CPF',
-          validation: { pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$', message: 'CPF inválido' }
+          preSet: 'cpf',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CPF'
         },
         {
           name: 'numeroDocumentoTitularAdvogadoCNPJ',
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: '00.000.000/0000-00',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CNPJ',
-          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+          preSet: 'cnpj',
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CNPJ'
         },
         {
           name: 'numeroDocumentoTitularAdvogadoRNE',
           label: 'Número do Documento',
           type: 'text',
           required: true,
-          mask: 'a000000-a',
-          validation: { pattern: '^[A-Z]\\d{6}[A-Z]$', message: 'RNE inválido' },
+          preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'RNE'
         }
       ]
@@ -808,9 +799,8 @@ export const step3: FormConfig['steps'][number] = {
           label: 'CNPJ',
           type: 'text',
           required: true,
-          colSpan: 2,
-          mask: '00.000.000/0000-00',
-          validation: { pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$', message: 'CNPJ inválido' }
+          preSet: 'cnpj',
+          colSpan: 2
         },
         {
           name: 'informarDadosBancariosOrgao',

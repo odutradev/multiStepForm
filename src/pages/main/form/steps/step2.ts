@@ -15,19 +15,15 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Matrícula do magistrado',
           type: 'text',
           required: true,
-          mask: 'a-0000000',
+          preSet: 'matricula',
           icon: 'Search',
-          validation: {
-            pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida'
-          },
           searchConfig: {
             title: 'Buscar Magistrado',
             initialFilterName: 'registration',
             pagination: true,
             fields: [
               { name: 'name', label: 'Nome do Magistrado', type: 'text' },
-              { name: 'registration', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
+              { name: 'registration', label: 'Matrícula', type: 'text', preSet: 'matricula' }
             ],
             columns: [
               { header: 'Matrícula', key: 'registration' },
@@ -55,19 +51,15 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Matrícula do gerente da secretaria',
           type: 'text',
           required: true,
-          mask: 'a-0000000',
+          preSet: 'matricula',
           icon: 'Search',
-          validation: {
-            pattern: '^[A-Z]-\\d{7}$',
-            message: 'Matrícula inválida'
-          },
           searchConfig: {
             title: 'Buscar Gerente da Secretaria',
             initialFilterName: 'registration',
             pagination: true,
             fields: [
               { name: 'name', label: 'Nome do Gerente', type: 'text' },
-              { name: 'registration', label: 'Matrícula', type: 'text', mask: 'a-0000000' }
+              { name: 'registration', label: 'Matrícula', type: 'text', preSet: 'matricula' }
             ],
             columns: [
               { header: 'Matrícula', key: 'registration' },
@@ -448,11 +440,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Número do documento',
           name: 'numeroCpfBeneficiarioOriginario',
           required: true,
-          mask: '000.000.000-00',
-          validation: {
-            pattern: '^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$',
-            message: 'CPF inválido'
-          },
+          preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF',
           colSpan: 1
         },
@@ -461,11 +449,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Número do documento',
           name: 'numeroCnpjBeneficiarioOriginario',
           required: true,
-          mask: '00.000.000/0000-00',
-          validation: {
-            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$',
-            message: 'CNPJ inválido'
-          },
+          preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
           colSpan: 1
         },
@@ -474,11 +458,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Número do documento',
           name: 'numeroRneBeneficiarioOriginario',
           required: true,
-          mask: 'a000000-a',
-          validation: {
-            pattern: '^[A-Z]\\d{6}-[A-Z]$',
-            message: 'RNE inválido'
-          },
+          preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
           colSpan: 1
         }
@@ -600,13 +580,9 @@ export const step2: FormConfig['steps'][number] = {
           type: 'text',
           name: 'cnpj',
           label: 'CNPJ',
-          mask: '00.000.000/0000-00',
+          preSet: 'cnpj',
           readOnly: true,
-          conditionalRender: ({ data }) => !!data.devedor,
-          validation: {
-            pattern: '^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$',
-            message: 'CNPJ inválido'
-          }
+          conditionalRender: ({ data }) => !!data.devedor
         }
       ]
     }

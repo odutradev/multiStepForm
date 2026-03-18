@@ -70,6 +70,7 @@ export interface FormField {
   required?: boolean;
   readOnly?: boolean;
   colSpan?: number;
+  preSet?: string;
   label: string;
   icon?: string;
   name: string;
@@ -99,6 +100,7 @@ export interface FormStep {
 }
 
 export interface FormConfig {
+  fieldPreSets?: Record<string, Partial<FormField>>;
   steps: FormStep[];
 }
 

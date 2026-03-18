@@ -83,9 +83,25 @@ export const useMultiStepForm = ({ config, initialData, onSubmit }: MultiStepFor
       .filter((g) => (g.conditionalRender ? g.conditionalRender(actionContext) : true))
       .map((g) => ({
         ...g,
-        fields: g.fields.filter((f) => (f.conditionalRender ? f.conditionalRender(actionContext) : true))
+        fields: g.fields
+          .filter((f) => (f.conditionalRender ? f.conditionalRender(actionContext) : true))
+          .map((f) => {
+            const baseField = f.preSet && config.fieldPreSets?.[f.preSet] ? { ...config.fieldPreSets[f.preSet], ...f } : f;
+            if (baseField.searchConfig?.fields) {
+              return {
+                ...baseField,
+                searchConfig: {
+                  ...baseField.searchConfig,
+                  fields: baseField.searchConfig.fields.map((sf) =>
+                    sf.preSet && config.fieldPreSets?.[sf.preSet] ? { ...config.fieldPreSets[sf.preSet], ...sf } : sf
+                  )
+                }
+              };
+            }
+            return baseField;
+          })
       }));
-  }, [currentStep, actionContext]);
+  }, [currentStep, actionContext, config.fieldPreSets]);
 
   const currentFieldsToValidate = useMemo(() => visibleGroups.flatMap((g) => g.fields).filter((f) => f.type !== 'info'), [visibleGroups]);
   const currentFieldNames = useMemo(() => currentFieldsToValidate.map((f) => f.name), [currentFieldsToValidate]);
