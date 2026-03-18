@@ -441,10 +441,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'creditoCessao',
           label: 'O crédito foi objeto de cessão?',
           required: true,
-          validation: {
-            pattern: '^(Sim|Não)$',
-            message: 'Campo obrigatório'
-          },
           colSpan: 1,
           preSet: 'simNao'
         },
@@ -452,10 +448,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'existePenhora',
           label: 'O crédito foi objeto de penhora?',
           required: true,
-          validation: {
-            pattern: '^(Sim|Não)$',
-            message: 'Campo obrigatório'
-          },
           colSpan: 1,
           preSet: 'simNao'
         },
