@@ -355,12 +355,10 @@ export const step3: FormConfig['steps'][number] = {
           name: 'nomeProcurador',
           label: 'Nome do Procurador',
           type: 'text',
-          colSpan: 1
         },
         {
           name: 'tipoDocumentoProcurador',
           label: 'Tipo de Documento',
-          colSpan: 1,
           preSet: 'tipoDocumento'
         },
         {
@@ -368,46 +366,39 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Número do Documento',
           type: 'text',
           disabled: true,
-          colSpan: 1,
           conditionalRender: ({ data }) => !data.tipoDocumentoProcurador
         },
         {
           name: 'numeroDocumentoProcuradorCPF',
           label: 'Número do Documento',
           preSet: 'cpf',
-          colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF'
         },
         {
           name: 'numeroDocumentoProcuradorCNPJ',
           label: 'Número do Documento',
           preSet: 'cnpj',
-          colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ'
         },
         {
           name: 'numeroDocumentoProcuradorRNE',
           label: 'Número do Documento',
           preSet: 'rne',
-          colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'RNE'
         },
         {
           name: 'numeroOABProcurador',
           label: 'Número da OAB',
           type: 'text',
-          colSpan: 1
         },
         {
           name: 'categoriaOABProcurador',
           label: 'Categoria',
-          colSpan: 1,
           preSet: 'categoriaOab'
         },
         {
           name: 'secaoOABProcurador',
           label: 'Seção',
-          colSpan: 1,
           preSet: 'estados'
         },
         {
@@ -415,7 +406,6 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Limpar Formulário',
           type: 'button',
           buttonVariant: 'outlined',
-          colSpan: 1,
           onButtonClick: (context) => context.setMultipleValues({
             selecioneProcurador: '',
             nomeProcurador: '',
@@ -812,19 +802,16 @@ export const step3: FormConfig['steps'][number] = {
           name: 'valorAssistenciaMedica',
           label: 'Valor da Assistência Médica',
           type: 'currency',
-          colSpan: 1
         },
         {
           name: 'valorFundoAposentadoria',
           label: 'Valor do Fundo de Aposentadoria',
           type: 'currency',
-          colSpan: 1
         },
         {
           name: 'haIncidenciaITCD',
           label: 'Há incidência de ITCD?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
@@ -832,14 +819,12 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Percentual / Alíquota',
           type: 'percentage',
           required: true,
-          colSpan: 1,
           conditionalRender: ({ data }) => data.haIncidenciaITCD === 'Sim'
         },
         {
           name: 'spacerITCD',
           label: ' ',
           type: 'info',
-          colSpan: 1,
           conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'Sim'
         },
         {
@@ -863,7 +848,6 @@ export const step3: FormConfig['steps'][number] = {
           type: 'date',
           required: true,
           disableFuture: true,
-          colSpan: 1,
           onChange: (_, context) => calcularMesesRRA(context)
         },
         {
@@ -872,21 +856,18 @@ export const step3: FormConfig['steps'][number] = {
           type: 'date',
           required: true,
           disableFuture: true,
-          colSpan: 1,
           onChange: (_, context) => calcularMesesRRA(context)
         },
         {
           name: 'parcelas13RRA',
           label: 'Número de parcelas do 13° (se houver)',
           type: 'number',
-          colSpan: 1
         },
         {
           name: 'numeroMesesRRA',
           label: 'Número de meses (NM) a que se refere a tributação RRA',
           type: 'number',
           readOnly: true,
-          colSpan: 1
         }
       ]
     },

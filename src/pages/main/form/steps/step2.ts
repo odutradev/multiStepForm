@@ -201,7 +201,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'dataTransitoJulgadoEmbargos',
           label: 'Data do trânsito em julgado dos embargos à execução',
           type: 'date',
-          required: false,
           disableFuture: true,
           conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Sim'
         },
@@ -209,7 +208,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'dataDecursoPrazoEmbargos',
           label: 'Data do decurso de prazo para apresentação dos embargos à execução',
           type: 'date',
-          required: false,
           disableFuture: true,
           conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Não'
         }
@@ -233,8 +231,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'dataIntimacaoFormulario',
           label: 'Data da intimação das partes quanto ao inteiro teor do Formulário Ofício Precatório',
           type: 'date',
-          required: false,
-          disabled: false,
           disableFuture: true,
           icon: 'CalendarToday'
         }
@@ -247,7 +243,6 @@ export const step2: FormConfig['steps'][number] = {
           name: 'acaoNaturezaSalarial',
           label: 'Ação de natureza salarial?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
@@ -255,7 +250,6 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Condição',
           type: 'select',
           required: true,
-          colSpan: 1,
           options: [
             { label: 'Ativo', value: 'Ativo' },
             { label: 'Inativo', value: 'Inativo' },
@@ -268,7 +262,6 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Órgão a que estiver vinculado o empregado ou servidor publico, civil ou militar, da administração direta',
           type: 'text',
           required: true,
-          colSpan: 1,
           conditionalRender: ({ data }) => data.acaoNaturezaSalarial === 'Sim'
         }
       ]
@@ -329,13 +322,11 @@ export const step2: FormConfig['steps'][number] = {
             { label: 'Honorários Sucumbenciais', value: 'Honorários Sucumbenciais' },
             { label: 'Honorários Periciais', value: 'Honorários Periciais' }
           ],
-          colSpan: 1
         },
         {
           name: 'previsaoDestaqueHonorarios',
           label: 'Existe a previsão de destaque de honorários contratuais?',
           required: true,
-          disabled: false,
           colSpan: 2,
           preSet: 'simNao',
           conditionalRender: ({ data }) => data.tipoBeneficiarioRequisicao === 'Beneficiário Principal'
@@ -352,14 +343,12 @@ export const step2: FormConfig['steps'][number] = {
           name: 'creditoObjetoCessaoPrincipal',
           label: 'O crédito foi objeto de cessão?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
           name: 'creditoObjetoSucessaoPrincipal',
           label: 'O crédito principal foi objeto de sucessão?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
@@ -370,17 +359,12 @@ export const step2: FormConfig['steps'][number] = {
             { label: 'Total', value: 'Total' },
             { label: 'Parcial', value: 'Parcial' }
           ],
-          required: false,
-          disabled: false,
-          readOnly: false,
-          colSpan: 1
         },
         {
           name: 'creditoObjetoPenhoraPrincipal',
           label: 'O crédito foi objeto de penhora?',
           required: true,
           conditionalRender: ({ data }) => data.creditoObjetoCessaoPrincipal === 'Sim',
-          colSpan: 1,
           preSet: 'simNao'
         }
       ]
@@ -396,13 +380,11 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Beneficiário Originário',
           type: 'text',
           required: true,
-          colSpan: 1
         },
         {
           name: 'tipoDocumentoBeneficiarioOriginario',
           label: 'Tipo do documento',
           required: true,
-          colSpan: 1,
           preSet: 'tipoDocumento'
         },
         {
@@ -411,7 +393,6 @@ export const step2: FormConfig['steps'][number] = {
           required: true,
           preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF',
-          colSpan: 1
         },
         {
           name: 'numeroCnpjBeneficiarioOriginario',
@@ -419,7 +400,6 @@ export const step2: FormConfig['steps'][number] = {
           required: true,
           preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
-          colSpan: 1
         },
         {
           name: 'numeroRneBeneficiarioOriginario',
@@ -427,7 +407,6 @@ export const step2: FormConfig['steps'][number] = {
           required: true,
           preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
-          colSpan: 1
         }
       ]
     },
@@ -441,21 +420,17 @@ export const step2: FormConfig['steps'][number] = {
           name: 'creditoCessao',
           label: 'O crédito foi objeto de cessão?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
           name: 'existePenhora',
           label: 'O crédito foi objeto de penhora?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
           name: 'isObjetoSucessao',
           label: 'Os honorários sucumbenciais foram objeto de sucessão?',
-          required: false,
-          colSpan: 1,
           preSet: 'simNao'
         }
       ]
@@ -470,21 +445,17 @@ export const step2: FormConfig['steps'][number] = {
           name: 'creditoObjetoCessaoPericial',
           label: 'O crédito foi objeto de cessão?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
           name: 'creditoObjetoPenhoraPericial',
           label: 'O crédito foi objeto de penhora?',
           required: true,
-          colSpan: 1,
           preSet: 'simNao'
         },
         {
           name: 'creditoObjetoSucessaoPericial',
           label: 'O crédito principal foi objeto de sucessão?',
-          required: false,
-          colSpan: 1,
           preSet: 'simNao'
         }
       ]
@@ -501,8 +472,6 @@ export const step2: FormConfig['steps'][number] = {
             { label: 'JD COMARCA EXTREMA', value: 'JD COMARCA EXTREMA' },
             { label: 'ESTADO DE MINAS GERAIS', value: 'ESTADO DE MINAS GERAIS' }
           ],
-          required: false,
-          disabled: false,
           onChange: (value, context) => {
             if (value === 'ESTADO DE MINAS GERAIS') {
               context.setMultipleValues({ cnpj: '18.715.615/0001-60' })
