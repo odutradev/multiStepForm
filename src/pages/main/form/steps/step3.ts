@@ -12,12 +12,11 @@ const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ',
 const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
 const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
 const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
-const PARSE_BRL_REGEX = /[R$\s.]/g;
-const CURRENCY_MASK = 'R$ 000.000.000,00';
+const PARSE_NUMBER_REGEX = /[^\d,]/g;
 
 const parseCurrency = (value: unknown): number => {
   if (typeof value !== 'string') return 0;
-  const cleanValue = value.replace(PARSE_BRL_REGEX, '').replace(',', '.');
+  const cleanValue = value.replace(PARSE_NUMBER_REGEX, '').replace(',', '.');
   const parsedNumber = parseFloat(cleanValue);
   return Number.isNaN(parsedNumber) ? 0 : parsedNumber;
 };
@@ -679,10 +678,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorPrincipalCorrigido',
           label: 'Valor Principal Corrigido',
-          type: 'text',
+          type: 'currency',
           required: true,
           colSpan: 3,
-          mask: CURRENCY_MASK,
           onChange: (val, context) => calcularValorBruto(context, 'valorPrincipalCorrigido', val)
         },
         {
@@ -704,10 +702,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorJurosMoratorios',
           label: 'Valor dos Juros Moratórios',
-          type: 'text',
+          type: 'currency',
           required: true,
           colSpan: 3,
-          mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haJurosMoratorios === 'S',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosMoratorios', val)
         },
@@ -730,10 +727,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorJurosCompensatorios',
           label: 'Valor dos Juros Compensatórios',
-          type: 'text',
+          type: 'currency',
           required: true,
           colSpan: 3,
-          mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosCompensatorios', val)
         },
@@ -756,10 +752,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorCustasDespesasMulta',
           label: 'Valor das Custas/Despesas/Multa',
-          type: 'text',
+          type: 'currency',
           required: true,
           colSpan: 3,
-          mask: CURRENCY_MASK,
           conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S',
           onChange: (val, context) => calcularValorBruto(context, 'valorCustasDespesasMulta', val)
         },
@@ -781,10 +776,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorDescontoPrevidenciario',
           label: 'Valor do Desconto Previdenciário',
-          type: 'text',
+          type: 'currency',
           required: true,
-          colSpan: 2,
-          mask: CURRENCY_MASK
+          colSpan: 2
         },
         {
           name: 'regimePrevidenciario',
@@ -870,16 +864,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorAssistenciaMedica',
           label: 'Valor da Assistência Médica',
-          type: 'text',
-          colSpan: 1,
-          mask: CURRENCY_MASK
+          type: 'currency',
+          colSpan: 1
         },
         {
           name: 'valorFundoAposentadoria',
           label: 'Valor do Fundo de Aposentadoria',
-          type: 'text',
-          colSpan: 1,
-          mask: CURRENCY_MASK
+          type: 'currency',
+          colSpan: 1
         },
         {
           name: 'haIncidenciaITCD',
@@ -892,10 +884,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'percentualAliquotaITCD',
           label: 'Percentual / Alíquota',
-          type: 'text',
+          type: 'percentage',
           required: true,
           colSpan: 1,
-          mask: '0000,00%',
           conditionalRender: ({ data }) => data.haIncidenciaITCD === 'S'
         },
         {

@@ -27,6 +27,15 @@ const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(({ onChange, 
   />
 ));
 
+const formatCustomValue = (val: string | number, type: string): string => {
+  if (!val && val !== 0) return '';
+  const digits = String(val).replace(/\D/g, '');
+  if (!digits) return '';
+  const num = parseInt(digits, 10) / 100;
+  if (type === 'percentage') return `${num.toFixed(2).replace('.', ',')}%`;
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
+};
+
 const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
   const [activeSearch, setActiveSearch] = useState<{ field: FormField; value?: string } | null>(null);
 
@@ -62,8 +71,13 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                         }}
                         render={({ field: { onChange, value }, fieldState: { error } }) => {
                           const handleFieldChange = (newValue: unknown) => {
-                            onChange(newValue);
-                            if (field.onChange) field.onChange(newValue, context);
+                            const isCustomFormat = field.type === 'currency' || field.type === 'percentage';
+                            const finalValue = isCustomFormat && (typeof newValue === 'string' || typeof newValue === 'number')
+                              ? formatCustomValue(newValue, field.type)
+                              : newValue;
+
+                            onChange(finalValue);
+                            if (field.onChange) field.onChange(finalValue, context);
                           };
 
                           if (field.type === 'select') {
@@ -102,12 +116,13 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                             );
                           }
 
+                          const isCustomTextType = field.type === 'currency' || field.type === 'percentage';
                           const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
                           const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
 
                           return (
                             <TextField
-                              type={field.type}
+                              type={isCustomTextType ? 'text' : field.type}
                               label={field.label}
                               required={field.required}
                               disabled={field.disabled}
