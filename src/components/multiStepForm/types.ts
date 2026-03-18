@@ -66,9 +66,13 @@ export interface FormField {
   validation?: FieldValidation;
   mask?: string | RegExp;
   options?: FieldOption[];
+  disableFuture?: boolean;
+  disablePast?: boolean;
   disabled?: boolean;
   required?: boolean;
   readOnly?: boolean;
+  maxDate?: string;
+  minDate?: string;
   colSpan?: number;
   preSet?: string;
   label?: string;

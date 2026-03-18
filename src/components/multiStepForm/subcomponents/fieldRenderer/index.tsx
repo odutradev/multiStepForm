@@ -1,14 +1,14 @@
 import { TextField, MenuItem, FormControl, InputLabel, Select, FormHelperText, InputAdornment, IconButton, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as MuiIcons from '@mui/icons-material';
-import { Controller } from 'react-hook-form';
 import { forwardRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
 import { IMaskInput } from 'react-imask';
 import dayjs from 'dayjs';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
-import FormTable from './components/formTable';
 import FormButton from './components/formButton';
+import FormTable from './components/formTable';
 import SearchModal from '../searchModal';
 
 import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
@@ -104,6 +104,10 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                                 readOnly={field.readOnly}
                                 value={value ? dayjs(value) : null}
                                 onChange={(newValue) => handleFieldChange(newValue ? newValue.format('YYYY-MM-DD') : null)}
+                                disableFuture={field.disableFuture}
+                                disablePast={field.disablePast}
+                                minDate={field.minDate ? dayjs(field.minDate) : undefined}
+                                maxDate={field.maxDate ? dayjs(field.maxDate) : undefined}
                                 slotProps={{
                                   textField: {
                                     fullWidth: true,
