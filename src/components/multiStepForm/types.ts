@@ -54,7 +54,7 @@ export interface TableColumn {
 }
 
 export interface FormField {
-  type: 'text' | 'number' | 'email' | 'select' | 'info' | 'date' | 'button' | 'table' | 'currency' | 'percentage';
+  type?: 'text' | 'number' | 'email' | 'select' | 'info' | 'date' | 'button' | 'table' | 'currency' | 'percentage';
   onButtonClick?: (context: ActionContext) => void;
   onChange?: (value: unknown, context: ActionContext) => void;
   conditionalRender?: (context: ActionContext) => boolean;
@@ -71,7 +71,7 @@ export interface FormField {
   readOnly?: boolean;
   colSpan?: number;
   preSet?: string;
-  label: string;
+  label?: string;
   icon?: string;
   name: string;
 }

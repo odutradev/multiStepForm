@@ -1,16 +1,9 @@
-import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 import dayjs from 'dayjs';
+
+import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 
 import type { ActionContext, FormConfig } from '@components/multiStepForm/types';
 
-const SECAO_OAB_OPTIONS = [{ label: 'AC', value: 'AC' }, { label: 'AL', value: 'AL' }, { label: 'AP', value: 'AP' }, { label: 'AM', value: 'AM' }, { label: 'BA', value: 'BA' }, { label: 'CE', value: 'CE' }, { label: 'DF', value: 'DF' }, { label: 'ES', value: 'ES' }, { label: 'GO', value: 'GO' }, { label: 'MA', value: 'MA' }, { label: 'MT', value: 'MT' }, { label: 'MS', value: 'MS' }, { label: 'MG', value: 'MG' }, { label: 'PA', value: 'PA' }, { label: 'PB', value: 'PB' }, { label: 'PR', value: 'PR' }, { label: 'PE', value: 'PE' }, { label: 'PI', value: 'PI' }, { label: 'RJ', value: 'RJ' }, { label: 'RN', value: 'RN' }, { label: 'RS', value: 'RS' }, { label: 'RO', value: 'RO' }, { label: 'RR', value: 'RR' }, { label: 'SC', value: 'SC' }, { label: 'SP', value: 'SP' }, { label: 'SE', value: 'SE' }, { label: 'TO', value: 'TO' }];
-const BANCOS_OPTIONS = [{ label: '001 - Banco do Brasil S.A.', value: '001' }, { label: '033 - Banco Santander (Brasil) S.A.', value: '033' }, { label: '077 - Banco Inter S.A.', value: '077' }, { label: '104 - Caixa Econômica Federal', value: '104' }, { label: '237 - Banco Bradesco S.A.', value: '237' }, { label: '260 - Nubank', value: '260' }, { label: '341 - Itaú Unibanco S.A.', value: '341' }];
-const REGIME_PREVIDENCIARIO_OPTIONS = [{ label: 'Geral/INSS', value: 'GeralINSS' }, { label: 'Próprio', value: 'Proprio' }];
-const CATEGORIA_OAB_OPTIONS = [{ label: 'A', value: 'A' }, { label: 'B', value: 'B' }, { label: 'E', value: 'E' }, { label: 'N', value: 'N' }];
-const TIPO_DOCUMENTO_OPTIONS = [{ label: 'CPF', value: 'CPF' }, { label: 'CNPJ', value: 'CNPJ' }, { label: 'RNE N°', value: 'RNE' }];
-const TIPO_CONTA_OPTIONS = [{ label: 'Conta Corrente', value: 'Corrente' }, { label: 'Conta Poupança', value: 'Poupanca' }];
-const TITULAR_ADVOGADO_OPTIONS = [{ label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }];
-const SIM_NAO_OPTIONS = [{ label: 'Sim', value: 'S' }, { label: 'Não', value: 'N' }];
 const PARSE_NUMBER_REGEX = /[^\d,]/g;
 
 const parseCurrency = (value: unknown): number => {
@@ -141,23 +134,20 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'doencaGrave',
           label: 'Doença Grave?',
-          type: 'select',
-          options: SIM_NAO_OPTIONS,
-          colSpan: 2
+          colSpan: 2,
+          preSet: 'simNaoSN'
         },
         {
           name: 'pessoaDeficiencia',
           label: 'Pessoa com Deficiência?',
-          type: 'select',
-          options: SIM_NAO_OPTIONS,
-          colSpan: 2
+          colSpan: 2,
+          preSet: 'simNaoSN'
         },
         {
           name: 'beneficiarioCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
-          type: 'select',
-          options: SIM_NAO_OPTIONS,
-          colSpan: 2
+          colSpan: 2,
+          preSet: 'simNaoSN'
         }
       ]
     },
@@ -195,9 +185,8 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'tipoDocumentoRepresentante',
           label: 'Tipo de Documento',
-          type: 'select',
           required: true,
-          options: TIPO_DOCUMENTO_OPTIONS
+          preSet: 'tipoDocumento'
         },
         {
           name: 'numeroDocumentoRepresentantePlaceholder',
@@ -209,7 +198,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoRepresentanteCPF',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CPF'
@@ -217,7 +205,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoRepresentanteCNPJ',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CNPJ'
@@ -225,7 +212,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoRepresentanteRNE',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'RNE'
@@ -238,16 +224,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'categoriaOABRepresentante',
           label: 'Categoria',
-          type: 'select',
           required: true,
-          options: CATEGORIA_OAB_OPTIONS
+          preSet: 'categoriaOab'
         },
         {
           name: 'secaoOABRepresentante',
           label: 'Seção',
-          type: 'select',
           required: true,
-          options: SECAO_OAB_OPTIONS
+          preSet: 'estados'
         }
       ]
     },
@@ -277,9 +261,8 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'tipoDocumentoTitularCredito',
           label: 'Tipo de Documento',
-          type: 'select',
           required: true,
-          options: TIPO_DOCUMENTO_OPTIONS
+          preSet: 'tipoDocumento'
         },
         {
           name: 'numeroDocumentoTitularCreditoPlaceholder',
@@ -291,7 +274,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularCreditoCPF',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CPF'
@@ -299,7 +281,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularCreditoCNPJ',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CNPJ'
@@ -307,7 +288,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularCreditoRNE',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
@@ -320,16 +300,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'bancoTitular',
           label: 'Banco do Titular',
-          type: 'select',
           required: true,
-          options: BANCOS_OPTIONS
+          preSet: 'bancos'
         },
         {
           name: 'tipoConta',
           label: 'Tipo de Conta',
-          type: 'select',
           required: true,
-          options: TIPO_CONTA_OPTIONS
+          preSet: 'tipoConta'
         },
         {
           name: 'agenciaConta',
@@ -381,9 +359,8 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'tipoDocumentoProcurador',
           label: 'Tipo de Documento',
-          type: 'select',
           colSpan: 1,
-          options: TIPO_DOCUMENTO_OPTIONS
+          preSet: 'tipoDocumento'
         },
         {
           name: 'numeroDocumentoProcuradorPlaceholder',
@@ -396,7 +373,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoProcuradorCPF',
           label: 'Número do Documento',
-          type: 'text',
           preSet: 'cpf',
           colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF'
@@ -404,7 +380,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoProcuradorCNPJ',
           label: 'Número do Documento',
-          type: 'text',
           preSet: 'cnpj',
           colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ'
@@ -412,7 +387,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoProcuradorRNE',
           label: 'Número do Documento',
-          type: 'text',
           preSet: 'rne',
           colSpan: 1,
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'RNE'
@@ -426,16 +400,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'categoriaOABProcurador',
           label: 'Categoria',
-          type: 'select',
           colSpan: 1,
-          options: CATEGORIA_OAB_OPTIONS
+          preSet: 'categoriaOab'
         },
         {
           name: 'secaoOABProcurador',
           label: 'Seção',
-          type: 'select',
           colSpan: 1,
-          options: SECAO_OAB_OPTIONS
+          preSet: 'estados'
         },
         {
           name: 'btnLimparProcurador',
@@ -562,16 +534,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'informarDadosBancariosAdvogado',
           label: 'Deseja informar dados bancários do advogado?',
-          type: 'select',
           required: true,
-          options: SIM_NAO_OPTIONS
+          preSet: 'simNaoSN'
         },
         {
           name: 'titularContaAdvogado',
           label: 'Titular da Conta',
-          type: 'select',
           required: true,
-          options: TITULAR_ADVOGADO_OPTIONS,
+          preSet: 'titularAdvogado',
           conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S'
         }
       ]
@@ -591,9 +561,8 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'tipoDocumentoTitularAdvogado',
           label: 'Tipo de Documento',
-          type: 'select',
           required: true,
-          options: TIPO_DOCUMENTO_OPTIONS
+          preSet: 'tipoDocumento'
         },
         {
           name: 'numeroDocumentoTitularAdvogadoPlaceholder',
@@ -605,7 +574,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularAdvogadoCPF',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CPF'
@@ -613,7 +581,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularAdvogadoCNPJ',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CNPJ'
@@ -621,7 +588,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'numeroDocumentoTitularAdvogadoRNE',
           label: 'Número do Documento',
-          type: 'text',
           required: true,
           preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'RNE'
@@ -635,16 +601,14 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'bancoTitularAdvogado',
           label: 'Banco do Titular',
-          type: 'select',
           required: true,
-          options: BANCOS_OPTIONS
+          preSet: 'bancos'
         },
         {
           name: 'tipoContaAdvogado',
           label: 'Tipo de Conta',
-          type: 'select',
           required: true,
-          options: TIPO_CONTA_OPTIONS
+          preSet: 'tipoConta'
         },
         {
           name: 'agenciaContaAdvogado',
@@ -684,10 +648,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haJurosMoratorios',
           label: 'Há juros moratórios?',
-          type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS,
+          preSet: 'simNaoSN',
           onChange: (val, context) => calcularValorBruto(context, 'haJurosMoratorios', val)
         },
         {
@@ -709,10 +672,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haJurosCompensatorios',
           label: 'Há incidência de juros compensatórios (remuneratórios)?',
-          type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS,
+          preSet: 'simNaoSN',
           onChange: (val, context) => calcularValorBruto(context, 'haJurosCompensatorios', val)
         },
         {
@@ -734,10 +696,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haCustasDespesasMulta',
           label: 'Há custas/despesas antecipadas/multa?',
-          type: 'select',
           required: true,
           colSpan: 3,
-          options: SIM_NAO_OPTIONS,
+          preSet: 'simNaoSN',
           onChange: (val, context) => calcularValorBruto(context, 'haCustasDespesasMulta', val)
         },
         {
@@ -759,10 +720,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haDescontoPrevidenciario',
           label: 'Há desconto previdenciário?',
-          type: 'select',
           required: true,
           colSpan: 2,
-          options: SIM_NAO_OPTIONS
+          preSet: 'simNaoSN'
         },
         {
           name: 'valorDescontoPrevidenciario',
@@ -774,10 +734,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'regimePrevidenciario',
           label: 'Regime previdenciário',
-          type: 'select',
           required: true,
           colSpan: 2,
-          options: REGIME_PREVIDENCIARIO_OPTIONS
+          preSet: 'regimePrevidenciario'
         }
       ]
     },
@@ -797,7 +756,6 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'cnpjOrgaoPrevidenciario',
           label: 'CNPJ',
-          type: 'text',
           required: true,
           preSet: 'cnpj',
           colSpan: 2
@@ -805,27 +763,24 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'informarDadosBancariosOrgao',
           label: 'Deseja informar os dados bancários do órgão previdenciário?',
-          type: 'select',
           required: true,
           colSpan: 2,
-          options: SIM_NAO_OPTIONS
+          preSet: 'simNaoSN'
         },
         {
           name: 'bancoOrgao',
           label: 'Banco do Titular',
-          type: 'select',
           required: true,
           colSpan: 3,
-          options: BANCOS_OPTIONS,
+          preSet: 'bancos',
           conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
         },
         {
           name: 'tipoContaOrgao',
           label: 'Tipo de Conta',
-          type: 'select',
           required: true,
           colSpan: 3,
-          options: TIPO_CONTA_OPTIONS,
+          preSet: 'tipoConta',
           conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
         },
         {
@@ -866,10 +821,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haIncidenciaITCD',
           label: 'Há incidência de ITCD?',
-          type: 'select',
           required: true,
           colSpan: 1,
-          options: SIM_NAO_OPTIONS
+          preSet: 'simNaoSN'
         },
         {
           name: 'percentualAliquotaITCD',
@@ -889,10 +843,9 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'haTributacaoRRA',
           label: 'Há tributação RRA a título de imposto de renda com incidência de imposto de renda?',
-          type: 'select',
           required: true,
           colSpan: 2,
-          options: SIM_NAO_OPTIONS
+          preSet: 'simNaoSN'
         }
       ]
     },
