@@ -1,48 +1,48 @@
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
-import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
+import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks'
 
-import type { ActionContext, FormConfig } from '@components/multiStepForm/types';
+import type { ActionContext, FormConfig } from '@components/multiStepForm/types'
 
-const PARSE_NUMBER_REGEX = /[^\d,]/g;
+const PARSE_NUMBER_REGEX = /[^\d,]/g
 
 const parseCurrency = (value: unknown): number => {
-  if (typeof value !== 'string') return 0;
-  const cleanValue = value.replace(PARSE_NUMBER_REGEX, '').replace(',', '.');
-  const parsedNumber = parseFloat(cleanValue);
-  return Number.isNaN(parsedNumber) ? 0 : parsedNumber;
-};
+  if (typeof value !== 'string') return 0
+  const cleanValue = value.replace(PARSE_NUMBER_REGEX, '').replace(',', '.')
+  const parsedNumber = parseFloat(cleanValue)
+  return Number.isNaN(parsedNumber) ? 0 : parsedNumber
+}
 
-const formatCurrency = (value: number): string => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+const formatCurrency = (value: number): string => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
 
 const calcularValorBruto = (context: ActionContext, changedField?: string, newValue?: unknown): void => {
-  const formValues = context.getValues();
-  const getValue = (field: string) => (changedField === field ? newValue : formValues[field]);
+  const formValues = context.getValues()
+  const getValue = (field: string) => (changedField === field ? newValue : formValues[field])
 
-  const principal = parseCurrency(getValue('valorPrincipalCorrigido'));
-  const jurosMoratorios = getValue('haJurosMoratorios') === 'S' ? parseCurrency(getValue('valorJurosMoratorios')) : 0;
-  const jurosCompensatorios = getValue('haJurosCompensatorios') === 'S' ? parseCurrency(getValue('valorJurosCompensatorios')) : 0;
-  const custasDespesas = getValue('haCustasDespesasMulta') === 'S' ? parseCurrency(getValue('valorCustasDespesasMulta')) : 0;
+  const principal = parseCurrency(getValue('valorPrincipalCorrigido'))
+  const jurosMoratorios = getValue('haJurosMoratorios') === 'Sim' ? parseCurrency(getValue('valorJurosMoratorios')) : 0
+  const jurosCompensatorios = getValue('haJurosCompensatorios') === 'Sim' ? parseCurrency(getValue('valorJurosCompensatorios')) : 0
+  const custasDespesas = getValue('haCustasDespesasMulta') === 'Sim' ? parseCurrency(getValue('valorCustasDespesasMulta')) : 0
 
-  const valorTotal = principal + jurosMoratorios + jurosCompensatorios + custasDespesas;
-  context.setMultipleValues({ valorBruto: formatCurrency(valorTotal) });
-};
+  const valorTotal = principal + jurosMoratorios + jurosCompensatorios + custasDespesas
+  context.setMultipleValues({ valorBruto: formatCurrency(valorTotal) })
+}
 
 const calcularMesesRRA = (context: ActionContext): void => {
-  const { dataInicialRRA, dataFinalRRA } = context.getValues();
+  const { dataInicialRRA, dataFinalRRA } = context.getValues()
   if (!dataInicialRRA || !dataFinalRRA) {
-    context.setMultipleValues({ numeroMesesRRA: '' });
-    return;
+    context.setMultipleValues({ numeroMesesRRA: '' })
+    return
   }
-  const start = dayjs(String(dataInicialRRA));
-  const end = dayjs(String(dataFinalRRA));
+  const start = dayjs(String(dataInicialRRA))
+  const end = dayjs(String(dataFinalRRA))
   if (!start.isValid() || !end.isValid()) {
-    context.setMultipleValues({ numeroMesesRRA: '' });
-    return;
+    context.setMultipleValues({ numeroMesesRRA: '' })
+    return
   }
-  const diff = end.diff(start, 'month');
-  context.setMultipleValues({ numeroMesesRRA: Math.max(0, diff) });
-};
+  const diff = end.diff(start, 'month')
+  context.setMultipleValues({ numeroMesesRRA: Math.max(0, diff) })
+}
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
@@ -65,15 +65,15 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           options: beneficiariesOptions,
           onChange: (value, context) => {
-            const selected = beneficiariesMock.find((b) => b.id === String(value));
-            if (!selected) return;
+            const selected = beneficiariesMock.find((b) => b.id === String(value))
+            if (!selected) return
             context.setMultipleValues({
               nomeBeneficiario: selected.nome,
               tipoDocumentoBeneficiario: selected.tipoDocumento,
               numeroDocumentoBeneficiario: selected.documento,
               dataNascimentoBeneficiario: selected.dataNascimento ?? '',
               idadeBeneficiario: selected.idade ?? ''
-            });
+            })
           }
         }
       ]
@@ -135,19 +135,19 @@ export const step3: FormConfig['steps'][number] = {
           name: 'doencaGrave',
           label: 'Doença Grave?',
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'pessoaDeficiencia',
           label: 'Pessoa com Deficiência?',
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'beneficiarioCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         }
       ]
     },
@@ -336,8 +336,8 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 3,
           options: procuradoresOptions,
           onChange: (value, context) => {
-            const selected = procuradoresMock.find((p) => p.id === String(value));
-            if (!selected) return;
+            const selected = procuradoresMock.find((p) => p.id === String(value))
+            if (!selected) return
             context.setMultipleValues({
               nomeProcurador: selected.nome,
               tipoDocumentoProcurador: selected.tipoDocumento,
@@ -347,7 +347,7 @@ export const step3: FormConfig['steps'][number] = {
               numeroOABProcurador: selected.oab,
               categoriaOABProcurador: selected.categoria,
               secaoOABProcurador: selected.secao
-            });
+            })
           }
         },
         {
@@ -434,20 +434,20 @@ export const step3: FormConfig['steps'][number] = {
           buttonVariant: 'contained',
           colSpan: 2,
           onButtonClick: (context) => {
-            const formValues = context.getValues();
-            const nome = String(formValues.nomeProcurador || '');
-            const tipoDoc = String(formValues.tipoDocumentoProcurador || '');
-            const docCpf = String(formValues.numeroDocumentoProcuradorCPF || '');
-            const docCnpj = String(formValues.numeroDocumentoProcuradorCNPJ || '');
-            const docRne = String(formValues.numeroDocumentoProcuradorRNE || '');
-            const oab = String(formValues.numeroOABProcurador || '');
-            const categoria = String(formValues.categoriaOABProcurador || '');
-            const secao = String(formValues.secaoOABProcurador || '');
+            const formValues = context.getValues()
+            const nome = String(formValues.nomeProcurador || '')
+            const tipoDoc = String(formValues.tipoDocumentoProcurador || '')
+            const docCpf = String(formValues.numeroDocumentoProcuradorCPF || '')
+            const docCnpj = String(formValues.numeroDocumentoProcuradorCNPJ || '')
+            const docRne = String(formValues.numeroDocumentoProcuradorRNE || '')
+            const oab = String(formValues.numeroOABProcurador || '')
+            const categoria = String(formValues.categoriaOABProcurador || '')
+            const secao = String(formValues.secaoOABProcurador || '')
 
-            if (!nome || !tipoDoc || (!docCpf && !docCnpj && !docRne)) return;
+            if (!nome || !tipoDoc || (!docCpf && !docCnpj && !docRne)) return
 
-            const docNum = tipoDoc === 'CPF' ? docCpf : tipoDoc === 'CNPJ' ? docCnpj : docRne;
-            const docFormatado = `${tipoDoc} - ${docNum}`;
+            const docNum = tipoDoc === 'CPF' ? docCpf : tipoDoc === 'CNPJ' ? docCnpj : docRne
+            const docFormatado = `${tipoDoc} - ${docNum}`
 
             const novoProcurador = {
               id: Date.now().toString(),
@@ -457,9 +457,9 @@ export const step3: FormConfig['steps'][number] = {
               categoria: categoria || '-',
               secao: secao || '-',
               rawData: { tipoDoc, docCpf, docCnpj, docRne }
-            };
+            }
 
-            const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
+            const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
 
             context.setMultipleValues({
               tabelaProcuradores: [...currentList, novoProcurador],
@@ -472,7 +472,7 @@ export const step3: FormConfig['steps'][number] = {
               numeroOABProcurador: '',
               categoriaOABProcurador: '',
               secaoOABProcurador: ''
-            });
+            })
           }
         },
         {
@@ -493,10 +493,10 @@ export const step3: FormConfig['steps'][number] = {
               label: 'Editar',
               icon: 'Edit',
               onClick: (row, context) => {
-                const formValues = context.getValues();
-                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
-                const newList = currentList.filter((p) => p.id !== row.id);
-                const rawData = row.rawData as Record<string, string>;
+                const formValues = context.getValues()
+                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
+                const newList = currentList.filter((p) => p.id !== row.id)
+                const rawData = row.rawData as Record<string, string>
 
                 context.setMultipleValues({
                   tabelaProcuradores: newList,
@@ -509,17 +509,17 @@ export const step3: FormConfig['steps'][number] = {
                   numeroOABProcurador: String(row.oab !== '-' ? row.oab : ''),
                   categoriaOABProcurador: String(row.categoria !== '-' ? row.categoria : ''),
                   secaoOABProcurador: String(row.secao !== '-' ? row.secao : '')
-                });
+                })
               }
             },
             {
               label: 'Remover',
               icon: 'Delete',
               onClick: (row, context) => {
-                const formValues = context.getValues();
-                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : [];
-                const newList = currentList.filter((p) => p.id !== row.id);
-                context.setMultipleValues({ tabelaProcuradores: newList });
+                const formValues = context.getValues()
+                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
+                const newList = currentList.filter((p) => p.id !== row.id)
+                context.setMultipleValues({ tabelaProcuradores: newList })
               }
             }
           ]
@@ -535,14 +535,14 @@ export const step3: FormConfig['steps'][number] = {
           name: 'informarDadosBancariosAdvogado',
           label: 'Deseja informar dados bancários do advogado?',
           required: true,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'titularContaAdvogado',
           label: 'Titular da Conta',
           required: true,
           preSet: 'titularAdvogado',
-          conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S'
+          conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim'
         }
       ]
     },
@@ -550,7 +550,7 @@ export const step3: FormConfig['steps'][number] = {
       title: 'Titular da Conta',
       highlight: true,
       gridColumns: 3,
-      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S' && !!data.titularContaAdvogado,
+      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim' && !!data.titularContaAdvogado,
       fields: [
         {
           name: 'nomeTitularAdvogado',
@@ -596,7 +596,7 @@ export const step3: FormConfig['steps'][number] = {
     },
     {
       gridColumns: 2,
-      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'S',
+      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim',
       fields: [
         {
           name: 'bancoTitularAdvogado',
@@ -650,7 +650,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Há juros moratórios?',
           required: true,
           colSpan: 3,
-          preSet: 'simNaoSN',
+          preSet: 'simNao',
           onChange: (val, context) => calcularValorBruto(context, 'haJurosMoratorios', val)
         },
         {
@@ -659,7 +659,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosMoratorios === 'S',
+          conditionalRender: ({ data }) => data.haJurosMoratorios === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosMoratorios', val)
         },
         {
@@ -667,14 +667,14 @@ export const step3: FormConfig['steps'][number] = {
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosMoratorios !== 'S'
+          conditionalRender: ({ data }) => data.haJurosMoratorios !== 'Sim'
         },
         {
           name: 'haJurosCompensatorios',
           label: 'Há incidência de juros compensatórios (remuneratórios)?',
           required: true,
           colSpan: 3,
-          preSet: 'simNaoSN',
+          preSet: 'simNao',
           onChange: (val, context) => calcularValorBruto(context, 'haJurosCompensatorios', val)
         },
         {
@@ -683,7 +683,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'S',
+          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosCompensatorios', val)
         },
         {
@@ -691,14 +691,14 @@ export const step3: FormConfig['steps'][number] = {
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosCompensatorios !== 'S'
+          conditionalRender: ({ data }) => data.haJurosCompensatorios !== 'Sim'
         },
         {
           name: 'haCustasDespesasMulta',
           label: 'Há custas/despesas antecipadas/multa?',
           required: true,
           colSpan: 3,
-          preSet: 'simNaoSN',
+          preSet: 'simNao',
           onChange: (val, context) => calcularValorBruto(context, 'haCustasDespesasMulta', val)
         },
         {
@@ -707,7 +707,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'S',
+          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorCustasDespesasMulta', val)
         },
         {
@@ -715,14 +715,14 @@ export const step3: FormConfig['steps'][number] = {
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haCustasDespesasMulta !== 'S'
+          conditionalRender: ({ data }) => data.haCustasDespesasMulta !== 'Sim'
         },
         {
           name: 'haDescontoPrevidenciario',
           label: 'Há desconto previdenciário?',
           required: true,
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'valorDescontoPrevidenciario',
@@ -765,7 +765,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Deseja informar os dados bancários do órgão previdenciário?',
           required: true,
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'bancoOrgao',
@@ -773,7 +773,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           preSet: 'bancos',
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
         },
         {
           name: 'tipoContaOrgao',
@@ -781,7 +781,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           preSet: 'tipoConta',
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
         },
         {
           name: 'agenciaOrgao',
@@ -790,7 +790,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
         },
         {
           name: 'numeroContaOrgao',
@@ -799,7 +799,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'S'
+          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
         }
       ]
     },
@@ -823,7 +823,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Há incidência de ITCD?',
           required: true,
           colSpan: 1,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         },
         {
           name: 'percentualAliquotaITCD',
@@ -831,21 +831,21 @@ export const step3: FormConfig['steps'][number] = {
           type: 'percentage',
           required: true,
           colSpan: 1,
-          conditionalRender: ({ data }) => data.haIncidenciaITCD === 'S'
+          conditionalRender: ({ data }) => data.haIncidenciaITCD === 'Sim'
         },
         {
           name: 'spacerITCD',
           label: ' ',
           type: 'info',
           colSpan: 1,
-          conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'S'
+          conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'Sim'
         },
         {
           name: 'haTributacaoRRA',
           label: 'Há tributação RRA a título de imposto de renda com incidência de imposto de renda?',
           required: true,
           colSpan: 2,
-          preSet: 'simNaoSN'
+          preSet: 'simNao'
         }
       ]
     },
@@ -853,7 +853,7 @@ export const step3: FormConfig['steps'][number] = {
       title: 'Tributação RRA a título de imposto de renda',
       highlight: true,
       gridColumns: 2,
-      conditionalRender: ({ data }) => data.haTributacaoRRA === 'S',
+      conditionalRender: ({ data }) => data.haTributacaoRRA === 'Sim',
       fields: [
         {
           name: 'dataInicialRRA',
@@ -904,8 +904,8 @@ export const step3: FormConfig['steps'][number] = {
       label: 'Confirmar e Enviar',
       actionType: 'submit',
       onClick: async () => {
-        await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS));
+        await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS))
       }
     }
   ]
-};
+}

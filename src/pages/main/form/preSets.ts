@@ -1,4 +1,4 @@
-import type { FormConfig } from '@components/multiStepForm/types';
+import type { FormConfig } from '@components/multiStepForm/types'
 
 export const formPreSets: FormConfig['fieldPreSets'] = {
   cpf: {
@@ -26,13 +26,6 @@ export const formPreSets: FormConfig['fieldPreSets'] = {
     options: [
       { label: 'Sim', value: 'Sim' },
       { label: 'Não', value: 'Não' }
-    ]
-  },
-  simNaoSN: {
-    type: 'select',
-    options: [
-      { label: 'Sim', value: 'S' },
-      { label: 'Não', value: 'N' }
     ]
   },
   estados: {
@@ -78,4 +71,4 @@ export const formPreSets: FormConfig['fieldPreSets'] = {
       { label: 'Procurador', value: 'Procurador' }, { label: 'Escritório de Advocacia', value: 'Escritorio' }
     ]
   }
-};
+}
