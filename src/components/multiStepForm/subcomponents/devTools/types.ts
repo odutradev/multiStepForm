@@ -1,7 +1,7 @@
-import type { ActionContext, FormStep } from '../../types';
+import type { ActionContext, FormConfig } from '../../types';
 
 export interface DevToolsProps {
   context: ActionContext;
-  steps: FormStep[];
+  config: FormConfig;
   isOpen: boolean;
 }

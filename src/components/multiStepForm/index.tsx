@@ -1,6 +1,6 @@
 import { FormContainer, StepContainer, LoadingOverlay } from './styles';
-import ActionButtons from './subcomponents/actionButtons';
 import FieldRenderer from './subcomponents/fieldRenderer';
+import ActionButtons from './subcomponents/actionButtons';
 import StepIndicator from './subcomponents/stepIndicator';
 import { useMultiStepForm } from './hooks/useMultiStepForm';
 import { useDevTools } from './hooks/useDevTools';
@@ -29,7 +29,7 @@ const MultiStepForm = (props: MultiStepFormProps) => {
 
   return (
     <FormContainer onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}>
-      <DevTools isOpen={isDevToolsOpen} steps={props.config.steps} context={actionContext} />
+      <DevTools isOpen={isDevToolsOpen} config={props.config} context={actionContext} />
       <StepIndicator steps={visibleSteps} currentStepIndex={currentStepIndex} />
       <StepContainer>
         <FieldRenderer
