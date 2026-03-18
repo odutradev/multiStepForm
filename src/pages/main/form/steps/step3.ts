@@ -1,11 +1,13 @@
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 import { calcularMesesRRA, calcularValorBruto } from '../utils';
+import { step3TestData } from '../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
   title: 'Beneficiário',
+  testData: step3TestData,
   groups: [
     {
       title: 'Seleção de Beneficiário',

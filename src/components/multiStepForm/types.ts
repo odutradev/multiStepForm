@@ -98,6 +98,7 @@ export interface FormAction {
 
 export interface FormStep {
   conditionalRender?: (context: ActionContext) => boolean;
+  testData?: Record<string, unknown>;
   actions: FormAction[];
   groups: FormGroup[];
   title: string;

@@ -1,10 +1,12 @@
 import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
+import { step2TestData } from '../tests/step2';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
 export const step2: FormConfig['steps'][number] = {
   id: 'step-2',
   title: 'Informações Gerais',
+  testData: step2TestData,
   groups: [
     {
       title: 'Dados do Magistrado',

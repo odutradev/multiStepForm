@@ -1,10 +1,12 @@
 import { stepOneAutoFillMock, MOCK_DELAY_MS } from '../mocks';
+import { step1TestData } from '../tests/step1';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
 export const step1: FormConfig['steps'][number] = {
   id: 'step-1',
   title: 'Cadastrar Processo',
+  testData: step1TestData,
   groups: [
     {
       title: 'Dados Iniciais',
