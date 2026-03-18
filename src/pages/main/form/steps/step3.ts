@@ -1,48 +1,7 @@
-import dayjs from 'dayjs'
-
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks'
+import { calcularMesesRRA, calcularValorBruto } from '../utils'
 
-import type { ActionContext, FormConfig } from '@components/multiStepForm/types'
-
-const PARSE_NUMBER_REGEX = /[^\d,]/g
-
-const parseCurrency = (value: unknown): number => {
-  if (typeof value !== 'string') return 0
-  const cleanValue = value.replace(PARSE_NUMBER_REGEX, '').replace(',', '.')
-  const parsedNumber = parseFloat(cleanValue)
-  return Number.isNaN(parsedNumber) ? 0 : parsedNumber
-}
-
-const formatCurrency = (value: number): string => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
-
-const calcularValorBruto = (context: ActionContext, changedField?: string, newValue?: unknown): void => {
-  const formValues = context.getValues()
-  const getValue = (field: string) => (changedField === field ? newValue : formValues[field])
-
-  const principal = parseCurrency(getValue('valorPrincipalCorrigido'))
-  const jurosMoratorios = getValue('haJurosMoratorios') === 'Sim' ? parseCurrency(getValue('valorJurosMoratorios')) : 0
-  const jurosCompensatorios = getValue('haJurosCompensatorios') === 'Sim' ? parseCurrency(getValue('valorJurosCompensatorios')) : 0
-  const custasDespesas = getValue('haCustasDespesasMulta') === 'Sim' ? parseCurrency(getValue('valorCustasDespesasMulta')) : 0
-
-  const valorTotal = principal + jurosMoratorios + jurosCompensatorios + custasDespesas
-  context.setMultipleValues({ valorBruto: formatCurrency(valorTotal) })
-}
-
-const calcularMesesRRA = (context: ActionContext): void => {
-  const { dataInicialRRA, dataFinalRRA } = context.getValues()
-  if (!dataInicialRRA || !dataFinalRRA) {
-    context.setMultipleValues({ numeroMesesRRA: '' })
-    return
-  }
-  const start = dayjs(String(dataInicialRRA))
-  const end = dayjs(String(dataFinalRRA))
-  if (!start.isValid() || !end.isValid()) {
-    context.setMultipleValues({ numeroMesesRRA: '' })
-    return
-  }
-  const diff = end.diff(start, 'month')
-  context.setMultipleValues({ numeroMesesRRA: Math.max(0, diff) })
-}
+import type { FormConfig } from '@components/multiStepForm/types'
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
