@@ -35,6 +35,7 @@ export interface SearchConfig {
   onSelect: (item: Record<string, unknown>, context: ActionContext) => void;
   initialFilterName?: string;
   columns: SearchResultColumn[];
+  autoSearchOnOpen?: boolean;
   viewMode?: 'table' | 'tree';
   pagination?: boolean;
   treeConfig?: TreeConfig;

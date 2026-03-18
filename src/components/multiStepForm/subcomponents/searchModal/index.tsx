@@ -64,11 +64,17 @@ const SearchModal = ({ config, context, onClose, initialValue }: SearchModalProp
   }, []);
 
   useEffect(() => {
-    if (initialValue && config.initialFilterName && !initialSearchDone.current) {
+    if (!initialSearchDone.current) {
       initialSearchDone.current = true;
-      handleSearch({ [config.initialFilterName]: initialValue });
+      if (initialValue && config.initialFilterName) {
+        handleSearch({ [config.initialFilterName]: initialValue });
+        return;
+      }
+      if (config.autoSearchOnOpen !== false) {
+        handleSearch();
+      }
     }
-  }, [initialValue, config.initialFilterName, handleSearch]);
+  }, [initialValue, config.initialFilterName, config.autoSearchOnOpen, handleSearch]);
 
   const displayedResults = config.pagination ? results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : results;
   const isTreeView = config.viewMode === 'tree' && config.treeConfig;
