@@ -1,7 +1,7 @@
 import { PictureAsPdf, ContentCopy, Download, ArrowBack } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import type { RefObject } from 'react';
 import { Button } from '@mui/material';
-import { RefObject } from 'react';
 
 import { downloadHTML } from '../../utils/htmlDownloader';
 import { generatePDF } from '../../utils/pdfGenerator';
@@ -10,15 +10,16 @@ import { ActionsContainer, ButtonGroup } from './styles';
 
 interface Props {
   contentRef: RefObject<HTMLDivElement | null>;
+  data: Record<string, unknown>;
 }
 
-const ActionButtons = ({ contentRef }: Props) => {
+const ActionButtons = ({ contentRef, data }: Props) => {
   const navigate = useNavigate();
 
   const handleBack = () => navigate('/main');
   const handleCopy = () => copyToClipboard(contentRef.current);
   const handleDownloadHTML = () => downloadHTML(contentRef.current);
-  const handleDownloadPDF = () => generatePDF(contentRef.current);
+  const handleDownloadPDF = () => generatePDF(data);
 
   return (
     <ActionsContainer>

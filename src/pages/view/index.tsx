@@ -15,7 +15,7 @@ const View = () => {
 
   return (
     <ViewContainer>
-      <ActionButtons contentRef={contentRef} />
+      <ActionButtons contentRef={contentRef} data={formData} />
       <DocumentViewer ref={contentRef} data={formData} />
     </ViewContainer>
   );
