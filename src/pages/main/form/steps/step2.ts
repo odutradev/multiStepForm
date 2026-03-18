@@ -1,5 +1,5 @@
 import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
-import { step2TestData } from '../tests/step2';
+import { step2TestData } from '../../tests/step2';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 

@@ -1,5 +1,5 @@
 import { stepOneAutoFillMock, MOCK_DELAY_MS } from '../mocks';
-import { step1TestData } from '../tests/step1';
+import { step1TestData } from '../../tests/step1';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 

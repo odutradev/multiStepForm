@@ -1,6 +1,6 @@
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 import { calcularMesesRRA, calcularValorBruto } from '../utils';
-import { step3TestData } from '../tests/step3';
+import { step3TestData } from '../../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
@@ -685,14 +685,23 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Valor do Desconto Previdenciário',
           type: 'currency',
           required: true,
-          colSpan: 2
+          colSpan: 2,
+          conditionalRender: ({ data }) => data.possuiDescontoPrevidenciario === 'Sim'
         },
         {
           name: 'tipoRegimePrevidenciario',
           label: 'Regime previdenciário',
           required: true,
           colSpan: 2,
-          preSet: 'regimePrevidenciario'
+          preSet: 'regimePrevidenciario',
+          conditionalRender: ({ data }) => data.possuiDescontoPrevidenciario === 'Sim'
+        },
+        {
+          name: 'espacadorDescontoPrevidenciario',
+          label: ' ',
+          type: 'info',
+          colSpan: 4,
+          conditionalRender: ({ data }) => data.possuiDescontoPrevidenciario !== 'Sim'
         }
       ]
     },
@@ -700,7 +709,7 @@ export const step3: FormConfig['steps'][number] = {
       title: 'Detalhes do Regime Previdenciário Próprio',
       highlight: true,
       gridColumns: 6,
-      conditionalRender: ({ data }) => data.tipoRegimePrevidenciario === 'Proprio',
+      conditionalRender: ({ data }) => data.tipoRegimePrevidenciario === 'Proprio' && data.possuiDescontoPrevidenciario === 'Sim',
       fields: [
         {
           name: 'nomeOrgaoPrevidenciario',
