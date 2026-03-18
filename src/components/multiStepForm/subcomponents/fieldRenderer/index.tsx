@@ -7,8 +7,8 @@ import { IMaskInput } from 'react-imask';
 import dayjs from 'dayjs';
 
 import { GroupsWrapper, GroupContainer, FieldsContainer, FieldWrapper, SubtitleText } from './styles';
-import FormButton from './components/formButton';
 import FormTable from './components/formTable';
+import FormButton from './components/formButton';
 import SearchModal from '../searchModal';
 
 import type { ElementType, KeyboardEvent, MouseEvent } from 'react';
@@ -32,7 +32,7 @@ const formatCustomValue = (val: string | number, type: string): string => {
   const digits = String(val).replace(/\D/g, '');
   if (!digits) return '';
   const num = parseInt(digits, 10) / 100;
-  if (type === 'percentage') return `${num.toFixed(2).replace('.', ',')}%`;
+  if (type === 'percentage') return num.toFixed(2).replace('.', ',');
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
 };
 
@@ -116,6 +116,27 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                             );
                           }
 
+                          const renderEndAdornment = () => {
+                            if (field.searchConfig) {
+                              return (
+                                <InputAdornment position="end">
+                                  <IconButton edge="end" disabled={field.disabled || field.readOnly} onClick={() => !field.disabled && !field.readOnly && setActiveSearch({ field, value: value ? String(value) : undefined })}>
+                                    {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
+                                  </IconButton>
+                                </InputAdornment>
+                              );
+                            }
+                            if (SelectedIcon || field.type === 'percentage') {
+                              return (
+                                <InputAdornment position="end">
+                                  {field.type === 'percentage' && <Typography color="text.secondary" sx={{ mr: SelectedIcon ? 1 : 0 }}>%</Typography>}
+                                  {SelectedIcon && <SelectedIcon color="action" />}
+                                </InputAdornment>
+                              );
+                            }
+                            return undefined;
+                          };
+
                           const isCustomTextType = field.type === 'currency' || field.type === 'percentage';
                           const searchHint = field.searchConfig ? 'Pressione Enter para pesquisar' : undefined;
                           const helperTextContent = error?.message ? (searchHint ? `${error.message} - ${searchHint}` : error.message) : searchHint;
@@ -146,19 +167,7 @@ const FieldRenderer = ({ groups, control, context }: FieldRendererProps) => {
                               InputProps={{
                                 ...(field.readOnly && { readOnly: true }),
                                 ...(field.mask && { inputComponent: MaskedInput as ElementType<InputBaseComponentProps> }),
-                                ...((SelectedIcon || field.searchConfig) && {
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      {field.searchConfig ? (
-                                        <IconButton edge="end" disabled={field.disabled || field.readOnly} onClick={() => !field.disabled && !field.readOnly && setActiveSearch({ field, value: value ? String(value) : undefined })}>
-                                          {SelectedIcon ? <SelectedIcon /> : <MuiIcons.Search />}
-                                        </IconButton>
-                                      ) : (
-                                        SelectedIcon && <SelectedIcon color="action" />
-                                      )}
-                                    </InputAdornment>
-                                  )
-                                })
+                                endAdornment: renderEndAdornment()
                               }}
                               inputProps={field.mask ? { maskPattern: field.mask } : undefined}
                             />
