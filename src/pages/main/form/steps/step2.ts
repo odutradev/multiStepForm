@@ -238,6 +238,32 @@ export const step2: FormConfig['steps'][number] = {
       ]
     },
     {
+      title: 'Tipo de Requisição',
+      gridColumns: 2,
+      fields: [
+        {
+          name: 'tipoRequisicao',
+          label: 'Requisição',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Original', value: 'Original' },
+            { label: 'Complementar', value: 'Complementar' },
+            { label: 'Parcial', value: 'Parcial' },
+            { label: 'Suplementar', value: 'Suplementar' }
+          ]
+        },
+        {
+          name: 'dataReconhecimentoParcela',
+          label: 'Data do reconhecimento da parcela incontroversa',
+          type: 'date',
+          required: true,
+          disableFuture: true,
+          conditionalRender: ({ data }) => data.tipoRequisicao === 'Parcial'
+        }
+      ]
+    },
+    {
       title: 'Ação Salarial',
       gridColumns: 3,
       fields: [
