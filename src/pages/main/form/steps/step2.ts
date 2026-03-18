@@ -350,7 +350,7 @@ export const step2: FormConfig['steps'][number] = {
             { label: 'Beneficiário Principal', value: 'Beneficiário Principal' },
             { label: 'Honorários Sucumbenciais', value: 'Honorários Sucumbenciais' },
             { label: 'Honorários Periciais', value: 'Honorários Periciais' }
-          ],
+          ]
         },
         {
           name: 'possuiDestaqueHonorarios',
@@ -387,7 +387,7 @@ export const step2: FormConfig['steps'][number] = {
           options: [
             { label: 'Total', value: 'Total' },
             { label: 'Parcial', value: 'Parcial' }
-          ],
+          ]
         },
         {
           name: 'houvePenhoraCreditoPrincipal',
@@ -408,7 +408,7 @@ export const step2: FormConfig['steps'][number] = {
           name: 'nomeBeneficiarioOriginario',
           label: 'Beneficiário Originário',
           type: 'text',
-          required: true,
+          required: true
         },
         {
           name: 'tipoDocumentoBeneficiarioOriginario',
@@ -421,21 +421,92 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Número do documento',
           required: true,
           preSet: 'cpf',
-          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CPF'
         },
         {
           name: 'cnpjBeneficiarioOriginario',
           label: 'Número do documento',
           required: true,
           preSet: 'cnpj',
-          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'CNPJ'
         },
         {
           name: 'rneBeneficiarioOriginario',
           label: 'Número do documento',
           required: true,
           preSet: 'rne',
-          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginario === 'RNE'
+        }
+      ]
+    },
+    {
+      title: 'Honorários Contratuais',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.possuiDestaqueHonorarios === 'Sim',
+      fields: [
+        {
+          name: 'houveCessaoHonorariosContratuais',
+          label: 'Os honorários contratuais foram objeto de cessão?',
+          required: true,
+          preSet: 'simNao'
+        },
+        {
+          name: 'houvePenhoraHonorariosContratuais',
+          label: 'Os honorários contratuais foram objeto de penhora?',
+          required: true,
+          preSet: 'simNao'
+        },
+        {
+          name: 'houveSucessaoHonorariosContratuais',
+          label: 'Os honorários contratuais foram objeto de sucessão?',
+          required: true,
+          preSet: 'simNao'
+        }
+      ]
+    },
+    {
+      title: 'Beneficiário Originário (Honorários Contratuais)',
+      highlight: true,
+      gridColumns: 3,
+      conditionalRender: ({ data }) => data.houveSucessaoHonorariosContratuais === 'Sim',
+      fields: [
+        {
+          name: 'nomeBeneficiarioOriginarioHonorarios',
+          label: 'Beneficiário Originário',
+          type: 'text',
+          required: true,
+          validation: {
+            pattern: '^.{1,255}$',
+            message: 'O nome do beneficiário deve ter no máximo 255 caracteres'
+          }
+        },
+        {
+          name: 'tipoDocumentoBeneficiarioOriginarioHonorarios',
+          label: 'Tipo do documento',
+          required: true,
+          preSet: 'tipoDocumento'
+        },
+        {
+          name: 'cpfBeneficiarioOriginarioHonorarios',
+          label: 'Número do documento',
+          required: true,
+          preSet: 'cpf',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginarioHonorarios === 'CPF'
+        },
+        {
+          name: 'cnpjBeneficiarioOriginarioHonorarios',
+          label: 'Número do documento',
+          required: true,
+          preSet: 'cnpj',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginarioHonorarios === 'CNPJ'
+        },
+        {
+          name: 'rneBeneficiarioOriginarioHonorarios',
+          label: 'Número do documento',
+          required: true,
+          preSet: 'rne',
+          conditionalRender: ({ data }) => data.tipoDocumentoBeneficiarioOriginarioHonorarios === 'RNE'
         }
       ]
     },
