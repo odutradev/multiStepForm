@@ -99,6 +99,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Data de Nascimento',
           required: true,
           type: 'date',
+          disableFuture: true,
           colSpan: 3,
           conditionalRender: ({ data }) => data.tipoDocumentoBeneficiario === 'CPF'
         },
@@ -643,6 +644,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Data de Liquidação',
           type: 'date',
           required: true,
+          disableFuture: true,
           colSpan: 3
         },
         {
@@ -860,6 +862,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Período Inicial',
           type: 'date',
           required: true,
+          disableFuture: true,
           colSpan: 1,
           onChange: (_, context) => calcularMesesRRA(context)
         },
@@ -868,6 +871,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Período Final',
           type: 'date',
           required: true,
+          disableFuture: true,
           colSpan: 1,
           onChange: (_, context) => calcularMesesRRA(context)
         },

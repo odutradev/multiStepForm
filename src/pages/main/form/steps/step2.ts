@@ -1,6 +1,6 @@
-import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks';
+import { fetchSubjects, fetchCourts, fetchUsers } from '../mocks'
 
-import type { FormConfig } from '@components/multiStepForm/types';
+import type { FormConfig } from '@components/multiStepForm/types'
 
 export const step2: FormConfig['steps'][number] = {
   id: 'step-2',
@@ -152,13 +152,15 @@ export const step2: FormConfig['steps'][number] = {
           name: 'dataAjuizamentoProcessoConhecimento',
           label: 'Data de ajuizamento do processo de conhecimento',
           type: 'date',
-          required: true
+          required: true,
+          disableFuture: true
         },
         {
           name: 'dataCitacaoProcessoConhecimento',
           label: 'Data da citação do processo de conhecimento',
           type: 'date',
-          required: true
+          required: true,
+          disableFuture: true
         },
         {
           name: 'tipoDataTransitoJulgado',
@@ -175,6 +177,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Data do trânsito em julgado da sentença da fase de conhecimento',
           type: 'date',
           required: true,
+          disableFuture: true,
           conditionalRender: ({ data }) => data.tipoDataTransitoJulgado === 'Sentença'
         },
         {
@@ -182,6 +185,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Data do trânsito em julgado do acórdão lavrado na fase de conhecimento',
           type: 'date',
           required: true,
+          disableFuture: true,
           conditionalRender: ({ data }) => data.tipoDataTransitoJulgado === 'Acórdão'
         }
       ]
@@ -200,6 +204,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Data do trânsito em julgado dos embargos à execução',
           type: 'date',
           required: false,
+          disableFuture: true,
           conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Sim'
         },
         {
@@ -207,6 +212,7 @@ export const step2: FormConfig['steps'][number] = {
           label: 'Data do decurso de prazo para apresentação dos embargos à execução',
           type: 'date',
           required: false,
+          disableFuture: true,
           conditionalRender: ({ data }) => data.houveEmbargosOuImpugnacao === 'Não'
         }
       ]
@@ -231,6 +237,7 @@ export const step2: FormConfig['steps'][number] = {
           type: 'date',
           required: false,
           disabled: false,
+          disableFuture: true,
           icon: 'CalendarToday'
         }
       ]
@@ -508,9 +515,9 @@ export const step2: FormConfig['steps'][number] = {
           disabled: false,
           onChange: (value, context) => {
             if (value === 'ESTADO DE MINAS GERAIS') {
-              context.setMultipleValues({ cnpj: '18.715.615/0001-60' });
+              context.setMultipleValues({ cnpj: '18.715.615/0001-60' })
             } else {
-              context.setMultipleValues({ cnpj: '' });
+              context.setMultipleValues({ cnpj: '' })
             }
           }
         },
@@ -528,4 +535,4 @@ export const step2: FormConfig['steps'][number] = {
     { label: 'Voltar', actionType: 'prev', variant: 'outlined' },
     { label: 'Avançar', actionType: 'next' }
   ]
-};
+}
