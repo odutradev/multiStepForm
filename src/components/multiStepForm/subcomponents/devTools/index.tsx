@@ -1,10 +1,11 @@
-import { AutoAwesome, BugReport, DeleteSweep, DataObject } from '@mui/icons-material';
+import { AutoAwesome, BugReport, DeleteSweep, DataObject, LayersClear } from '@mui/icons-material';
 import { Typography, Button, Collapse } from '@mui/material';
 import { useState } from 'react';
 
 import { DevToolsContainer, HeaderContainer, ButtonsContainer, StateViewerContainer, SectionTitle } from './styles';
 
 import type { DevToolsProps } from './types';
+import type { FormStep } from '../../types';
 
 const DevTools = ({ isOpen, steps, context }: DevToolsProps) => {
   const [showState, setShowState] = useState(false);
@@ -23,6 +24,11 @@ const DevTools = ({ isOpen, steps, context }: DevToolsProps) => {
   const handleClearAll = () => {
     const currentData = context.getValues();
     const emptyData = Object.keys(currentData).reduce((acc, key) => ({ ...acc, [key]: '' }), {});
+    context.setMultipleValues(emptyData, true);
+  };
+
+  const handleClearStep = (step: FormStep) => {
+    const emptyData = step.groups.flatMap((g) => g.fields.map((f) => f.name)).reduce((acc, key) => ({ ...acc, [key]: '' }), {});
     context.setMultipleValues(emptyData, true);
   };
 
@@ -59,6 +65,15 @@ const DevTools = ({ isOpen, steps, context }: DevToolsProps) => {
           </ButtonsContainer>
         </>
       )}
+
+      <SectionTitle variant="caption">Limpeza Individual</SectionTitle>
+      <ButtonsContainer>
+        {steps.map((step) => (
+          <Button key={`devtools-clear-${step.id}`} variant="outlined" color="error" size="small" startIcon={<LayersClear />} onClick={() => handleClearStep(step)}>
+            {step.title}
+          </Button>
+        ))}
+      </ButtonsContainer>
 
       <SectionTitle variant="caption">Inspecionar</SectionTitle>
       <ButtonsContainer>
