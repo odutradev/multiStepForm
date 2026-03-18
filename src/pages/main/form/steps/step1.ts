@@ -1,12 +1,13 @@
-import { stepOneAutoFillMock, MOCK_DELAY_MS } from '../mocks'
+import { stepOneAutoFillMock, MOCK_DELAY_MS } from '../mocks';
 
-import type { FormConfig } from '@components/multiStepForm/types'
+import type { FormConfig } from '@components/multiStepForm/types';
 
 export const step1: FormConfig['steps'][number] = {
   id: 'step-1',
   title: 'Cadastrar Processo',
   groups: [
     {
+      title: 'Dados Iniciais',
       gridColumns: 2,
       fields: [
         {
@@ -39,9 +40,9 @@ export const step1: FormConfig['steps'][number] = {
       label: 'Buscar e Avançar',
       actionType: 'next',
       onClick: async (context) => {
-        await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS))
-        context.setMultipleValues(stepOneAutoFillMock, true)
+        await new Promise((resolve) => setTimeout(resolve, MOCK_DELAY_MS));
+        context.setMultipleValues(stepOneAutoFillMock, true);
       }
     }
   ]
-}
+};

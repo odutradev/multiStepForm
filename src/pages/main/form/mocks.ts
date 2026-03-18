@@ -202,11 +202,11 @@ export const subjectsTreeMock = [
 ];
 
 export const stepOneAutoFillMock = {
-  numeroUnicoProcessoJudicialCnj: '12345678912345678912',
-  nomeVara: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
+  numeroUnicoCnj: '12345678912345678912',
+  nomeVaraRequisicao: '1ª Vara de Feitos Tributários do Estado da comarca de Belo Horizonte',
   matriculaGerenteSecretaria: 'S-1234567',
   nomeGerenteSecretaria: 'João Guimarães Rosa',
-  codigoVara: '100240413'
+  codigoVaraRequisicao: '100240413'
 };
 
 export const beneficiariesMock = [

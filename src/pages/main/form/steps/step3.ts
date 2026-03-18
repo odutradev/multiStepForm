@@ -1,13 +1,14 @@
-import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks'
-import { calcularMesesRRA, calcularValorBruto } from '../utils'
+import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
+import { calcularMesesRRA, calcularValorBruto } from '../utils';
 
-import type { FormConfig } from '@components/multiStepForm/types'
+import type { FormConfig } from '@components/multiStepForm/types';
 
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
   title: 'Beneficiário',
   groups: [
     {
+      title: 'Seleção de Beneficiário',
       gridColumns: 2,
       fields: [
         {
@@ -18,27 +19,27 @@ export const step3: FormConfig['steps'][number] = {
           required: true
         },
         {
-          name: 'beneficiarioSelecionado',
+          name: 'idBeneficiarioSelecionado',
           label: 'Selecione o Beneficiário',
           type: 'select',
           required: true,
           options: beneficiariesOptions,
           onChange: (value, context) => {
-            const selected = beneficiariesMock.find((b) => b.id === String(value))
-            if (!selected) return
+            const selected = beneficiariesMock.find((b) => b.id === String(value));
+            if (!selected) return;
             context.setMultipleValues({
               nomeBeneficiario: selected.nome,
               tipoDocumentoBeneficiario: selected.tipoDocumento,
               numeroDocumentoBeneficiario: selected.documento,
               dataNascimentoBeneficiario: selected.dataNascimento ?? '',
               idadeBeneficiario: selected.idade ?? ''
-            })
+            });
           }
         }
       ]
     },
     {
-      title: 'Informações Básicas',
+      title: 'Dados Pessoais do Beneficiário',
       gridColumns: 6,
       fields: [
         {
@@ -86,25 +87,25 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 2
         },
         {
-          name: 'numeroPixPasepNit',
+          name: 'numeroInscricaoSocial',
           label: 'Número PIX / PASEP ou NIT',
           type: 'text',
           colSpan: 2
         },
         {
-          name: 'doencaGrave',
+          name: 'possuiDoencaGrave',
           label: 'Doença Grave?',
           colSpan: 2,
           preSet: 'simNao'
         },
         {
-          name: 'pessoaDeficiencia',
+          name: 'possuiDeficiencia',
           label: 'Pessoa com Deficiência?',
           colSpan: 2,
           preSet: 'simNao'
         },
         {
-          name: 'beneficiarioCreditoPreferencial',
+          name: 'possuiCreditoPreferencial',
           label: 'Beneficiário de crédito preferencial por decisão jurídica?',
           colSpan: 2,
           preSet: 'simNao'
@@ -112,11 +113,11 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Representante do Beneficiário',
+      title: 'Condição do Beneficiário',
       gridColumns: 1,
       fields: [
         {
-          name: 'condicaoBeneficiario',
+          name: 'condicaoCapacidadeBeneficiario',
           label: 'O beneficiário é',
           type: 'select',
           required: true,
@@ -134,7 +135,7 @@ export const step3: FormConfig['steps'][number] = {
       title: 'Dados do Representante Legal',
       highlight: true,
       gridColumns: 3,
-      conditionalRender: ({ data }) => !!data.condicaoBeneficiario && data.condicaoBeneficiario !== 'NaoSeAplica',
+      conditionalRender: ({ data }) => !!data.condicaoCapacidadeBeneficiario && data.condicaoCapacidadeBeneficiario !== 'NaoSeAplica',
       fields: [
         {
           name: 'nomeRepresentanteLegal',
@@ -143,52 +144,52 @@ export const step3: FormConfig['steps'][number] = {
           required: true
         },
         {
-          name: 'tipoDocumentoRepresentante',
+          name: 'tipoDocumentoRepresentanteLegal',
           label: 'Tipo de Documento',
           required: true,
           preSet: 'tipoDocumento'
         },
         {
-          name: 'numeroDocumentoRepresentantePlaceholder',
+          name: 'documentoRepresentanteLegalPlaceholder',
           label: 'Número do Documento',
           type: 'text',
           disabled: true,
-          conditionalRender: ({ data }) => !data.tipoDocumentoRepresentante
+          conditionalRender: ({ data }) => !data.tipoDocumentoRepresentanteLegal
         },
         {
-          name: 'numeroDocumentoRepresentanteCPF',
+          name: 'cpfRepresentanteLegal',
           label: 'Número do Documento',
           required: true,
           preSet: 'cpf',
-          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CPF'
+          conditionalRender: ({ data }) => data.tipoDocumentoRepresentanteLegal === 'CPF'
         },
         {
-          name: 'numeroDocumentoRepresentanteCNPJ',
+          name: 'cnpjRepresentanteLegal',
           label: 'Número do Documento',
           required: true,
           preSet: 'cnpj',
-          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'CNPJ'
+          conditionalRender: ({ data }) => data.tipoDocumentoRepresentanteLegal === 'CNPJ'
         },
         {
-          name: 'numeroDocumentoRepresentanteRNE',
+          name: 'rneRepresentanteLegal',
           label: 'Número do Documento',
           required: true,
           preSet: 'rne',
-          conditionalRender: ({ data }) => data.tipoDocumentoRepresentante === 'RNE'
+          conditionalRender: ({ data }) => data.tipoDocumentoRepresentanteLegal === 'RNE'
         },
         {
-          name: 'numeroOABRepresentante',
+          name: 'numeroOabRepresentanteLegal',
           label: 'Número da OAB (se for o caso)',
           type: 'text'
         },
         {
-          name: 'categoriaOABRepresentante',
+          name: 'categoriaOabRepresentanteLegal',
           label: 'Categoria',
           required: true,
           preSet: 'categoriaOab'
         },
         {
-          name: 'secaoOABRepresentante',
+          name: 'secaoOabRepresentanteLegal',
           label: 'Seção',
           required: true,
           preSet: 'estados'
@@ -196,11 +197,11 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Dados Bancários',
+      title: 'Titularidade Bancária do Beneficiário',
       gridColumns: 2,
       fields: [
         {
-          name: 'titularConta',
+          name: 'titularContaBancaria',
           label: 'Titular da Conta',
           type: 'select',
           required: true,
@@ -213,71 +214,72 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Beneficiário de Crédito',
+      title: 'Dados Bancários do Titular',
       highlight: true,
       gridColumns: 2,
-      conditionalRender: ({ data }) => data.titularConta === 'BeneficiarioCredito',
+      conditionalRender: ({ data }) => data.titularContaBancaria === 'BeneficiarioCredito',
       fields: [
         {
-          name: 'tipoDocumentoTitularCredito',
+          name: 'tipoDocumentoTitularBancario',
           label: 'Tipo de Documento',
           required: true,
           preSet: 'tipoDocumento'
         },
         {
-          name: 'numeroDocumentoTitularCreditoPlaceholder',
+          name: 'documentoTitularBancarioPlaceholder',
           label: 'Número do Documento',
           type: 'text',
           disabled: true,
-          conditionalRender: ({ data }) => !data.tipoDocumentoTitularCredito
+          conditionalRender: ({ data }) => !data.tipoDocumentoTitularBancario
         },
         {
-          name: 'numeroDocumentoTitularCreditoCPF',
+          name: 'cpfTitularBancario',
           label: 'Número do Documento',
           required: true,
           preSet: 'cpf',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CPF'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancario === 'CPF'
         },
         {
-          name: 'numeroDocumentoTitularCreditoCNPJ',
+          name: 'cnpjTitularBancario',
           label: 'Número do Documento',
           required: true,
           preSet: 'cnpj',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'CNPJ'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancario === 'CNPJ'
         },
         {
-          name: 'numeroDocumentoTitularCreditoRNE',
+          name: 'rneTitularBancario',
           label: 'Número do Documento',
           required: true,
           preSet: 'rne',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularCredito === 'RNE'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancario === 'RNE'
         }
       ]
     },
     {
+      title: 'Informações da Conta Bancária',
       gridColumns: 2,
       fields: [
         {
-          name: 'bancoTitular',
+          name: 'codigoBancoTitular',
           label: 'Banco do Titular',
           required: true,
           preSet: 'bancos'
         },
         {
-          name: 'tipoConta',
+          name: 'tipoContaBancariaTitular',
           label: 'Tipo de Conta',
           required: true,
           preSet: 'tipoConta'
         },
         {
-          name: 'agenciaConta',
+          name: 'agenciaBancariaTitular',
           label: 'Agência',
           type: 'text',
           required: true,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
         },
         {
-          name: 'numeroConta',
+          name: 'numeroContaBancariaTitular',
           label: 'Número da Conta',
           type: 'text',
           required: true,
@@ -286,28 +288,28 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Procurador(es)',
+      title: 'Procuradores do Beneficiário',
       gridColumns: 3,
       fields: [
         {
-          name: 'selecioneProcurador',
+          name: 'idProcuradorSelecionado',
           label: 'Selecione o Procurador',
           type: 'select',
           colSpan: 3,
           options: procuradoresOptions,
           onChange: (value, context) => {
-            const selected = procuradoresMock.find((p) => p.id === String(value))
-            if (!selected) return
+            const selected = procuradoresMock.find((p) => p.id === String(value));
+            if (!selected) return;
             context.setMultipleValues({
               nomeProcurador: selected.nome,
               tipoDocumentoProcurador: selected.tipoDocumento,
-              numeroDocumentoProcuradorCPF: selected.documentoCPF,
-              numeroDocumentoProcuradorCNPJ: selected.documentoCNPJ,
-              numeroDocumentoProcuradorRNE: selected.documentoRNE,
-              numeroOABProcurador: selected.oab,
-              categoriaOABProcurador: selected.categoria,
-              secaoOABProcurador: selected.secao
-            })
+              cpfProcurador: selected.documentoCPF,
+              cnpjProcurador: selected.documentoCNPJ,
+              rneProcurador: selected.documentoRNE,
+              numeroOabProcurador: selected.oab,
+              categoriaOabProcurador: selected.categoria,
+              secaoOabProcurador: selected.secao
+            });
           }
         },
         {
@@ -321,83 +323,83 @@ export const step3: FormConfig['steps'][number] = {
           preSet: 'tipoDocumento'
         },
         {
-          name: 'numeroDocumentoProcuradorPlaceholder',
+          name: 'documentoProcuradorPlaceholder',
           label: 'Número do Documento',
           type: 'text',
           disabled: true,
           conditionalRender: ({ data }) => !data.tipoDocumentoProcurador
         },
         {
-          name: 'numeroDocumentoProcuradorCPF',
+          name: 'cpfProcurador',
           label: 'Número do Documento',
           preSet: 'cpf',
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CPF'
         },
         {
-          name: 'numeroDocumentoProcuradorCNPJ',
+          name: 'cnpjProcurador',
           label: 'Número do Documento',
           preSet: 'cnpj',
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'CNPJ'
         },
         {
-          name: 'numeroDocumentoProcuradorRNE',
+          name: 'rneProcurador',
           label: 'Número do Documento',
           preSet: 'rne',
           conditionalRender: ({ data }) => data.tipoDocumentoProcurador === 'RNE'
         },
         {
-          name: 'numeroOABProcurador',
+          name: 'numeroOabProcurador',
           label: 'Número da OAB',
           type: 'text',
         },
         {
-          name: 'categoriaOABProcurador',
+          name: 'categoriaOabProcurador',
           label: 'Categoria',
           preSet: 'categoriaOab'
         },
         {
-          name: 'secaoOABProcurador',
+          name: 'secaoOabProcurador',
           label: 'Seção',
           preSet: 'estados'
         },
         {
-          name: 'btnLimparProcurador',
+          name: 'acaoLimparProcurador',
           label: 'Limpar Formulário',
           type: 'button',
           buttonVariant: 'outlined',
           onButtonClick: (context) => context.setMultipleValues({
-            selecioneProcurador: '',
+            idProcuradorSelecionado: '',
             nomeProcurador: '',
             tipoDocumentoProcurador: '',
-            numeroDocumentoProcuradorCPF: '',
-            numeroDocumentoProcuradorCNPJ: '',
-            numeroDocumentoProcuradorRNE: '',
-            numeroOABProcurador: '',
-            categoriaOABProcurador: '',
-            secaoOABProcurador: ''
+            cpfProcurador: '',
+            cnpjProcurador: '',
+            rneProcurador: '',
+            numeroOabProcurador: '',
+            categoriaOabProcurador: '',
+            secaoOabProcurador: ''
           })
         },
         {
-          name: 'btnAdicionarProcurador',
+          name: 'acaoAdicionarProcurador',
           label: 'Adicionar Procurador',
           type: 'button',
           buttonVariant: 'contained',
           colSpan: 2,
           onButtonClick: (context) => {
-            const formValues = context.getValues()
-            const nome = String(formValues.nomeProcurador || '')
-            const tipoDoc = String(formValues.tipoDocumentoProcurador || '')
-            const docCpf = String(formValues.numeroDocumentoProcuradorCPF || '')
-            const docCnpj = String(formValues.numeroDocumentoProcuradorCNPJ || '')
-            const docRne = String(formValues.numeroDocumentoProcuradorRNE || '')
-            const oab = String(formValues.numeroOABProcurador || '')
-            const categoria = String(formValues.categoriaOABProcurador || '')
-            const secao = String(formValues.secaoOABProcurador || '')
+            const formValues = context.getValues();
+            const nome = String(formValues.nomeProcurador || '');
+            const tipoDoc = String(formValues.tipoDocumentoProcurador || '');
+            const docCpf = String(formValues.cpfProcurador || '');
+            const docCnpj = String(formValues.cnpjProcurador || '');
+            const docRne = String(formValues.rneProcurador || '');
+            const oab = String(formValues.numeroOabProcurador || '');
+            const categoria = String(formValues.categoriaOabProcurador || '');
+            const secao = String(formValues.secaoOabProcurador || '');
 
-            if (!nome || !tipoDoc || (!docCpf && !docCnpj && !docRne)) return
+            if (!nome || !tipoDoc || (!docCpf && !docCnpj && !docRne)) return;
 
-            const docNum = tipoDoc === 'CPF' ? docCpf : tipoDoc === 'CNPJ' ? docCnpj : docRne
-            const docFormatado = `${tipoDoc} - ${docNum}`
+            const docNum = tipoDoc === 'CPF' ? docCpf : tipoDoc === 'CNPJ' ? docCnpj : docRne;
+            const docFormatado = `${tipoDoc} - ${docNum}`;
 
             const novoProcurador = {
               id: Date.now().toString(),
@@ -407,30 +409,30 @@ export const step3: FormConfig['steps'][number] = {
               categoria: categoria || '-',
               secao: secao || '-',
               rawData: { tipoDoc, docCpf, docCnpj, docRne }
-            }
+            };
 
-            const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
+            const currentList = Array.isArray(formValues.listaProcuradoresAdicionados) ? formValues.listaProcuradoresAdicionados : [];
 
             context.setMultipleValues({
-              tabelaProcuradores: [...currentList, novoProcurador],
-              selecioneProcurador: '',
+              listaProcuradoresAdicionados: [...currentList, novoProcurador],
+              idProcuradorSelecionado: '',
               nomeProcurador: '',
               tipoDocumentoProcurador: '',
-              numeroDocumentoProcuradorCPF: '',
-              numeroDocumentoProcuradorCNPJ: '',
-              numeroDocumentoProcuradorRNE: '',
-              numeroOABProcurador: '',
-              categoriaOABProcurador: '',
-              secaoOABProcurador: ''
-            })
+              cpfProcurador: '',
+              cnpjProcurador: '',
+              rneProcurador: '',
+              numeroOabProcurador: '',
+              categoriaOabProcurador: '',
+              secaoOabProcurador: ''
+            });
           }
         },
         {
-          name: 'tabelaProcuradores',
+          name: 'listaProcuradoresAdicionados',
           label: 'Procuradores Adicionados',
           type: 'table',
           colSpan: 3,
-          conditionalRender: ({ data }) => Array.isArray(data.tabelaProcuradores) && data.tabelaProcuradores.length > 0,
+          conditionalRender: ({ data }) => Array.isArray(data.listaProcuradoresAdicionados) && data.listaProcuradoresAdicionados.length > 0,
           tableColumns: [
             { header: 'Nome', key: 'nome' },
             { header: 'Documento', key: 'documento' },
@@ -443,33 +445,33 @@ export const step3: FormConfig['steps'][number] = {
               label: 'Editar',
               icon: 'Edit',
               onClick: (row, context) => {
-                const formValues = context.getValues()
-                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
-                const newList = currentList.filter((p) => p.id !== row.id)
-                const rawData = row.rawData as Record<string, string>
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.listaProcuradoresAdicionados) ? formValues.listaProcuradoresAdicionados : [];
+                const newList = currentList.filter((p) => p.id !== row.id);
+                const rawData = row.rawData as Record<string, string>;
 
                 context.setMultipleValues({
-                  tabelaProcuradores: newList,
-                  selecioneProcurador: '',
+                  listaProcuradoresAdicionados: newList,
+                  idProcuradorSelecionado: '',
                   nomeProcurador: String(row.nome || ''),
                   tipoDocumentoProcurador: rawData.tipoDoc,
-                  numeroDocumentoProcuradorCPF: rawData.docCpf,
-                  numeroDocumentoProcuradorCNPJ: rawData.docCnpj,
-                  numeroDocumentoProcuradorRNE: rawData.docRne,
-                  numeroOABProcurador: String(row.oab !== '-' ? row.oab : ''),
-                  categoriaOABProcurador: String(row.categoria !== '-' ? row.categoria : ''),
-                  secaoOABProcurador: String(row.secao !== '-' ? row.secao : '')
-                })
+                  cpfProcurador: rawData.docCpf,
+                  cnpjProcurador: rawData.docCnpj,
+                  rneProcurador: rawData.docRne,
+                  numeroOabProcurador: String(row.oab !== '-' ? row.oab : ''),
+                  categoriaOabProcurador: String(row.categoria !== '-' ? row.categoria : ''),
+                  secaoOabProcurador: String(row.secao !== '-' ? row.secao : '')
+                });
               }
             },
             {
               label: 'Remover',
               icon: 'Delete',
               onClick: (row, context) => {
-                const formValues = context.getValues()
-                const currentList = Array.isArray(formValues.tabelaProcuradores) ? formValues.tabelaProcuradores : []
-                const newList = currentList.filter((p) => p.id !== row.id)
-                context.setMultipleValues({ tabelaProcuradores: newList })
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.listaProcuradoresAdicionados) ? formValues.listaProcuradoresAdicionados : [];
+                const newList = currentList.filter((p) => p.id !== row.id);
+                context.setMultipleValues({ listaProcuradoresAdicionados: newList });
               }
             }
           ]
@@ -477,98 +479,99 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Dados Bancários do Advogado',
+      title: 'Dados Bancários dos Procuradores',
       gridColumns: 2,
-      conditionalRender: ({ data }) => Array.isArray(data.tabelaProcuradores) && data.tabelaProcuradores.length > 0,
+      conditionalRender: ({ data }) => Array.isArray(data.listaProcuradoresAdicionados) && data.listaProcuradoresAdicionados.length > 0,
       fields: [
         {
-          name: 'informarDadosBancariosAdvogado',
+          name: 'possuiDadosBancariosProcurador',
           label: 'Deseja informar dados bancários do advogado?',
           required: true,
           preSet: 'simNao'
         },
         {
-          name: 'titularContaAdvogado',
+          name: 'titularContaBancariaProcurador',
           label: 'Titular da Conta',
           required: true,
           preSet: 'titularAdvogado',
-          conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim'
+          conditionalRender: ({ data }) => data.possuiDadosBancariosProcurador === 'Sim'
         }
       ]
     },
     {
-      title: 'Titular da Conta',
+      title: 'Dados Bancários do Titular (Procurador)',
       highlight: true,
       gridColumns: 3,
-      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim' && !!data.titularContaAdvogado,
+      conditionalRender: ({ data }) => data.possuiDadosBancariosProcurador === 'Sim' && !!data.titularContaBancariaProcurador,
       fields: [
         {
-          name: 'nomeTitularAdvogado',
+          name: 'nomeTitularBancarioProcurador',
           label: 'Nome do Titular',
           type: 'text',
           required: true
         },
         {
-          name: 'tipoDocumentoTitularAdvogado',
+          name: 'tipoDocumentoTitularBancarioProcurador',
           label: 'Tipo de Documento',
           required: true,
           preSet: 'tipoDocumento'
         },
         {
-          name: 'numeroDocumentoTitularAdvogadoPlaceholder',
+          name: 'documentoTitularBancarioProcuradorPlaceholder',
           label: 'Número do Documento',
           type: 'text',
           disabled: true,
-          conditionalRender: ({ data }) => !data.tipoDocumentoTitularAdvogado
+          conditionalRender: ({ data }) => !data.tipoDocumentoTitularBancarioProcurador
         },
         {
-          name: 'numeroDocumentoTitularAdvogadoCPF',
+          name: 'cpfTitularBancarioProcurador',
           label: 'Número do Documento',
           required: true,
           preSet: 'cpf',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CPF'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancarioProcurador === 'CPF'
         },
         {
-          name: 'numeroDocumentoTitularAdvogadoCNPJ',
+          name: 'cnpjTitularBancarioProcurador',
           label: 'Número do Documento',
           required: true,
           preSet: 'cnpj',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'CNPJ'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancarioProcurador === 'CNPJ'
         },
         {
-          name: 'numeroDocumentoTitularAdvogadoRNE',
+          name: 'rneTitularBancarioProcurador',
           label: 'Número do Documento',
           required: true,
           preSet: 'rne',
-          conditionalRender: ({ data }) => data.tipoDocumentoTitularAdvogado === 'RNE'
+          conditionalRender: ({ data }) => data.tipoDocumentoTitularBancarioProcurador === 'RNE'
         }
       ]
     },
     {
+      title: 'Informações da Conta Bancária (Procurador)',
       gridColumns: 2,
-      conditionalRender: ({ data }) => data.informarDadosBancariosAdvogado === 'Sim',
+      conditionalRender: ({ data }) => data.possuiDadosBancariosProcurador === 'Sim',
       fields: [
         {
-          name: 'bancoTitularAdvogado',
+          name: 'codigoBancoProcurador',
           label: 'Banco do Titular',
           required: true,
           preSet: 'bancos'
         },
         {
-          name: 'tipoContaAdvogado',
+          name: 'tipoContaBancariaProcurador',
           label: 'Tipo de Conta',
           required: true,
           preSet: 'tipoConta'
         },
         {
-          name: 'agenciaContaAdvogado',
+          name: 'agenciaBancariaProcurador',
           label: 'Agência',
           type: 'text',
           required: true,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' }
         },
         {
-          name: 'numeroContaAdvogado',
+          name: 'numeroContaBancariaProcurador',
           label: 'Número da Conta',
           type: 'text',
           required: true,
@@ -577,7 +580,7 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Valor Devido ao Titular',
+      title: 'Valores e Deduções',
       gridColumns: 6,
       fields: [
         {
@@ -589,7 +592,7 @@ export const step3: FormConfig['steps'][number] = {
           onChange: (val, context) => calcularValorBruto(context, 'valorPrincipalCorrigido', val)
         },
         {
-          name: 'dataLiquidacao',
+          name: 'dataLiquidacaoCalculo',
           label: 'Data de Liquidação',
           type: 'date',
           required: true,
@@ -597,12 +600,12 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 3
         },
         {
-          name: 'haJurosMoratorios',
+          name: 'possuiJurosMoratorios',
           label: 'Há juros moratórios?',
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'haJurosMoratorios', val)
+          onChange: (val, context) => calcularValorBruto(context, 'possuiJurosMoratorios', val)
         },
         {
           name: 'valorJurosMoratorios',
@@ -610,23 +613,23 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosMoratorios === 'Sim',
+          conditionalRender: ({ data }) => data.possuiJurosMoratorios === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosMoratorios', val)
         },
         {
-          name: 'spacerJurosMoratorios',
+          name: 'espacadorJurosMoratorios',
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosMoratorios !== 'Sim'
+          conditionalRender: ({ data }) => data.possuiJurosMoratorios !== 'Sim'
         },
         {
-          name: 'haJurosCompensatorios',
+          name: 'possuiJurosCompensatorios',
           label: 'Há incidência de juros compensatórios (remuneratórios)?',
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'haJurosCompensatorios', val)
+          onChange: (val, context) => calcularValorBruto(context, 'possuiJurosCompensatorios', val)
         },
         {
           name: 'valorJurosCompensatorios',
@@ -634,23 +637,23 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosCompensatorios === 'Sim',
+          conditionalRender: ({ data }) => data.possuiJurosCompensatorios === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorJurosCompensatorios', val)
         },
         {
-          name: 'spacerJurosCompensatorios',
+          name: 'espacadorJurosCompensatorios',
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haJurosCompensatorios !== 'Sim'
+          conditionalRender: ({ data }) => data.possuiJurosCompensatorios !== 'Sim'
         },
         {
-          name: 'haCustasDespesasMulta',
+          name: 'possuiCustasDespesasMulta',
           label: 'Há custas/despesas antecipadas/multa?',
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'haCustasDespesasMulta', val)
+          onChange: (val, context) => calcularValorBruto(context, 'possuiCustasDespesasMulta', val)
         },
         {
           name: 'valorCustasDespesasMulta',
@@ -658,18 +661,18 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haCustasDespesasMulta === 'Sim',
+          conditionalRender: ({ data }) => data.possuiCustasDespesasMulta === 'Sim',
           onChange: (val, context) => calcularValorBruto(context, 'valorCustasDespesasMulta', val)
         },
         {
-          name: 'spacerCustasDespesasMulta',
+          name: 'espacadorCustasDespesasMulta',
           label: ' ',
           type: 'info',
           colSpan: 3,
-          conditionalRender: ({ data }) => data.haCustasDespesasMulta !== 'Sim'
+          conditionalRender: ({ data }) => data.possuiCustasDespesasMulta !== 'Sim'
         },
         {
-          name: 'haDescontoPrevidenciario',
+          name: 'possuiDescontoPrevidenciario',
           label: 'Há desconto previdenciário?',
           required: true,
           colSpan: 2,
@@ -683,7 +686,7 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 2
         },
         {
-          name: 'regimePrevidenciario',
+          name: 'tipoRegimePrevidenciario',
           label: 'Regime previdenciário',
           required: true,
           colSpan: 2,
@@ -692,10 +695,10 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Regime Previdenciário Próprio',
+      title: 'Detalhes do Regime Previdenciário Próprio',
       highlight: true,
       gridColumns: 6,
-      conditionalRender: ({ data }) => data.regimePrevidenciario === 'Proprio',
+      conditionalRender: ({ data }) => data.tipoRegimePrevidenciario === 'Proprio',
       fields: [
         {
           name: 'nomeOrgaoPrevidenciario',
@@ -712,49 +715,50 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 2
         },
         {
-          name: 'informarDadosBancariosOrgao',
+          name: 'possuiDadosBancariosOrgaoPrevidenciario',
           label: 'Deseja informar os dados bancários do órgão previdenciário?',
           required: true,
           colSpan: 2,
           preSet: 'simNao'
         },
         {
-          name: 'bancoOrgao',
+          name: 'codigoBancoOrgaoPrevidenciario',
           label: 'Banco do Titular',
           required: true,
           colSpan: 3,
           preSet: 'bancos',
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
+          conditionalRender: ({ data }) => data.possuiDadosBancariosOrgaoPrevidenciario === 'Sim'
         },
         {
-          name: 'tipoContaOrgao',
+          name: 'tipoContaBancariaOrgaoPrevidenciario',
           label: 'Tipo de Conta',
           required: true,
           colSpan: 3,
           preSet: 'tipoConta',
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
+          conditionalRender: ({ data }) => data.possuiDadosBancariosOrgaoPrevidenciario === 'Sim'
         },
         {
-          name: 'agenciaOrgao',
+          name: 'agenciaBancariaOrgaoPrevidenciario',
           label: 'Agência',
           type: 'text',
           required: true,
           colSpan: 3,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
+          conditionalRender: ({ data }) => data.possuiDadosBancariosOrgaoPrevidenciario === 'Sim'
         },
         {
-          name: 'numeroContaOrgao',
+          name: 'numeroContaBancariaOrgaoPrevidenciario',
           label: 'Número da Conta',
           type: 'text',
           required: true,
           colSpan: 3,
           validation: { pattern: '^\\d{1,20}$', message: 'Apenas números (máximo 20 dígitos)' },
-          conditionalRender: ({ data }) => data.informarDadosBancariosOrgao === 'Sim'
+          conditionalRender: ({ data }) => data.possuiDadosBancariosOrgaoPrevidenciario === 'Sim'
         }
       ]
     },
     {
+      title: 'Outras Deduções e Impostos',
       gridColumns: 2,
       fields: [
         {
@@ -768,26 +772,26 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
         },
         {
-          name: 'haIncidenciaITCD',
+          name: 'possuiIncidenciaItcd',
           label: 'Há incidência de ITCD?',
           required: true,
           preSet: 'simNao'
         },
         {
-          name: 'percentualAliquotaITCD',
+          name: 'percentualAliquotaItcd',
           label: 'Percentual / Alíquota',
           type: 'percentage',
           required: true,
-          conditionalRender: ({ data }) => data.haIncidenciaITCD === 'Sim'
+          conditionalRender: ({ data }) => data.possuiIncidenciaItcd === 'Sim'
         },
         {
-          name: 'spacerITCD',
+          name: 'espacadorItcd',
           label: ' ',
           type: 'info',
-          conditionalRender: ({ data }) => data.haIncidenciaITCD !== 'Sim'
+          conditionalRender: ({ data }) => data.possuiIncidenciaItcd !== 'Sim'
         },
         {
-          name: 'haTributacaoRRA',
+          name: 'possuiTributacaoRra',
           label: 'Há tributação RRA a título de imposto de renda com incidência de imposto de renda?',
           required: true,
           colSpan: 2,
@@ -796,13 +800,13 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
-      title: 'Tributação RRA a título de imposto de renda',
+      title: 'Detalhes da Tributação RRA',
       highlight: true,
       gridColumns: 2,
-      conditionalRender: ({ data }) => data.haTributacaoRRA === 'Sim',
+      conditionalRender: ({ data }) => data.possuiTributacaoRra === 'Sim',
       fields: [
         {
-          name: 'dataInicialRRA',
+          name: 'dataInicialTributacaoRra',
           label: 'Período Inicial',
           type: 'date',
           required: true,
@@ -810,7 +814,7 @@ export const step3: FormConfig['steps'][number] = {
           onChange: (_, context) => calcularMesesRRA(context)
         },
         {
-          name: 'dataFinalRRA',
+          name: 'dataFinalTributacaoRra',
           label: 'Período Final',
           type: 'date',
           required: true,
@@ -818,12 +822,12 @@ export const step3: FormConfig['steps'][number] = {
           onChange: (_, context) => calcularMesesRRA(context)
         },
         {
-          name: 'parcelas13RRA',
+          name: 'quantidadeParcelasDecimoTerceiroRra',
           label: 'Número de parcelas do 13° (se houver)',
           type: 'number',
         },
         {
-          name: 'numeroMesesRRA',
+          name: 'quantidadeMesesTributacaoRra',
           label: 'Número de meses (NM) a que se refere a tributação RRA',
           type: 'number',
           readOnly: true,
@@ -831,10 +835,11 @@ export const step3: FormConfig['steps'][number] = {
       ]
     },
     {
+      title: 'Resumo Financeiro',
       gridColumns: 1,
       fields: [
         {
-          name: 'valorBruto',
+          name: 'valorBrutoTotal',
           label: 'Valor Bruto',
           type: 'text',
           readOnly: true
@@ -848,8 +853,8 @@ export const step3: FormConfig['steps'][number] = {
       label: 'Confirmar e Enviar',
       actionType: 'submit',
       onClick: async () => {
-        await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS))
+        await new Promise((resolve) => setTimeout(resolve, MOCK_SUBMIT_DELAY_MS));
       }
     }
   ]
-}
+};
