@@ -12,10 +12,10 @@ export const generatePrecatorioHtml = (data: Record<string, unknown>): string =>
     const radiosHtml = options
       .map(
         (opt) => `
-      <label style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b; white-space: nowrap;">
-        <input type="radio" ${opt.checked ? 'checked="checked"' : ''} disabled="disabled" style="vertical-align: middle; margin-right: 4px;" />
+      <span style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b; white-space: nowrap;">
+        <span style="font-weight: bold; margin-right: 4px;">(${opt.checked ? ' X ' : '&nbsp;&nbsp;&nbsp;'})</span>
         <span style="vertical-align: middle;">${opt.label}</span>
-      </label>`
+      </span>`
       )
       .join('');
 
@@ -161,12 +161,12 @@ export const generatePrecatorioHtml = (data: Record<string, unknown>): string =>
     <strong style="font-weight: 600; font-size: 14px; color: #64748b; margin-right: 8px; vertical-align: middle;">4.8.5 Conta N°:</strong>
     <span style="font-size: 15px; font-weight: 500; color: #1e293b; vertical-align: middle; margin-right: 16px;">${getVal('numeroContaBancariaTitular')}</span>
     <span style="display: inline-block; vertical-align: middle;">
-      <label style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b;">
-        <input type="radio" ${getVal('tipoContaBancariaTitular') === 'Corrente' ? 'checked="checked"' : ''} disabled="disabled" style="vertical-align: middle; margin-right: 4px;" /> Corrente
-      </label>
-      <label style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b;">
-        <input type="radio" ${getVal('tipoContaBancariaTitular') === 'Poupanca' ? 'checked="checked"' : ''} disabled="disabled" style="vertical-align: middle; margin-right: 4px;" /> Poupança
-      </label>
+      <span style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b;">
+        <span style="font-weight: bold; margin-right: 4px;">(${getVal('tipoContaBancariaTitular') === 'Corrente' ? ' X ' : '&nbsp;&nbsp;&nbsp;'})</span> Corrente
+      </span>
+      <span style="display: inline-block; margin-right: 16px; font-size: 14px; color: #1e293b;">
+        <span style="font-weight: bold; margin-right: 4px;">(${getVal('tipoContaBancariaTitular') === 'Poupanca' ? ' X ' : '&nbsp;&nbsp;&nbsp;'})</span> Poupança
+      </span>
     </span>
   </div>
 
