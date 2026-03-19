@@ -1,5 +1,5 @@
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
-import { calcularMesesRRA, calcularValorBruto } from '../utils';
+import { calculateGrossValue, calculateRRAMonths } from '../utils';
 import { step3TestData } from '../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
@@ -591,7 +591,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'currency',
           required: true,
           colSpan: 3,
-          onChange: (val, context) => calcularValorBruto(context, 'valorPrincipalCorrigido', val)
+          onChange: (val, context) => calculateGrossValue(context, 'valorPrincipalCorrigido', val)
         },
         {
           name: 'dataLiquidacaoCalculo',
@@ -607,7 +607,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'possuiJurosMoratorios', val)
+          onChange: (val, context) => calculateGrossValue(context, 'possuiJurosMoratorios', val)
         },
         {
           name: 'valorJurosMoratorios',
@@ -616,7 +616,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           conditionalRender: ({ data }) => data.possuiJurosMoratorios === 'Sim',
-          onChange: (val, context) => calcularValorBruto(context, 'valorJurosMoratorios', val)
+          onChange: (val, context) => calculateGrossValue(context, 'valorJurosMoratorios', val)
         },
         {
           name: 'espacadorJurosMoratorios',
@@ -631,7 +631,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'possuiJurosCompensatorios', val)
+          onChange: (val, context) => calculateGrossValue(context, 'possuiJurosCompensatorios', val)
         },
         {
           name: 'valorJurosCompensatorios',
@@ -640,7 +640,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           conditionalRender: ({ data }) => data.possuiJurosCompensatorios === 'Sim',
-          onChange: (val, context) => calcularValorBruto(context, 'valorJurosCompensatorios', val)
+          onChange: (val, context) => calculateGrossValue(context, 'valorJurosCompensatorios', val)
         },
         {
           name: 'espacadorJurosCompensatorios',
@@ -655,7 +655,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           preSet: 'simNao',
-          onChange: (val, context) => calcularValorBruto(context, 'possuiCustasDespesasMulta', val)
+          onChange: (val, context) => calculateGrossValue(context, 'possuiCustasDespesasMulta', val)
         },
         {
           name: 'valorCustasDespesasMulta',
@@ -664,7 +664,7 @@ export const step3: FormConfig['steps'][number] = {
           required: true,
           colSpan: 3,
           conditionalRender: ({ data }) => data.possuiCustasDespesasMulta === 'Sim',
-          onChange: (val, context) => calcularValorBruto(context, 'valorCustasDespesasMulta', val)
+          onChange: (val, context) => calculateGrossValue(context, 'valorCustasDespesasMulta', val)
         },
         {
           name: 'espacadorCustasDespesasMulta',
@@ -822,7 +822,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'date',
           required: true,
           disableFuture: true,
-          onChange: (_, context) => calcularMesesRRA(context)
+          onChange: (_, context) => calculateRRAMonths(context)
         },
         {
           name: 'dataFinalTributacaoRra',
@@ -830,7 +830,7 @@ export const step3: FormConfig['steps'][number] = {
           type: 'date',
           required: true,
           disableFuture: true,
-          onChange: (_, context) => calcularMesesRRA(context)
+          onChange: (_, context) => calculateRRAMonths(context)
         },
         {
           name: 'quantidadeParcelasDecimoTerceiroRra',
