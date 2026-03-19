@@ -5,7 +5,7 @@ import { step3 } from './steps/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
-export const mockFormConfig: FormConfig = {
+export const asprecFormConfig: FormConfig = {
   fieldPreSets: formPreSets,
   steps: [step1, step2, step3]
 };
