@@ -1,11 +1,58 @@
-import { Dialog, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle, DialogActions, Button, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 
-import { ModalTitle, ModalContent, PreviewWrapper, PreviewFrame } from './styles';
-import { MODAL_CONSTANTS } from './constants';
+export interface HtmlModalProps {
+  htmlContent: string;
+  onClose: () => void;
+  isOpen: boolean;
+}
 
-import type { HtmlModalProps } from './types';
+export const MODAL_CONSTANTS = {
+  PRINT_STYLE_INJECTION: '<style>@media print { @page { size: A4; margin: 15mm; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: #ffffff !important; } main { box-shadow: none !important; padding: 0 !important; margin: 0 !important; } }</style></head>',
+  SUCCESS_COPY: 'Documento copiado com sucesso! Pode colar no seu editor.',
+  ERROR_PDF_NATIVE: 'Erro ao acionar a geração nativa de PDF.',
+  ERROR_PDF: 'Erro ao acessar o documento para geração de PDF.',
+  DOWNLOAD_FILE_NAME: 'oficio-precatorio.html',
+  PRINT_STYLE_TARGET: '</head>',
+  ERROR_COPY: 'Erro ao copiar o documento.',
+  MIME_TYPE: 'text/html;charset=utf-8'
+} as const;
+
+export const ModalTitle = styled(DialogTitle)({
+  borderBottom: '1px solid #e2e8f0',
+  fontSize: '1.25rem',
+  fontWeight: 600,
+  color: '#1e293b'
+});
+
+export const ModalContent = styled(DialogContent)({
+  backgroundColor: '#f8fafc',
+  padding: '24px'
+});
+
+export const PreviewWrapper = styled(Box)({
+  border: '1px solid #e2e8f0',
+  backgroundColor: '#ffffff',
+  borderRadius: '8px',
+  height: '60vh',
+  width: '100%'
+});
+
+export const PreviewFrame = styled('iframe')({
+  height: '100%',
+  width: '100%',
+  border: 'none'
+});
+
+export const ActionsContainer = styled(DialogActions)({
+  padding: '16px 24px'
+});
+
+export const ActionButton = styled(Button)<{ $spaced?: boolean }>(({ $spaced }) => ({
+  ...( $spaced && { marginLeft: '16px' })
+}));
 
 const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
   const iframeReference = useRef<HTMLIFrameElement>(null);
@@ -73,20 +120,20 @@ const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
           <PreviewFrame ref={iframeReference} srcDoc={printableHtmlContent} title="Preview Precatório" />
         </PreviewWrapper>
       </ModalContent>
-      <DialogActions sx={{ padding: '16px 24px' }}>
-        <Button onClick={onClose} color="inherit" variant="text">
+      <ActionsContainer>
+        <ActionButton onClick={onClose} color="inherit" variant="text">
           Fechar
-        </Button>
-        <Button onClick={handleCopyToClipboard} color="primary" variant="outlined" sx={{ ml: 2 }}>
+        </ActionButton>
+        <ActionButton onClick={handleCopyToClipboard} color="primary" variant="outlined" $spaced>
           Copiar HTML (Rich Text)
-        </Button>
-        <Button onClick={handleHtmlDownload} color="primary" variant="outlined" sx={{ ml: 2 }}>
+        </ActionButton>
+        <ActionButton onClick={handleHtmlDownload} color="primary" variant="outlined" $spaced>
           Baixar HTML
-        </Button>
-        <Button onClick={handlePdfDownload} color="primary" variant="contained" sx={{ ml: 2 }}>
+        </ActionButton>
+        <ActionButton onClick={handlePdfDownload} color="primary" variant="contained" $spaced>
           Salvar como PDF
-        </Button>
-      </DialogActions>
+        </ActionButton>
+      </ActionsContainer>
     </Dialog>
   );
 };

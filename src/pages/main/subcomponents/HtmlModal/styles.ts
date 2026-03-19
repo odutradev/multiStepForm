@@ -1,4 +1,4 @@
-import { DialogContent, DialogTitle, Box } from '@mui/material';
+import { DialogContent, DialogTitle, DialogActions, Button, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const ModalTitle = styled(DialogTitle)({
@@ -26,3 +26,11 @@ export const PreviewFrame = styled('iframe')({
   width: '100%',
   border: 'none'
 });
+
+export const ActionsContainer = styled(DialogActions)({
+  padding: '16px 24px'
+});
+
+export const ActionButton = styled(Button)<{ $spaced?: boolean }>(({ $spaced }) => ({
+  ...( $spaced && { marginLeft: '16px' })
+}));
