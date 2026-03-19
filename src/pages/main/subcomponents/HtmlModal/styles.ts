@@ -1,28 +1,28 @@
 import { DialogContent, DialogTitle, Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export const StyledDialogTitle = styled(DialogTitle)({
-  fontWeight: 600,
+export const ModalTitle = styled(DialogTitle)({
+  borderBottom: '1px solid #e2e8f0',
   fontSize: '1.25rem',
-  color: '#1e293b',
-  borderBottom: '1px solid #e2e8f0'
+  fontWeight: 600,
+  color: '#1e293b'
 });
 
-export const StyledDialogContent = styled(DialogContent)({
-  padding: '24px',
-  backgroundColor: '#f8fafc'
+export const ModalContent = styled(DialogContent)({
+  backgroundColor: '#f8fafc',
+  padding: '24px'
 });
 
-export const PreviewContainer = styled(Box)({
-  width: '100%',
-  height: '60vh',
+export const PreviewWrapper = styled(Box)({
   border: '1px solid #e2e8f0',
+  backgroundColor: '#ffffff',
   borderRadius: '8px',
-  backgroundColor: '#ffffff'
+  height: '60vh',
+  width: '100%'
 });
 
-export const StyledIframe = styled('iframe')({
-  width: '100%',
+export const PreviewFrame = styled('iframe')({
   height: '100%',
+  width: '100%',
   border: 'none'
 });

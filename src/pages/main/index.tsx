@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-import { generatePrecatorioHtml } from './subcomponents/HtmlModal/template';
+import { generateDocumentHtml } from './subcomponents/HtmlModal/template';
 import MultiStepForm from '@components/multiStepForm';
 import HtmlModal from './subcomponents/HtmlModal';
 import { MainContainer } from './styles';
@@ -11,7 +11,7 @@ const Main = () => {
   const [modalHtml, setModalHtml] = useState('');
 
   const handleFormSubmit = useCallback((data: Record<string, unknown>) => {
-    const generatedHtml = generatePrecatorioHtml(data);
+    const generatedHtml = generateDocumentHtml(data);
     setModalHtml(generatedHtml);
     setIsModalOpen(true);
   }, []);
