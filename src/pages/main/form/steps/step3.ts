@@ -1,6 +1,6 @@
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
 import { calcularMesesRRA, calcularValorBruto } from '../utils';
-import { step3TestData } from '../../tests/step3';
+import { step3TestData } from '../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
