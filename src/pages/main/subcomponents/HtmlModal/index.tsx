@@ -2,7 +2,8 @@ import { Dialog, DialogActions, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 
-import { StyledDialogContent, StyledDialogTitle, PreviewContainer } from './styles';
+import { StyledDialogContent, StyledDialogTitle, PreviewContainer, StyledIframe } from './styles';
+import { HTML_MODAL_CONSTANTS } from './constants';
 
 import type { HtmlModalProps } from './types';
 
@@ -20,11 +21,12 @@ const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
     range.selectNodeContents(tempContainer);
     selection?.removeAllRanges();
     selection?.addRange(range);
+    
     try {
       document.execCommand('copy');
-      toast.success('Documento copiado com sucesso! Pode colar no seu editor.');
+      toast.success(HTML_MODAL_CONSTANTS.SUCCESS_COPY);
     } catch {
-      toast.error('Erro ao copiar o documento.');
+      toast.error(HTML_MODAL_CONSTANTS.ERROR_COPY);
     } finally {
       selection?.removeAllRanges();
       document.body.removeChild(tempContainer);
@@ -32,11 +34,11 @@ const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
   };
 
   const handleDownloadHtml = () => {
-    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+    const blob = new Blob([htmlContent], { type: HTML_MODAL_CONSTANTS.MIME_TYPE });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'oficio-precatorio.html';
+    link.download = HTML_MODAL_CONSTANTS.DOWNLOAD_FILE_NAME;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -45,21 +47,21 @@ const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
 
   const handleDownloadPdf = () => {
     if (!iframeRef.current?.contentWindow) {
-      toast.error('Erro ao acessar o documento para geração de PDF.');
+      toast.error(HTML_MODAL_CONSTANTS.ERROR_PDF);
       return;
     }
     try {
       iframeRef.current.contentWindow.print();
     } catch {
-      toast.error('Erro ao acionar a geração nativa de PDF.');
+      toast.error(HTML_MODAL_CONSTANTS.ERROR_PDF_NATIVE);
     }
   };
 
   if (!isOpen) return null;
 
   const printReadyHtml = htmlContent.replace(
-    '</head>',
-    '<style>@media print { @page { size: A4; margin: 15mm; } body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background-color: #ffffff !important; } main { box-shadow: none !important; padding: 0 !important; margin: 0 !important; } }</style></head>'
+    HTML_MODAL_CONSTANTS.PRINT_STYLE_REPLACE_TARGET,
+    HTML_MODAL_CONSTANTS.PRINT_STYLE_INJECTION
   );
 
   return (
@@ -67,7 +69,7 @@ const HtmlModal = ({ isOpen, htmlContent, onClose }: HtmlModalProps) => {
       <StyledDialogTitle>Pré-visualização do Documento</StyledDialogTitle>
       <StyledDialogContent>
         <PreviewContainer>
-          <iframe ref={iframeRef} srcDoc={printReadyHtml} title="Preview Precatório" width="100%" height="100%" style={{ border: 'none' }} />
+          <StyledIframe ref={iframeRef} srcDoc={printReadyHtml} title="Preview Precatório" />
         </PreviewContainer>
       </StyledDialogContent>
       <DialogActions sx={{ padding: '16px 24px' }}>

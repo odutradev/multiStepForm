@@ -20,3 +20,9 @@ export const PreviewContainer = styled(Box)({
   borderRadius: '8px',
   backgroundColor: '#ffffff'
 });
+
+export const StyledIframe = styled('iframe')({
+  width: '100%',
+  height: '100%',
+  border: 'none'
+});
