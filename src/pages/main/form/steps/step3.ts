@@ -1,5 +1,5 @@
 import { beneficiariesOptions, beneficiariesMock, procuradoresOptions, procuradoresMock, MOCK_SUBMIT_DELAY_MS } from '../mocks';
-import { calculateGrossValue, calculateRRAMonths } from '../utils';
+import { calculateGrossValue, calculateRRAMonths, parseCurrency, formatCurrency } from '../utils';
 import { step3TestData } from '../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
@@ -854,6 +854,117 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Valor Bruto',
           type: 'text',
           readOnly: true
+        }
+      ]
+    },
+    {
+      title: 'Cálculo Extra',
+      gridColumns: 3,
+      fields: [
+        {
+          name: 'especieCalculoExtra',
+          label: 'Espécie',
+          type: 'select',
+          colSpan: 2,
+          options: [
+            { label: 'Principal', value: 'Principal' },
+            { label: 'Custas e Outros', value: 'CustasEoutros' },
+            { label: 'Desconto Previdenciário', value: 'DescontoPrevidenciário' },
+            { label: 'Juros Anteriores', value: 'JurosAnteriores' },
+            { label: 'Assistência Médica', value: 'AssistMedica' },
+            { label: 'Selic Anterior Sobre Principal', value: 'SelicAnteriorSobrePrincipal' },
+            { label: 'Selic Anterior Desconto Previdenciário', value: 'SelicAnteriorDescontoPrevidenciário' },
+            { label: 'Selic Anterior Sobre Juros Anteriores', value: 'SelicAnteriorSobreJurosAnteriores' },
+            { label: 'Selic Anterior Sobre Assistência Médica', value: 'SelicAnteriorSobreAssistMedica' },
+            { label: 'Selic Anterior Sobre Contribuição Patronal', value: 'SelicAnteriorSobreContribuicaoPatronal' },
+            { label: 'Selic Anterior Sobre Custas e Outros', value: 'SelicAnteriorSobreCustasEoutros' },
+            { label: 'Contribuição Patronal', value: 'ContribuicaoPatronal' }
+          ]
+        },
+        {
+          name: 'valorEspecieCalculoExtra',
+          label: 'Valor da Espécie',
+          type: 'currency',
+          colSpan: 1
+        },
+        {
+          name: 'acaoLimparCalculoExtra',
+          label: 'Limpar Formulário',
+          type: 'button',
+          buttonVariant: 'outlined',
+          colSpan: 1,
+          onButtonClick: (context) => context.setMultipleValues({
+            especieCalculoExtra: '',
+            valorEspecieCalculoExtra: ''
+          })
+        },
+        {
+          name: 'acaoAdicionarCalculoExtra',
+          label: 'Adicionar Categoria',
+          type: 'button',
+          buttonVariant: 'contained',
+          colSpan: 2,
+          onButtonClick: (context) => {
+            const formValues = context.getValues();
+            const especie = String(formValues.especieCalculoExtra || '');
+            const valorRaw = String(formValues.valorEspecieCalculoExtra || '');
+
+            if (!especie || !valorRaw) return;
+
+            const valorNumber = parseCurrency(valorRaw);
+            const novaCategoria = {
+              id: Date.now().toString(),
+              especie,
+              valor: valorNumber,
+              valorFormatado: formatCurrency(valorNumber)
+            };
+
+            const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
+
+            context.setMultipleValues({
+              categorias: [...currentList, novaCategoria],
+              especieCalculoExtra: '',
+              valorEspecieCalculoExtra: ''
+            });
+          }
+        },
+        {
+          name: 'categorias',
+          label: 'Categorias Adicionadas',
+          type: 'table',
+          colSpan: 3,
+          conditionalRender: ({ data }) => Array.isArray(data.categorias) && data.categorias.length > 0,
+          tableColumns: [
+            { header: 'Espécie', key: 'especie' },
+            { header: 'Valor', key: 'valorFormatado' }
+          ],
+          tableActions: [
+            {
+              label: 'Editar',
+              icon: 'Edit',
+              onClick: (row, context) => {
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
+                const newList = currentList.filter((c) => c.id !== row.id);
+
+                context.setMultipleValues({
+                  categorias: newList,
+                  especieCalculoExtra: String(row.especie || ''),
+                  valorEspecieCalculoExtra: formatCurrency(Number(row.valor || 0))
+                });
+              }
+            },
+            {
+              label: 'Remover',
+              icon: 'Delete',
+              onClick: (row, context) => {
+                const formValues = context.getValues();
+                const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
+                const newList = currentList.filter((c) => c.id !== row.id);
+                context.setMultipleValues({ categorias: newList });
+              }
+            }
+          ]
         }
       ]
     }
