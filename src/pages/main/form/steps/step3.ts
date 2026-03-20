@@ -859,13 +859,13 @@ export const step3: FormConfig['steps'][number] = {
     },
     {
       title: 'Cálculo Extra',
-      gridColumns: 3,
+      gridColumns: 5,
       fields: [
         {
           name: 'especieCalculoExtra',
           label: 'Espécie',
-          type: 'select',
           colSpan: 2,
+          type: 'select',
           options: [
             { label: 'Principal', value: 'Principal' },
             { label: 'Custas e Outros', value: 'CustasEoutros' },
@@ -884,26 +884,15 @@ export const step3: FormConfig['steps'][number] = {
         {
           name: 'valorEspecieCalculoExtra',
           label: 'Valor da Espécie',
-          type: 'currency',
-          colSpan: 1
-        },
-        {
-          name: 'acaoLimparCalculoExtra',
-          label: 'Limpar Formulário',
-          type: 'button',
-          buttonVariant: 'outlined',
-          colSpan: 1,
-          onButtonClick: (context) => context.setMultipleValues({
-            especieCalculoExtra: '',
-            valorEspecieCalculoExtra: ''
-          })
+          colSpan: 2,
+          type: 'currency'
         },
         {
           name: 'acaoAdicionarCalculoExtra',
           label: 'Adicionar Categoria',
           type: 'button',
+          colSpan: 1,
           buttonVariant: 'contained',
-          colSpan: 2,
           onButtonClick: (context) => {
             const formValues = context.getValues();
             const especie = String(formValues.especieCalculoExtra || '');
@@ -920,11 +909,14 @@ export const step3: FormConfig['steps'][number] = {
             };
 
             const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
+            const newList = [...currentList, novaCategoria];
+            const total = newList.reduce((acc, curr) => acc + (Number(curr.valor) || 0), 0);
 
             context.setMultipleValues({
-              categorias: [...currentList, novaCategoria],
+              categorias: newList,
               especieCalculoExtra: '',
-              valorEspecieCalculoExtra: ''
+              valorEspecieCalculoExtra: '',
+              valorTotalCategorias: formatCurrency(total)
             });
           }
         },
@@ -932,7 +924,7 @@ export const step3: FormConfig['steps'][number] = {
           name: 'categorias',
           label: 'Categorias Adicionadas',
           type: 'table',
-          colSpan: 3,
+          colSpan: 5,
           conditionalRender: ({ data }) => Array.isArray(data.categorias) && data.categorias.length > 0,
           tableColumns: [
             { header: 'Espécie', key: 'especie' },
@@ -946,11 +938,13 @@ export const step3: FormConfig['steps'][number] = {
                 const formValues = context.getValues();
                 const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
                 const newList = currentList.filter((c) => c.id !== row.id);
+                const total = newList.reduce((acc, curr) => acc + (Number(curr.valor) || 0), 0);
 
                 context.setMultipleValues({
                   categorias: newList,
                   especieCalculoExtra: String(row.especie || ''),
-                  valorEspecieCalculoExtra: formatCurrency(Number(row.valor || 0))
+                  valorEspecieCalculoExtra: formatCurrency(Number(row.valor || 0)),
+                  valorTotalCategorias: formatCurrency(total)
                 });
               }
             },
@@ -961,10 +955,23 @@ export const step3: FormConfig['steps'][number] = {
                 const formValues = context.getValues();
                 const currentList = Array.isArray(formValues.categorias) ? formValues.categorias : [];
                 const newList = currentList.filter((c) => c.id !== row.id);
-                context.setMultipleValues({ categorias: newList });
+                const total = newList.reduce((acc, curr) => acc + (Number(curr.valor) || 0), 0);
+                
+                context.setMultipleValues({ 
+                  categorias: newList,
+                  valorTotalCategorias: formatCurrency(total)
+                });
               }
             }
           ]
+        },
+        {
+          name: 'valorTotalCategorias',
+          label: 'Valor Total de Categorias',
+          type: 'text',
+          readOnly: true,
+          colSpan: 5,
+          conditionalRender: ({ data }) => Array.isArray(data.categorias) && data.categorias.length > 0
         }
       ]
     }
