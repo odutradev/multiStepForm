@@ -4,6 +4,21 @@ import { step3TestData } from '../tests/step3';
 
 import type { FormConfig } from '@components/multiStepForm/types';
 
+const CALCULO_EXTRA_OPTIONS = [
+  { label: 'Principal', value: 'Principal' },
+  { label: 'Custas e Outros', value: 'CustasEoutros' },
+  { label: 'Desconto Previdenciário', value: 'DescontoPrevidenciário' },
+  { label: 'Juros Anteriores', value: 'JurosAnteriores' },
+  { label: 'Assistência Médica', value: 'AssistMedica' },
+  { label: 'Selic Anterior Sobre Principal', value: 'SelicAnteriorSobrePrincipal' },
+  { label: 'Selic Anterior Desconto Previdenciário', value: 'SelicAnteriorDescontoPrevidenciário' },
+  { label: 'Selic Anterior Sobre Juros Anteriores', value: 'SelicAnteriorSobreJurosAnteriores' },
+  { label: 'Selic Anterior Sobre Assistência Médica', value: 'SelicAnteriorSobreAssistMedica' },
+  { label: 'Selic Anterior Sobre Contribuição Patronal', value: 'SelicAnteriorSobreContribuicaoPatronal' },
+  { label: 'Selic Anterior Sobre Custas e Outros', value: 'SelicAnteriorSobreCustasEoutros' },
+  { label: 'Contribuição Patronal', value: 'ContribuicaoPatronal' }
+];
+
 export const step3: FormConfig['steps'][number] = {
   id: 'step-3',
   title: 'Beneficiário',
@@ -866,20 +881,7 @@ export const step3: FormConfig['steps'][number] = {
           label: 'Espécie',
           colSpan: 2,
           type: 'select',
-          options: [
-            { label: 'Principal', value: 'Principal' },
-            { label: 'Custas e Outros', value: 'CustasEoutros' },
-            { label: 'Desconto Previdenciário', value: 'DescontoPrevidenciário' },
-            { label: 'Juros Anteriores', value: 'JurosAnteriores' },
-            { label: 'Assistência Médica', value: 'AssistMedica' },
-            { label: 'Selic Anterior Sobre Principal', value: 'SelicAnteriorSobrePrincipal' },
-            { label: 'Selic Anterior Desconto Previdenciário', value: 'SelicAnteriorDescontoPrevidenciário' },
-            { label: 'Selic Anterior Sobre Juros Anteriores', value: 'SelicAnteriorSobreJurosAnteriores' },
-            { label: 'Selic Anterior Sobre Assistência Médica', value: 'SelicAnteriorSobreAssistMedica' },
-            { label: 'Selic Anterior Sobre Contribuição Patronal', value: 'SelicAnteriorSobreContribuicaoPatronal' },
-            { label: 'Selic Anterior Sobre Custas e Outros', value: 'SelicAnteriorSobreCustasEoutros' },
-            { label: 'Contribuição Patronal', value: 'ContribuicaoPatronal' }
-          ]
+          options: CALCULO_EXTRA_OPTIONS
         },
         {
           name: 'valorEspecieCalculoExtra',
@@ -901,9 +903,12 @@ export const step3: FormConfig['steps'][number] = {
             if (!especie || !valorRaw) return;
 
             const valorNumber = parseCurrency(valorRaw);
+            const nome = CALCULO_EXTRA_OPTIONS.find((opt) => opt.value === especie)?.label || especie;
+
             const novaCategoria = {
               id: Date.now().toString(),
               especie,
+              nome,
               valor: valorNumber,
               valorFormatado: formatCurrency(valorNumber)
             };
@@ -927,7 +932,7 @@ export const step3: FormConfig['steps'][number] = {
           colSpan: 5,
           conditionalRender: ({ data }) => Array.isArray(data.categorias) && data.categorias.length > 0,
           tableColumns: [
-            { header: 'Espécie', key: 'especie' },
+            { header: 'Espécie', key: 'nome' },
             { header: 'Valor', key: 'valorFormatado' }
           ],
           tableActions: [
